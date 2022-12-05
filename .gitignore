@@ -5,8 +5,12 @@
 
 ##Project settings
 /CakeFactoryProd/appsettings.json
+CakeFactoryProd/appsettings.json
 **CakeFactoryProd/appsettings.json
 **CakeFactoryProd/Data/ApplicationDbContext.cs
+/CakeFactoryProd/Data/ApplicationDbContext.cs
+CakeFactoryProd/Data/ApplicationDbContext.cs
+
 
 # User-specific files
 *.rsuser
