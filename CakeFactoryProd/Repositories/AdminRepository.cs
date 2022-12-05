@@ -1,6 +1,6 @@
 ﻿namespace CakeFactoryProd.Repositories
 {
-    public class CakeOrderRepository
+    public class AdminRepository
     {
     }
 }
