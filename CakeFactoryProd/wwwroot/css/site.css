@@ -36,6 +36,16 @@ img {
     justify-content: space-between;
 }
 
+.row {
+    display: flex;
+    justify-content: center;
+}
+
+.col-md-4{
+    width: 40%;
+}
+
+
 
 @media (min-width: 768px) {
     html {
@@ -70,3 +80,4 @@ body {
     margin-top: 50px;
     margin-left: 20px
 }
+

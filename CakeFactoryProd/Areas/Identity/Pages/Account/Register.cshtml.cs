@@ -70,6 +70,17 @@ namespace CakeFactoryProd.Areas.Identity.Pages.Account
         /// </summary>
         public class InputModel
         {
+            [Required]
+            [Display(Name = "Full Name")]
+            public string Name { get; set; }
+            
+            [Display(Name = "Prefered Name")]
+            public string preferredName { get; set; }
+
+            [Required]
+            [Display(Name = "Phone Number")]
+            public string phoneNumber { get; set; }
+
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
