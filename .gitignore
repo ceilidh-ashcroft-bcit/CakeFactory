@@ -3,6 +3,12 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+##Project settings
+/CakeFactoryProd/appsettings.json
+**CakeFactoryProd/appsettings.json
+**CakeFactoryProd/Models/CakeFactoryContext.cs
+/CakeFactoryProd/Models/CakeFactoryContext.cs
+
 # User-specific files
 *.rsuser
 *.suo
