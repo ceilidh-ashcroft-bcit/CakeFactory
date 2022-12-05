@@ -1,11 +1,47 @@
 html {
-  font-size: 14px;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+    font-size: 14px;
 }
 
+*, *:before, *:after {
+    box-sizing: border-box;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.wrapper {
+    max-width: 1500px;
+    height: 1500px;
+    margin: 0;
+    background-color: white;
+    min-height: 100vh;
+}
+
+.container {
+    text-align: center;
+}
+
+.items img {
+    display: block;
+}
+
+.items {
+    margin-top: 20px;
+    display: flex;
+    text-align: center;
+    justify-content: space-between;
+}
+
+
 @media (min-width: 768px) {
-  html {
+    html {
     font-size: 16px;
-  }
+    }
+
 }
 
 html {
@@ -15,4 +51,22 @@ html {
 
 body {
   margin-bottom: 60px;
+}
+
+.cake-logo-nav {
+    max-width: 100px;
+}
+
+.footer-img{
+    max-width: 300px;
+}
+
+.footer-info {
+    display: flex;
+    justify-content: safe center;
+}
+
+.footer-info article{
+    margin-top: 50px;
+    margin-left: 20px
 }
