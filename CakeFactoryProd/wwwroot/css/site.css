@@ -13,6 +13,10 @@ img {
     height: auto;
 }
 
+.cake-logo-nav {
+    max-width: 100px;
+}
+
 .wrapper {
     max-width: 1500px;
     height: 1500px;
@@ -45,6 +49,17 @@ img {
     width: 40%;
 }
 
+.footer-info {
+    flex-direction: column;
+    text-align: center
+}
+.footer-img {
+    max-width: 300px;
+    justify-content: center
+}
+
+
+/*above information is anything smaller than 768px*/
 
 
 @media (min-width: 768px) {
@@ -52,32 +67,35 @@ img {
     font-size: 16px;
     }
 
+    html {
+        position: relative;
+        min-height: 100%;
+    }
+
+    body {
+        margin-bottom: 60px;
+    }
+
+    .cake-logo-nav {
+        max-width: 100px;
+    }
+
+    .footer-img {
+        max-width: 300px;
+    }
+
+    .footer-info {
+        display: flex;
+        justify-content: center;
+        flex-direction: row;
+    }
+
+    .footer-info article {
+        margin-top: 50px;
+        margin-left: 20px
+    }
+
 }
 
-html {
-  position: relative;
-  min-height: 100%;
-}
 
-body {
-  margin-bottom: 60px;
-}
-
-.cake-logo-nav {
-    max-width: 100px;
-}
-
-.footer-img{
-    max-width: 300px;
-}
-
-.footer-info {
-    display: flex;
-    justify-content: safe center;
-}
-
-.footer-info article{
-    margin-top: 50px;
-    margin-left: 20px
-}
 
