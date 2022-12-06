@@ -1,0 +1,53 @@
+﻿@model CakeFactoryProd.Models.Shape
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>Shape</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Value" class="control-label"></label>
+                <input asp-for="Value" class="form-control" />
+                <span asp-validation-for="Value" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PriceFactor" class="control-label"></label>
+                <input asp-for="PriceFactor" class="form-control" />
+                <span asp-validation-for="PriceFactor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="IsActive" class="control-label">Is it active?</label>
+                @Html.DropDownListFor(model => model.IsActive, new List<SelectListItem>()
+                {
+                    new SelectListItem() { Text = "Yes", Value = "True" },
+                    new SelectListItem() { Text = "No", Value = "False"}
+                }, "Select.....", new { @id = "isActive", @class="form-control" })
+                @Html.ValidationMessageFor(model => model.IsActive)
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
