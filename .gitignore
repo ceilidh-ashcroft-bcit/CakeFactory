@@ -8,10 +8,17 @@
 /CakeFactoryProd/appsettings.json
 CakeFactoryProd/appsettings.json
 
-**CakeFactoryProd/Models/CakeFactoryContext.cs
-/CakeFactoryProd/Models/CakeFactoryContext.cs
-CakeFactoryProd/Models/CakeFactoryContext.cs
+##**CakeFactoryProd/Data/CakeFactoryContext.cs
+##/CakeFactoryProd/Data/CakeFactoryContext.cs
+##CakeFactoryProd/Data/CakeFactoryContext.cs
 
+**CakeFactoryProd/Data/Migrations/
+/CakeFactoryProd/Data/Migrations/
+CakeFactoryProd/Data/Migrations/
+
+**CakeFactoryProd/Migrations/
+/CakeFactoryProd/Migrations/
+CakeFactoryProd/Migrations/
 
 # User-specific files
 *.rsuser
