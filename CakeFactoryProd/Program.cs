@@ -6,14 +6,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-//builder.Services.AddDbContext<ApplicationDbContext>(options =>
+
 builder.Services.AddDbContext<CakeFactoryContext>(options =>
     options.UseSqlServer(connectionString));
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
-    .AddEntityFrameworkStores<CakeFactoryContext>();
-    //.AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddDefaultIdentity<IdentityUser>(options => 
+            options.SignIn.RequireConfirmedAccount = false)
+                .AddEntityFrameworkStores<CakeFactoryContext>();
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
 

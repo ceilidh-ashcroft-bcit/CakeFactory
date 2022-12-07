@@ -4,10 +4,10 @@ using CakeFactoryProd.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
 
 namespace CakeFactoryProd.Data
 {
-    //public partial class CakeFactoryContext : DbContext
     public partial class CakeFactoryContext : IdentityDbContext
     {
         public CakeFactoryContext(DbContextOptions<CakeFactoryContext> options)
@@ -32,8 +32,12 @@ namespace CakeFactoryProd.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=LAPTOP-GI8D20M1\\SSD_SQL_SERVER;Database=CakeFactory;Trusted_Connection=True;");
+                IConfigurationRoot configuration = new ConfigurationBuilder()
+                    .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                    .AddJsonFile("appsettings.json")
+                    .Build();
+
+                optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             }
         }
 
