@@ -14,7 +14,7 @@ namespace CakeFactoryProd.Data
             : base(options)
         {
         }
-        public CakeFactoryContext()
+        public CakeFactoryContext() 
         {
         }
 
