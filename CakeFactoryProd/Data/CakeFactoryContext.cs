@@ -10,12 +10,11 @@ namespace CakeFactoryProd.Data
     //public partial class CakeFactoryContext : DbContext
     public partial class CakeFactoryContext : IdentityDbContext
     {
-        public CakeFactoryContext()
-        {
-        }
-
         public CakeFactoryContext(DbContextOptions<CakeFactoryContext> options)
             : base(options)
+        {
+        }
+        public CakeFactoryContext()
         {
         }
 
@@ -40,6 +39,8 @@ namespace CakeFactoryProd.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Cake>(entity =>
             {
                 entity.ToTable("Cake");
