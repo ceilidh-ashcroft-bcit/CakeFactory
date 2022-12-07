@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CakeFactoryProd.Migrations
 {
     [DbContext(typeof(CakeFactoryContext))]
-    [Migration("20221207175836_di")]
-    partial class di
+    [Migration("20221207184227_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

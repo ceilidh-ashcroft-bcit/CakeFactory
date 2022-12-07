@@ -11,6 +11,8 @@ using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
 using CakeFactoryProd.Data;
+using CakeFactoryProd.Models;
+using CakeFactoryProd.Repositories;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -74,16 +76,19 @@ namespace CakeFactoryProd.Areas.Identity.Pages.Account
         /// </summary>
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "Please enter in your full name")]
+            //[RegularExpression(@"^[a-zA-Z]+[a-zA-Z]*$", ErrorMessage = "Please only use alphabetical charachters")]
             [Display(Name = "Full Name")]
             public string Name { get; set; }
-            
-            [Display(Name = "Prefered Name")]
-            public string preferredName { get; set; }
 
-            [Required]
+            
+            [RegularExpression(@"^[a-zA-Z]+[a-zA-Z]*$", ErrorMessage = "Please only use alphabetical charachters")]
+            [Display(Name = "Prefered Name")]
+
+            [Required(ErrorMessage = "Please enter in your phone number")]            public string PreferredName { get; set; }
+
             [Display(Name = "Phone Number")]
-            public string phoneNumber { get; set; }
+            public string PhoneNumber { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -135,6 +140,16 @@ namespace CakeFactoryProd.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+                    User registeredUser = new User()
+                    {
+                        Name = Input.Name,
+                        PreferredName = Input.PreferredName,
+                        PhoneNumber = Input.PhoneNumber,
+                        Email = Input.Email
+                    };
+                    UserRepository userRepository = new UserRepository(_context);
+                    userRepository.CreateRegisteredUser(registeredUser);
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
