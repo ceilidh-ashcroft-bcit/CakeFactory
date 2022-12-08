@@ -8,5 +8,18 @@ namespace CakeFactoryProd.Controllers
         {
             return View();
         }
+
+        public IActionResult Cakes()
+        {
+            return View();
+        }
+        public IActionResult Users()
+        {
+            return View();
+        }
+        public IActionResult Sales()
+        {
+            return View();
+        }
     }
 }
