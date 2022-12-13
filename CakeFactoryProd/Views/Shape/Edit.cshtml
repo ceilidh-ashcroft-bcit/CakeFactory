@@ -1,0 +1,63 @@
+﻿@model CakeFactoryProd.Models.Shape
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+@{
+    if (ViewBag.Message != "") {
+        <hr />
+        <h4>@ViewBag.Message</h4>
+    } else {
+        <h4>Shape</h4>
+    }
+}
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Value" class="control-label"></label>
+                <input asp-for="Value" class="form-control" />
+                <span asp-validation-for="Value" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PriceFactor" class="control-label"></label>
+                <input asp-for="PriceFactor" class="form-control" />
+                <span asp-validation-for="PriceFactor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            @{Console.WriteLine("======= isActive:: " + Model.IsActive.ToString());}
+            <div>
+                <label asp-for="IsActive" class="control-label">Is it active?</label>
+                @Html.DropDownListFor(model => model.IsActive, new List<SelectListItem>()
+                {
+                    new SelectListItem() { Text = "Yes", Value = "True" },
+                    new SelectListItem() { Text = "No", Value = "False"}
+                }, "Select (Y/N)", new { @id = "isActive", @class="form-control" })
+                @Html.ValidationMessageFor(model => model.IsActive)
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
