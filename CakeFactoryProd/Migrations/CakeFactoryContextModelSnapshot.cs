@@ -54,6 +54,9 @@ namespace CakeFactoryProd.Migrations
                         .HasColumnName("isActive")
                         .HasDefaultValueSql("((1))");
 
+                    b.Property<bool>("IsPredefined")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)

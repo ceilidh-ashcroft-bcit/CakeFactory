@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CakeFactoryProd.Migrations
 {
     [DbContext(typeof(CakeFactoryContext))]
-    [Migration("20221207184227_initial")]
-    partial class initial
+    [Migration("20221213000558_asdasd")]
+    partial class asdasd
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -55,6 +55,9 @@ namespace CakeFactoryProd.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("isActive")
                         .HasDefaultValueSql("((1))");
+
+                    b.Property<bool>("IsPredefined")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()

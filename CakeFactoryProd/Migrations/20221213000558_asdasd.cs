@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CakeFactoryProd.Migrations
 {
-    public partial class initial : Migration
+    public partial class asdasd : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -247,6 +247,7 @@ namespace CakeFactoryProd.Migrations
                     description = table.Column<string>(type: "varchar(200)", unicode: false, maxLength: 200, nullable: true),
                     isActive = table.Column<bool>(type: "bit", nullable: false, defaultValueSql: "((1))"),
                     imagePath = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
+                    IsPredefined = table.Column<bool>(type: "bit", nullable: false),
                     fillingId = table.Column<int>(type: "int", nullable: false),
                     sizeId = table.Column<int>(type: "int", nullable: false),
                     shapeId = table.Column<int>(type: "int", nullable: false)
