@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Fillings</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -12,28 +12,48 @@
 <table class="table">
     <thead>
         <tr>
-            <div>
-                <h4>Topping</h4>
-                <hr />
-                @foreach (var topping in Model)
-                {
-                <th>
-                        @topping.Id
-                </th>
-                <th>
-                        @topping.Description
-                </th>
-                <th>
-                        @topping.PriceFactor
-                </th>
-                <th>
-                        @topping.Flavor
-                </th>
-                <th>
-                        @topping.IsActive
-                </th>
-                }
-            </div>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Flavor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PriceFactor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsActive)
+            </th>
+            <th></th>
         </tr>
     </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Flavor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PriceFactor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsActive)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new {id = item.Id}) |
+                    @Html.ActionLink("Details", "Details", new {id = item.Id}) |
+                    @Html.ActionLink("Delete", "Delete", new {id = item.Id})
+            </td>
+        </tr>
+}
+    </tbody>
 </table>
