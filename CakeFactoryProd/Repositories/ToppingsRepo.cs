@@ -15,15 +15,23 @@ namespace CakeFactoryProd.Repositories
         public IEnumerable<Topping> GetAllToppings()
         {
             IEnumerable<Topping> toppings =
-             _context.Toppings.Select(t => new Topping() { 
+                _context.Toppings.Select(t => new Topping() { 
                 Id = t.Id,
                 Flavor= t.Flavor,
                 PriceFactor= t.PriceFactor,
                 Description= t.Description,
                 IsActive= t.IsActive,
-             });
+                });
 
             return toppings;
+        }
+
+        /* For Lisa Cake Edit Page */
+        public List<ToppingVM> GetToppingAll()
+        {
+            IQueryable<ToppingVM> topping = _context.Toppings.Select(t => new ToppingVM { Flavor = t.Flavor, PriceFactor = t.PriceFactor, IsActive = t.IsActive });
+
+            return topping.ToList();
         }
 
         public Topping GetToppingById(int id)

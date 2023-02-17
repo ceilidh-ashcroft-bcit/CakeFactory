@@ -26,7 +26,12 @@ namespace CakeFactoryProd.Repositories
 
             return fillings;
         }
-
+        /* For Lisa Cake Edit Page */
+        public List<FillingVM> GetFillingAll()
+        {
+            IQueryable<FillingVM> filling = _context.Fillings.Select(f => new FillingVM { Flavor = f.Flavor, PriceFactor = f.PriceFactor, IsActive = f.IsActive });
+            return filling.ToList();
+        }
         public Filling GetFillingById(int id)
         {
             var topping = _context.Fillings.FirstOrDefault(t => t.Id == id);
