@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using CakeFactoryProd.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace CakeFactoryProd.Data
@@ -9,5 +10,6 @@ namespace CakeFactoryProd.Data
             : base(options)
         {
         }
+
     }
-}
+}       

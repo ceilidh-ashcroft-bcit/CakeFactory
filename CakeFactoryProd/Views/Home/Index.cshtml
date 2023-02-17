@@ -1,24 +1,44 @@
-﻿
+﻿@model IEnumerable<CakeFactoryProd.Models.Cake>
+
 @{
     ViewData["Title"] = "Home Page";
 }
 
+
 <div class="wrapper">
-    <div class="main_banner">
-        <img src=~/images/cakeFactory-banner.jpg alt="flour on a board" />
+    <div class="main-banner">
+    <img src=~/images/cakeFactory-banner.jpg alt="flour on a board" />
+    <div class="banner-inner">
+            <h1 class="banner-title">Welcome to <span class="cake-factory-banner-name">Cake Factory!</span></h1>
+        <p class="banner-text">Our cakes are made with the finest ingredients and are baked fresh daily. We offer a variety of flavors and sizes to suit your needs. We also offer custom cakes for any occasion.</p>
     </div>
-    <div class="items">
-        <div class="item article-01">
-            <img src="~/images/carrotCake.jpg" alt="Carrot Cake">
-            <h2>Carrot Cake</h2>
+</div>
+    <section class="cake-container">
+        <div class="cake-container-title">
+            <h1>Cakes</h1>
         </div>
-        <div class="item article-02">
-            <img src="~/images/chocolateCake.jpg" alt="Chocolate Cake">
-            <h2>Chocolate Cake</h2>
+        
+    @foreach (var cake in Model)
+    {
+       <a asp-controller="Cake" asp-action="Detail" asp-route-id="@cake.Id" class="cake-item">             
+        <div class="cake-image">
+            @*<img src="@cake.ImagePath" alt="@cake.Name">*@
+          <img src="~/images/chocolateCake.jpg" alt="@cake.Name">
         </div>
-        <div class="item article-03">
-            <img src="~/images/emptyCake.jpg" alt="Empty Cake">
-            <h2>Custormized Cake</h2>
-        </div>
-    </div>
+        <div class="cake-contents">
+            <h2 class="cake-name">@cake.Name</h2>
+            <p class="cake-price">$@String.Format("{0:0.00}", @cake.Price)</p>
+        </div>      
+            </a>
+        }
+        <a asp-controller="Cake" asp-action="Detail" asp-route-id="null" class="cake-item">
+            <div class="cake-image">
+                <img src="~/images/emptyCake.jpg" alt="custom cake">
+            </div>
+            <div class="cake-contents">
+                <h2 class="cake-name">Custom Cake</h2>
+                <p class="cake-price">$20.00 - $50.00</p>
+            </div>
+        </a>
+    </section>
 </div>

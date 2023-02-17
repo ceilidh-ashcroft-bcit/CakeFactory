@@ -1,5 +1,8 @@
-﻿using CakeFactoryProd.Models;
+﻿using CakeFactoryProd.Data;
+using CakeFactoryProd.Models;
+using CakeFactoryProd.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace CakeFactoryProd.Controllers
@@ -7,15 +10,19 @@ namespace CakeFactoryProd.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly CakeFactoryContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, CakeFactoryContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
         {
-            return View();
+            CakeRepository cakeRepo = new CakeRepository(_context);
+            var allCakes = cakeRepo.GetAllCakes();
+            return View(allCakes);
         }
 
         public IActionResult Privacy()

@@ -10,6 +10,9 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using CakeFactoryProd.Data;
+using CakeFactoryProd.Models;
+using CakeFactoryProd.Repositories;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -29,13 +32,15 @@ namespace CakeFactoryProd.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly CakeFactoryContext _db;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            CakeFactoryContext context)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -43,6 +48,7 @@ namespace CakeFactoryProd.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _db = context;
         }
 
         /// <summary>
@@ -70,22 +76,24 @@ namespace CakeFactoryProd.Areas.Identity.Pages.Account
         /// </summary>
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "Please enter in your full name")]
+            //[RegularExpression(@"^[a-zA-Z]+[a-zA-Z]*$", ErrorMessage = "Please only use alphabetical charachters")]
             [Display(Name = "Full Name")]
             public string Name { get; set; }
             
             [Display(Name = "Prefered Name")]
-            public string preferredName { get; set; }
+            [RegularExpression(@"^[a-zA-Z]+[a-zA-Z]*$", ErrorMessage = "Please only use alphabetical charachters")]
+            public string PreferredName { get; set; }
 
             [Required]
             [Display(Name = "Phone Number")]
-            public string phoneNumber { get; set; }
+            public string PhoneNumber { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
+            [Required(ErrorMessage = "Please enter in an email address")]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
@@ -131,6 +139,15 @@ namespace CakeFactoryProd.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+                    User registeredUser = new User()
+                    {
+                        Name = Input.Name,
+                        PreferredName = Input.PreferredName,
+                        PhoneNumber = Input.PhoneNumber
+                    };
+                    UserRepository userRepository = new UserRepository(_db);
+                    userRepository.CreateRegisteredUser(registeredUser);
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
