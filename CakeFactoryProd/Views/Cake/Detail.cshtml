@@ -1,0 +1,71 @@
+﻿@model CakeFactoryProd.ViewModels.CakeOrderVM;
+
+
+@{
+    ViewData["Title"] = "Cake Order";
+}
+
+
+<div class="cake-detail-container">
+    <div class="cake-detail-top">
+        <div class="cake-detail-image">
+            @*<img src="@Model.ImagePath" alt="@Model.Name" /> *@
+            <img src="~/images/emptyCake.jpg" alt="TEST-IMAGE-PLACEHOLDER" />
+        </div>
+        <div class="cake-detail-info">
+            <h2>@Model.Cake.Name</h2>
+            <p>$@String.Format("{0:0.00}", Model.Cake.Price)</p>
+            <h4>@Model.Cake.Description</h4>
+            <a asp-controller="Home" asp-action="Index">Back to the cakes!</a>
+        </div>
+    </div>
+   
+    <div class="cake-edit-container">
+        <form class="cake-order-form">
+        <div class="cake-size-shape">
+            <h2>Select a size and shape</h2>          
+            <label asp-for="Sizes" >Size</label>
+                @Html.DropDownListFor(model => model.Sizes, Model.Sizes, "Select a size", new { @class = "cake-select-size" })
+            </br>  
+            <label asp-for="Shapes">Shape</label>
+                @Html.DropDownListFor(model => model.Shapes, Model.Shapes, "Select a shape", new { @class = "cake-select-shape" })           
+            </br>
+            <label asp-for="Fillings">Filling</label>
+                @Html.DropDownListFor(model => model.Fillings, Model.Fillings, "Select a filling", new { @class = "cake-select-shape" })
+            </div>
+        <div class="choco-plaque-container">
+            <h2>Custom Chocolate Plaque</h2>
+                <p>Our beautiful 3” chocolate plaques are brushed with gold dust and hand written with white chocolate. 
+                    Please keep your messages short and sweet (max. 25 characters). We do not draw emojis.
+                </p>
+            <label for="custom-plaque">Chocolate plaque with custom message (+$4.00)</label>
+            <input type="text" id="custom-message" name="custom-plaque" placeholder="Enter a message... 50 max characters" class="custom-plaque-input">
+        </div>
+        <div class="cake-pickup-date">
+            <h2>Pickup Date</h2>
+             <input type="datetime-local" value="@Model.PickupDate">
+        </div>
+        <div class="cake-to-cart-container">
+            <input type="number" min="1" max="3" placeholder="Qty" name="quantity-input" value="@Model.Quantity">
+            <button>Add to Cart</button>
+        </div>
+        </form>
+    </div>
+    <div class="cake-detail-info-container">
+        <h2>Important Information</h2>
+        <ul>
+            <li>We require 48 hours Notice for all cake pre-orders.</li>
+            <li>If the product is “Out of Stock” it is for the current week only. New cakes are added every Saturday for future dates.</li>
+            <li>Make sure you select the correct date and pick up time prior to payment.</li>
+            <li>We are unable to accommodate special cake and pastry requests.</li>
+            <li>We strongly suggest that you place your orders in advance as we have LIMITED quantities.</li>
+        </ul>
+        <h2>Cancelation Policy</h2>
+        <h3>We understand, sometimes plans change. Here are the details:</h3>
+        <ul>
+            <li>Up to 72 hours prior to pickup – We are sorry, we are unable to refund, exchange or cancel your order because it is already in process.</li>
+            <li>Between 4 and 7 days- We will offer you an in store credit for the value of your order.</li>
+            <li>With 8 days notice and beyond- A full credit will be issued at our earliest convenience, and we hope to see you back soon!</li>
+        </ul>
+    </div>
+    
