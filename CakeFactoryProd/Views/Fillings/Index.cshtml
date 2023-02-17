@@ -1,0 +1,39 @@
+﻿@model IEnumerable<CakeFactoryProd.Models.Filling>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <div>
+                <h4>Topping</h4>
+                <hr />
+                @foreach (var topping in Model)
+                {
+                <th>
+                        @topping.Id
+                </th>
+                <th>
+                        @topping.Description
+                </th>
+                <th>
+                        @topping.PriceFactor
+                </th>
+                <th>
+                        @topping.Flavor
+                </th>
+                <th>
+                        @topping.IsActive
+                </th>
+                }
+            </div>
+        </tr>
+    </thead>
+</table>
