@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CakeFactoryProd.Controllers
 {
@@ -8,5 +9,6 @@ namespace CakeFactoryProd.Controllers
         {
             return View();
         }
+
     }
 }
