@@ -32,7 +32,7 @@ namespace CakeFactoryProd.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
-        private readonly CakeFactoryContext _db;
+        private readonly CakeFactoryContext _context;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -48,7 +48,7 @@ namespace CakeFactoryProd.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
-            _db = context;
+            _context = context;
         }
 
         /// <summary>
@@ -80,12 +80,13 @@ namespace CakeFactoryProd.Areas.Identity.Pages.Account
             //[RegularExpression(@"^[a-zA-Z]+[a-zA-Z]*$", ErrorMessage = "Please only use alphabetical charachters")]
             [Display(Name = "Full Name")]
             public string Name { get; set; }
-            
-            [Display(Name = "Prefered Name")]
+
             [RegularExpression(@"^[a-zA-Z]+[a-zA-Z]*$", ErrorMessage = "Please only use alphabetical charachters")]
+            [Display(Name = "Prefered Name")]
+
+            [Required(ErrorMessage = "Please enter in your phone number")]            
             public string PreferredName { get; set; }
 
-            [Required]
             [Display(Name = "Phone Number")]
             public string PhoneNumber { get; set; }
 
@@ -143,9 +144,12 @@ namespace CakeFactoryProd.Areas.Identity.Pages.Account
                     {
                         Name = Input.Name,
                         PreferredName = Input.PreferredName,
-                        PhoneNumber = Input.PhoneNumber
+                        PhoneNumber = Input.PhoneNumber,
+                        Email = Input.Email
+
                     };
-                    UserRepository userRepository = new UserRepository(_db);
+
+                    UserRepository userRepository = new UserRepository(_context);
                     userRepository.CreateRegisteredUser(registeredUser);
 
                     _logger.LogInformation("User created a new account with password.");

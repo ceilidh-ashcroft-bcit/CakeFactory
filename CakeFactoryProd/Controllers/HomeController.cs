@@ -25,6 +25,11 @@ namespace CakeFactoryProd.Controllers
             return View(allCakes);
         }
 
+        public IActionResult About()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();

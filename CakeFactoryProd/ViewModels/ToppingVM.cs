@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
-namespace CakeFactoryProd.Models
+﻿namespace CakeFactoryProd.ViewModels
 {
-    public partial class Topping
+    public class ToppingVM
     {
-        [Key]
         public int Id { get; set; }
         public string Flavor { get; set; } = null!;
         public double PriceFactor { get; set; }

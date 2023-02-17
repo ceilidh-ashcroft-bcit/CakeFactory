@@ -11,6 +11,7 @@ namespace CakeFactoryProd.Models
         public string? Description { get; set; }
         public bool? IsActive { get; set; }
         public string? ImagePath { get; set; }
+        public bool IsPredefined { get; set; }
         public int FillingId { get; set; }
         public int SizeId { get; set; }
         public int ShapeId { get; set; }

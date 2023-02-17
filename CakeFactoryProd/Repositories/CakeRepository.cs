@@ -58,20 +58,20 @@ namespace CakeFactoryProd.Repositories
         public void AddCake(Cake cake)
         {
             _context.Cakes.Add(cake);
-            _context.SaveChanges();
+            //_context.SaveChanges();
         }
 
         public void UpdateCake(Cake cake)
         {
             _context.Cakes.Update(cake);
-            _context.SaveChanges();
+            //_context.SaveChanges();
         }
 
         public void DeleteCake(int id)
         {
             Cake cake = _context.Cakes.Find(id);
             _context.Cakes.Remove(cake);
-            _context.SaveChanges();
+            //_context.SaveChanges();
         }   
     }
 }

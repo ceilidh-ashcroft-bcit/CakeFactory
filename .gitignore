@@ -3,6 +3,20 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+##Project settings
+##**CakeFactoryProd/appsettings.json
+##/CakeFactoryProd/appsettings.json
+##CakeFactoryProd/appsettings.json
+
+##**CakeFactoryProd/Data/CakeFactoryContext.cs
+##/CakeFactoryProd/Data/CakeFactoryContext.cs
+##CakeFactoryProd/Data/CakeFactoryContext.cs
+
+**CakeFactoryProd/Data/Migrations/
+/CakeFactoryProd/Data/Migrations/
+CakeFactoryProd/Data/Migrations/
+
+
 # User-specific files
 *.rsuser
 *.suo
