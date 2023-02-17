@@ -12,6 +12,7 @@ builder.Services.AddDbContext<CakeFactoryContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<CakeFactoryContext>();
     //.AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
