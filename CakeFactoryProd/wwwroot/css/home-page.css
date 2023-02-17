@@ -1,0 +1,105 @@
+﻿
+
+
+/*home pages styles*/
+.main-banner {
+    left: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    max-width: 100vw;
+    position: relative;
+    right: 50%;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: black;
+}
+.main-banner img {
+    opacity: 0.5;
+}
+
+.banner-inner {
+    position: absolute;
+    color: white;
+    max-width: 60%;
+}
+
+.banner-title {
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.cake-factory-banner-name {
+    font-family: 'Pacifico', cursive;
+    font-weight: normal;
+    color: orange;
+}
+
+.banner-text {
+    font-style: italic;
+}
+
+.items img {
+    display: block;
+}
+
+.items {
+    margin-top: 20px;
+    display: flex;
+    text-align: center;
+    justify-content: space-between;
+}
+
+.cake-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.cake-container-title{
+    width: 100%;
+    text-align: left;
+    margin-bottom: 20px;
+    color: gray;
+    text-transform: uppercase;
+    border-bottom: 1px double gray;
+}
+
+.cake-item {
+    max-width: 500px;
+    width: 30%;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.cake-item img{
+    border-radius: 5%;  
+}
+
+.cake-contents {
+    color: gray;
+}
+
+@media (min-width: 768px) {
+    .banner-title {
+        font-size: 3rem;
+    }
+
+    .banner-text {
+        font-size: 1.2rem;
+    }
+
+}
+
+@media(min-width: 1200px) {
+    .banner-title {
+        font-size: 4rem;
+    }
+
+    .banner-text {
+        font-size: 1.5rem;
+    }
+
+}

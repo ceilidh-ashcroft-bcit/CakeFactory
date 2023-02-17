@@ -1,0 +1,138 @@
+﻿/*cake details styles */
+.cake-detail-top {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.cake-detail-image {
+    width: 40%;
+    display: flex;
+}
+
+.cake-detail-image img{
+    border-radius: 25% 10%;
+}
+
+.cake-detail-info {
+    width: 60%;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    margin-left:20px;
+}
+
+    .cake-detail-info h2 {
+        font-family: 'Pacifico', cursive;
+        font-weight: normal;
+        color: orange;
+    }
+
+    .cake-detail-info p {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: red;
+    }
+
+    .cake-detail-info a {
+        margin-top: auto;
+    }
+
+
+.cake-edit-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    border: 2px solid black;
+    background-color: lightgrey;
+    width: 100%;
+    text-align: left;
+    padding: 30px;
+    height: 700px;
+    margin-top: 50px;
+}
+
+.cake-order-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+}
+
+.cake-size-shape {
+    max-width: 400px;
+}
+
+    .cake-size-shape > label {
+        font-size: 2rem
+    }
+
+.cake-select-size {
+    margin-left: 36px;
+    font-size: 1.5rem;
+    border-radius: 5px;
+    width: 60%;
+}
+
+.cake-select-shape {
+    margin-left: 10px;
+    font-size: 1.5rem;
+    padding-right: 20px;
+    border-radius: 5px;
+    width: 60%;
+}
+
+.cake-select-fillings {
+    margin-left: 12px;
+    font-size: 1.5rem;
+    padding-right: 20px;
+    border-radius: 5px;
+    width: 60%;
+}
+
+.choco-plaque-container h2 {
+    margin-bottom: 30px;
+}
+
+.custom-plaque-input {
+    width: 100%;
+    padding: 0;
+    margin-top: 10px;
+}
+
+.cake-detail-info-container {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    padding: 30px;
+    border: 2px solid black;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+@media (min-width: 768px) {
+    .cake-detail-info h2 {
+        font-size: 2.5rem;
+        font-weight: bold;
+    }
+
+    .cake-select-size {
+        margin-left: 41px;
+    }
+
+    .cake-select-shape {
+        margin-left: 10px;
+    }
+
+    .cake-select-fillings{
+        margin-left: 12px;
+    }
+
+}
+
+@media(min-width: 1200px) {
+    .cake-detail-info h2 {
+        font-size: 3rem;
+    }
+}
