@@ -39,5 +39,13 @@ namespace CakeFactoryProd.Repositories
             return user;
 
         }
+
+        public string Edit(User user)
+        {
+
+            _context.Users.Update(user);
+            _context.SaveChanges();
+            return "";
+        }
     }
 }

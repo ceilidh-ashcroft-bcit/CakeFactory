@@ -15,9 +15,10 @@ namespace CakeFactoryProd.ViewModels
         [RegularExpression(@"^[a-zA-Z]+[ a-zA-Z-_]*$", ErrorMessage = "Please enter alphabets only.")]
         public string PrefferedName { get; set; }
 
-        [RegularExpression("^[0-9]$", ErrorMessage = "Enter numbers only.")]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "Enter numbers only.")]
         public string PhoneNumber { get; set; }
 
+        public bool IsActive { get; set; }
         public int TotalNumberOfOrders { get; set; }
 
     }

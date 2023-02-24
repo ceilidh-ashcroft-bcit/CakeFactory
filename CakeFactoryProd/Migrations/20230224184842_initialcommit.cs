@@ -5,8 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CakeFactoryProd.Migrations
 {
-    public partial class asdasd : Migration
+    /// <inheritdoc />
+    public partial class initialcommit : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -128,6 +130,23 @@ namespace CakeFactoryProd.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_User", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserVM",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PrefferedName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TotalNumberOfOrders = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserVM", x => x.UserId);
                 });
 
             migrationBuilder.CreateTable(
@@ -426,6 +445,7 @@ namespace CakeFactoryProd.Migrations
                 unique: true);
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
@@ -448,6 +468,9 @@ namespace CakeFactoryProd.Migrations
 
             migrationBuilder.DropTable(
                 name: "OrderHasCakes");
+
+            migrationBuilder.DropTable(
+                name: "UserVM");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
