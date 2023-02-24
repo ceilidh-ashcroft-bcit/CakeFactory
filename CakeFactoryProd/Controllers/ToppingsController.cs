@@ -70,7 +70,7 @@ namespace CakeFactoryProd.Controllers
             {
                 Flavor = topping.Flavor,
                 PriceFactor = topping.PriceFactor,
-                Id = topping.Id,
+                ToppingId = topping.Id,
                 Description = topping.Description,
                 IsActive = topping.IsActive
             };
