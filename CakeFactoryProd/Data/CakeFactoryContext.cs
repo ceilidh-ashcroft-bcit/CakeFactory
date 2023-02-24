@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CakeFactoryProd.Models;
-
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
