@@ -31,9 +31,9 @@
             <td>@item.Shape</td>
             <td>@item.IsActive</td>
             <td>
-                <a asp-controller="Cake" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-controller="Cake" asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-controller="Cake" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-controller="Cake" asp-action="Edit" asp-route-id="@item.CakeId">Edit</a> |
+                    <a asp-controller="Cake" asp-action="Details" asp-route-id="@item.CakeId">Details</a> |
+                    <a asp-controller="Cake" asp-action="Delete" asp-route-id="@item.CakeId">Delete</a>
             </td>
         </tr>
 }
@@ -62,9 +62,9 @@
                 <td>@string.Format("{0:0.00}", @item.PriceFactor)</td>
             <td>@item.IsActive</td>
             <td>
-                <a asp-controller="Toppings" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-controller="Toppings" asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-controller="Toppings" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-controller="Toppings" asp-action="Edit" asp-route-id="@item.ToppingId">Edit</a> |
+                <a asp-controller="Toppings" asp-action="Details" asp-route-id="@item.ToppingId">Details</a> |
+                <a asp-controller="Toppings" asp-action="Delete" asp-route-id="@item.ToppingId">Delete</a>
             </td>
         </tr>
 }
@@ -95,9 +95,9 @@
                 <td>@string.Format("{0:0.00}", @item.PriceFactor)</td>
                 <td>@item.IsActive</td>
                 <td>
-                    <a asp-controller="Fillings" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-controller="Fillings" asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-controller="Fillings" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-controller="Fillings" asp-action="Edit" asp-route-id="@item.FillingId">Edit</a> |
+                    <a asp-controller="Fillings" asp-action="Details" asp-route-id="@item.FillingId">Details</a> |
+                    <a asp-controller="Fillings" asp-action="Delete" asp-route-id="@item.FillingId">Delete</a>
                 </td>
             </tr>
         }

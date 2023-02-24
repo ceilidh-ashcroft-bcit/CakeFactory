@@ -2,22 +2,39 @@
 -------------------------------------------------------------
 --- #1- Handle DATABASE
 -------------------------------------------------------------
-USE master;
-GO
 
-PRINT '#1- CREATE database ''CakeFactory''';
-IF DB_ID('CakeFactory') IS NOT NULL 
-BEGIN
-	DROP DATABASE CakeFactory;
-	PRINT '  CakeFactory DATABASE already exists and it''s been dropped and create again';
-END
-GO
+-- # assuming we already scafolded the .net Identity Entity Framework
+--USE master;
+--GO
 
-CREATE DATABASE CakeFactory;
-GO
+--PRINT '#1- CREATE database ''CakeFactory''';
+--IF DB_ID('CakeFactory') IS NOT NULL 
+--BEGIN
+--	DROP DATABASE CakeFactory;
+--	PRINT '  CakeFactory DATABASE already exists and it''s been dropped and create again';
+--END
+--GO
+
+--CREATE DATABASE CakeFactory;
+--GO
 
 USE CakeFactory;
 GO
+
+
+-- DROP ALL TABLES AND REMOVE ALL ASP.NET USERS/ROLES
+DROP TABLE IF EXISTS CakeHasToppings;
+DROP TABLE IF EXISTS Topping;
+DROP TABLE IF EXISTS OrderHasCakes;
+DROP TABLE IF EXISTS Cake;
+DROP TABLE IF EXISTS Filling;
+DROP TABLE IF EXISTS Size;
+DROP TABLE IF EXISTS Shape;
+DROP TABLE IF EXISTS [Order];
+DROP TABLE IF EXISTS [User];
+DELETE from AspNetRoles
+DELETE from AspNetUsers
+DELETE from AspNetUserRoles
 
 
 -------------------------------------------------------------
@@ -30,7 +47,7 @@ CREATE TABLE [User]
     id	INT PRIMARY KEY IDENTITY (1, 1),
     email VARCHAR(100) NOT NULL UNIQUE,
     [name] VARCHAR(60) NOT NULL,
-    isAdmin BIT DEFAULT 0 NOT NULL,
+	[password] VARCHAR(50) NOT NULL,
 	preferredName VARCHAR(60),
 	phoneNumber VARCHAR(12),
 	isActive BIT DEFAULT 1 NOT NULL
@@ -120,6 +137,7 @@ CREATE TABLE Cake
 	[description] VARCHAR(200),
 	isActive BIT DEFAULT 1 NOT NULL,
 	imagePath VARCHAR(100),
+	isPredefined BIT DEFAULT 1 NOT NULL,
 	fillingId INT NOT NULL,
     FOREIGN KEY (fillingId) REFERENCES Filling(id),
 	sizeId INT NOT NULL,
@@ -163,6 +181,9 @@ CREATE TABLE [Order]
 	totalAmount MONEY NOT NULL,
 	openOrder BIT DEFAULT 0 NOT NULL,
 	openOrderDate DATE,
+	currency VARCHAR(3),
+	paypalId VARCHAR(30),
+
 	userId int NOT NULL,
     FOREIGN KEY (userId) REFERENCES [User](id)
 );
@@ -198,11 +219,30 @@ ELSE
 -------------------------------------------------------------
 PRINT CHAR(10) + '#3- INSERT data';
 PRINT CHAR(10) + '#3.1- INSERT data INTO ''User''';
-INSERT INTO [User] VALUES ('firstadmin@bcit.ca', 'First System Admin', 1, 'Admin1', '', 1);
-INSERT INTO [User] VALUES ('secondadmin@bcit.ca', 'The Second Admin', 1, 'Admin2', '777-123-4567', 1);
-INSERT INTO [User] VALUES ('admin@bcit.ca', 'The Main Admin', 1, 'Admin', '123-456-7890', 1);
-INSERT INTO [User] VALUES ('client01@email.ca', 'The First Client', 0, 'First', '789-123-4567', 1);
-INSERT INTO [User] VALUES ('client02@gmail.ca', 'Second Client', 0, 'Second', '888-999-1234', 1);
+INSERT INTO [User] VALUES ('admin@cakefactory.ca', 'First System Admin', 'P@ssw0rd!', 'Admin1', '', 1);
+INSERT INTO [User] VALUES ('manager@cakefactory.ca', 'The Store Manager', 'P@ssw0rd!', 'Manager', '777-123-4567', 1);
+INSERT INTO [User] VALUES ('customer01@email.ca', 'Customer01', 'P@ssw0rd!', 'Customer ONE', '123-456-7890', 1);
+INSERT INTO [User] VALUES ('customer02@email.ca', 'Customer02', 'P@ssw0rd!', 'Customer TWO', '123-456-7890', 1);
+
+INSERT INTO AspNetUsers VALUES ('1', 'First System Admin', 'First System Admin', 'firstadmin@bcit.ca',
+'', '', '', '', '', '', '', '', '', '', '');
+INSERT INTO AspNetUsers VALUES ('2', 'The Store Manager', 'THE STORE MANAGER', 'manager@cakefactory.ca',
+'', '', '', '', '', '', '', '', '', '', '');
+INSERT INTO AspNetUsers VALUES ('3', 'Customer01', 'CUSTOMER01', 'customer01@email.ca',
+'', '', '', '', '', '', '', '', '', '', '');
+INSERT INTO AspNetUsers VALUES ('4', 'Customer02', 'CUSTOMER02', 'customer02@email.ca',
+'', '', '', '', '', '', '', '', '', '', '');
+
+
+INSERT INTO AspNetRoles VALUES ('1', 'Admin', 'ADMIN', '');
+INSERT INTO AspNetRoles VALUES ('2', 'Manager', 'MANAGER', '');
+INSERT INTO AspNetRoles VALUES ('3', 'Customer', 'CUSTOMER', '');
+
+INSERT INTO AspNetUserRoles VALUES ('1', '1');
+INSERT INTO AspNetUserRoles VALUES ('2', '2');
+INSERT INTO AspNetUserRoles VALUES ('3', '3');
+INSERT INTO AspNetUserRoles VALUES ('4', '3');
+
 
 PRINT CHAR(10) + '#3.2- INSERT data INTO ''Shape''';
 INSERT INTO Shape VALUES ('Rectangle', 0 , '', 1);
@@ -234,16 +274,16 @@ INSERT INTO Topping VALUES ('Multicolor', 0.2, 'Chocolate, Vanilla and Strawberr
 INSERT INTO Topping VALUES ('Caramel', 0, 'Sweet Caramel', 1);
 
 PRINT CHAR(10) + '#3.6- INSERT data INTO ''Cake''';
-INSERT INTO Cake VALUES ('VS Special Chocolate', 8.99, 'Very Small Rectangle Chocolate', 1, null, 1, 1, 1);
-INSERT INTO Cake VALUES ('S Special Chocolate', 14.99, 'Small Rectangle Chocolate', 1, 'K:\cake-images\cake1.jpg', 1, 2, 1);
-INSERT INTO Cake VALUES ('M Special Chocolate', 22.99, 'Medium Rectangle Chocolate', 1, 'K:\cake-images\cake2-chocolate.jpg', 1, 3, 1);
-INSERT INTO Cake VALUES ('L Special Chocolate', 32.99, 'Large Rectangle Chocolate', 1, 'K:\cake-images\cake-image3.jpg', 1, 4, 1);
-INSERT INTO Cake VALUES ('VL Special Chocolate', 49.99, 'Very Large Rectangle Chocolate', 1, 'K:\cake-images\cake4.jpg', 1, 5, 1);
-INSERT INTO Cake VALUES ('VS Great Vanilla', 8.99, 'Very Small Rectangle Vanilla', 1, 'K:\cake-images\cake-vanilla-1.jpg', 1, 1, 1);
-INSERT INTO Cake VALUES ('S Great Vanilla', 14.99, 'Small Rectangle Vanilla', 1, 'K:\cake-images\cake-vanilla-22.jpg', 1, 2, 1);
-INSERT INTO Cake VALUES ('M Great Vanilla', 22.99, 'Medium Rectangle Vanilla', 1, 'K:\cake-images\cake-vanilla-three.jpg', 1, 3, 1);
-INSERT INTO Cake VALUES ('G Great Vanilla', 32.99, 'Large Rectangle Vanilla', 1, 'K:\cake-images\cake-vanilla-4444.jpg', 1, 4, 1);
-INSERT INTO Cake VALUES ('VL Great Vanilla', 49.99, 'Very Large Rectangle Vanilla', 1, 'K:\cake-images\cake-vanilla-number5.jpg', 1, 5, 1);
+INSERT INTO Cake VALUES ('VS Special Chocolate', 8.99, 'Very Small Rectangle Chocolate', 1, null, 1, 1, 1, 1);
+INSERT INTO Cake VALUES ('S Special Chocolate', 14.99, 'Small Rectangle Chocolate', 1, 'K:\cake-images\cake1.jpg', 1, 1, 2, 1);
+INSERT INTO Cake VALUES ('M Special Chocolate', 22.99, 'Medium Rectangle Chocolate', 1, 'K:\cake-images\cake2-chocolate.jpg', 1, 1, 3, 1);
+INSERT INTO Cake VALUES ('L Special Chocolate', 32.99, 'Large Rectangle Chocolate', 1, 'K:\cake-images\cake-image3.jpg', 1, 1, 4, 1);
+INSERT INTO Cake VALUES ('VL Special Chocolate', 49.99, 'Very Large Rectangle Chocolate', 1, 'K:\cake-images\cake4.jpg', 1, 1, 5, 1);
+INSERT INTO Cake VALUES ('VS Great Vanilla', 8.99, 'Very Small Rectangle Vanilla', 1, 'K:\cake-images\cake-vanilla-1.jpg', 1, 1, 1, 1);
+INSERT INTO Cake VALUES ('S Great Vanilla', 14.99, 'Small Rectangle Vanilla', 1, 'K:\cake-images\cake-vanilla-22.jpg', 1, 1, 2, 1);
+INSERT INTO Cake VALUES ('M Great Vanilla', 22.99, 'Medium Rectangle Vanilla', 1, 'K:\cake-images\cake-vanilla-three.jpg', 1, 1, 3, 1);
+INSERT INTO Cake VALUES ('G Great Vanilla', 32.99, 'Large Rectangle Vanilla', 1, 'K:\cake-images\cake-vanilla-4444.jpg', 1, 1, 4, 1);
+INSERT INTO Cake VALUES ('VL Great Vanilla', 49.99, 'Very Large Rectangle Vanilla', 1, 'K:\cake-images\cake-vanilla-number5.jpg', 1, 1, 5, 1);
 
 PRINT CHAR(10) + '#3.7- INSERT data INTO ''CakeHasToppings''';
 INSERT INTO CakeHasToppings VALUES (1, 1);
@@ -258,15 +298,15 @@ INSERT INTO CakeHasToppings VALUES (9, 2);
 INSERT INTO CakeHasToppings VALUES (10, 2);
 
 PRINT CHAR(10) + '#3.8- INSERT data INTO ''Order''';
-INSERT INTO [Order] VALUES (null, null, 0, 8.99, 1, '2022-11-20', 3);
-INSERT INTO [Order] VALUES (null, null, 0, 12.34, 1, '2022-11-10', 3);
-INSERT INTO [Order] VALUES ('20221201', '20221203', 1, 30.15, 0, null, 4);
-INSERT INTO [Order] VALUES ('2022-11-30', '20221201', 1, 50, 0, null, 5);
-INSERT INTO [Order] VALUES ('2022-11-28', '2022-11-30', 1, 90, 0, null, 3);
-INSERT INTO [Order] VALUES ('2022-11-25', '2022-11-26', 1, 88.12, 0, '2022-11-20', 5);
-INSERT INTO [Order] VALUES ('2022-11-23', '2022-11-24', 1, 45.67, 0, '2022-11-20', 4);
-INSERT INTO [Order] VALUES ('2022-12-01', '2022-12-02', 1, 49.99, 0, null, 5);
-INSERT INTO [Order] VALUES ('2022-12-02', '2022-12-03', 1, 33.99, 0, null, 4);
+INSERT INTO [Order] VALUES (null, null, 0, 8.99, 1, '2022-11-20', 'CAD', 'PAYPAL-ID#00001', 3);
+INSERT INTO [Order] VALUES (null, null, 0, 12.34, 1, '2022-11-10', 'CAD', 'PAYPAL-ID#00002', 3);
+INSERT INTO [Order] VALUES ('20221201', '20221203', 1, 30.15, 0, null, 'CAD', 'PAYPAL-ID#00003', 4);
+INSERT INTO [Order] VALUES ('2022-11-30', '20221201', 1, 50, 0, null, 'CAD', 'PAYPAL-ID#00004', 4);
+INSERT INTO [Order] VALUES ('2022-11-28', '2022-11-30', 1, 90, 0, null, 'CAD', 'PAYPAL-ID#00005', 3);
+INSERT INTO [Order] VALUES ('2022-11-25', '2022-11-26', 1, 88.12, 0, '2022-11-20', 'CAD', 'PAYPAL-ID#00006', 4);
+INSERT INTO [Order] VALUES ('2022-11-23', '2022-11-24', 1, 45.67, 0, '2022-11-20', 'CAD', 'PAYPAL-ID#00007', 4);
+INSERT INTO [Order] VALUES ('2022-12-01', '2022-12-02', 1, 49.99, 0, null, 'CAD', 'PAYPAL-ID#00008', 3);
+INSERT INTO [Order] VALUES ('2022-12-02', '2022-12-03', '1', 33.99, 0, null, 'CAD', 'PAYPAL-ID#00009', 4);
 
 PRINT CHAR(10) + '#3.9- INSERT data INTO ''OrderHasCakes''';
 INSERT INTO OrderHasCakes VALUES (1, 8.99, 1, 1);
@@ -317,4 +357,26 @@ SELECT * FROM [Order];
 
 PRINT CHAR(10) + '#4.9- SELECT data FROM ''OrderHasCakes''';
 SELECT * FROM OrderHasCakes;
+*/
+
+
+
+
+/*
+-------------------------------------------------------------
+--- #5- Delete data
+-------------------------------------------------------------
+DELETE FROM CakeHasToppings;
+DELETE FROM Topping;
+DELETE FROM OrderHasCakes;
+DELETE FROM Cake;
+DELETE FROM Filling;
+DELETE FROM Size;
+DELETE FROM Shape;
+DELETE FROM Order;
+DELETE FROM [User];
+
+select * from AspNetRoles
+select * from AspNetUsers
+select * from AspNetUserRoles
 */

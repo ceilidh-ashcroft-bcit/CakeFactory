@@ -1,0 +1,51 @@
+﻿	Data Dictionary
+
+1-	Pre defined cake: that cakes the admin inserted in the system and 
+they can be displayed by the system.
+2-	Customized cake: when a client changes a predefined cake or 
+assemblies a brand new one from scratch.
+3-	User: any person registered in the system. Admin user is able to 
+remove any other user. Remove is made by inactivating an user.
+4-	Client: an user which is able to access related to client in the 
+system.
+5-	Admin: is as user able to access any functionality in the system.
+6-	Visitor: is a user without being logged. They are able to browse 
+in public areas and add items to the cart – we will hold it in cookie.
+7-	Email: is the email will login in a external service (email). The 
+users will be able to change their email.
+8-	isActive: is a field presented in most of tables. It is the way 
+we will provide ‘delete’ action, meaning the record will be no longer 
+available instead of deleted by themselves.
+9-	Cake Property: they are the features in a cake, such as Size, 
+Shape, Filling and Topping
+(5 to 10 are applied to Order table).
+10-	Purchase date: the date a client checked out (paid) for an order.
+11-	Pickup date: it is the day the client picked the products related 
+to that order .
+12-	Is picked: flags whether the user has picked the products from 
+that order, or not.
+13-	Total amount: is the total value regarding a particular Order – 
+this is the same value transacted with PayPal.
+14-	Open order: situation that happens when a client saves a cart but 
+does not check that out.
+15-	Open order date: it is the day the above situation happened.
+*** when client checks out, the Open Order field needs to be written 
+to 0 (false) and we can leave Open order date field
+(13 and 14 are applied to OrderHasCakes table) – not sure about this
+16-	Quantity: number of a particular cake in a specific order.
+17-	Cost: it is the total price for a specific cake (and its quantity)
+in a particular Order.
+18-	Cake Basic Price: it refers to the base price of a cake, depends 
+on its size. It will be used when a user assemblies they own cake. 
+When an admin is inserting a new cake, a pre defined one, they can 
+define the cake regardless of size basic price.
+19-	isPredefined: when a admin adds a predefined cake this field will
+be 1 (true) in the DB. For the cases when a client customize a cake,
+it will be 0 (false). This field is useful for the display Cakes
+purpose, because the system will query the DB for all isPredefined
+Cakes on Cake table. When a Cake is added by the admin, it is true.
+When a Customer purchases a cake after changing its properties, it
+will be recorded as false.
+20-	paypalId: it is the PayPal transaction id, received from them
+when a customer proceeds a checkout. 
+

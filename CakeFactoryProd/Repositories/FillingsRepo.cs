@@ -29,7 +29,7 @@ namespace CakeFactoryProd.Repositories
         /* For Lisa Cake Edit Page */
         public List<FillingVM> GetFillingAll()
         {
-            IQueryable<FillingVM> filling = _context.Fillings.Select(f => new FillingVM { Id = f.Id, Flavor = f.Flavor, PriceFactor = f.PriceFactor, IsActive = f.IsActive });
+            IQueryable<FillingVM> filling = _context.Fillings.Select(f => new FillingVM { FillingId = f.Id, Flavor = f.Flavor, PriceFactor = f.PriceFactor, IsActive = f.IsActive });
             return filling.ToList();
         }
         public Filling GetFillingById(int id)
@@ -55,11 +55,11 @@ namespace CakeFactoryProd.Repositories
         public Tuple<Filling, string> UpdateFillingByID(FillingVM fillingVM)
         {
             Filling filling = (from t in _context.Fillings
-                                where t.Id == fillingVM.Id
-                                select t).FirstOrDefault();
+                                where t.Id == fillingVM.FillingId
+                               select t).FirstOrDefault();
             if (filling != null)
             {
-                filling.Id = fillingVM.Id;
+                filling.Id = fillingVM.FillingId;
                 filling.Flavor = fillingVM.Flavor;
                 filling.PriceFactor = fillingVM.PriceFactor;
                 filling.Description = fillingVM.Description;
@@ -77,7 +77,7 @@ namespace CakeFactoryProd.Repositories
         {
             Filling newFilling = new Filling()
             {
-                Id = fillingVM.Id,
+                Id = fillingVM.FillingId,
                 Flavor = fillingVM.Flavor,
                 PriceFactor = fillingVM.PriceFactor,
                 Description = fillingVM.Description,

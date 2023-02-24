@@ -29,7 +29,7 @@ namespace CakeFactoryProd.Repositories
         /* For Lisa Cake Edit Page */
         public List<ToppingVM> GetToppingAll()
         {
-            IQueryable<ToppingVM> topping = _context.Toppings.Select(t => new ToppingVM { Id = t.Id, Flavor = t.Flavor, PriceFactor = t.PriceFactor, IsActive = t.IsActive });
+            IQueryable<ToppingVM> topping = _context.Toppings.Select(t => new ToppingVM { ToppingId = t.Id, Flavor = t.Flavor, PriceFactor = t.PriceFactor, IsActive = t.IsActive });
 
             return topping.ToList();
         }
@@ -57,11 +57,11 @@ namespace CakeFactoryProd.Repositories
         public Tuple<Topping, string> UpdateToppingByID(ToppingVM toppingVM)
         {
             Topping topping = (from t in _context.Toppings
-                              where t.Id == toppingVM.Id
-                              select t).FirstOrDefault();
+                              where t.Id == toppingVM.ToppingId
+                               select t).FirstOrDefault();
             if (topping != null)
             {
-                topping.Id = toppingVM.Id;
+                topping.Id = toppingVM.ToppingId;
                 topping.Flavor = toppingVM.Flavor;
                 topping.PriceFactor = toppingVM.PriceFactor;
                 topping.Description = toppingVM.Description;
@@ -79,7 +79,7 @@ namespace CakeFactoryProd.Repositories
         {
             Topping newTopping = new Topping()
             {
-                Id = toppingVM.Id,
+                Id = toppingVM.ToppingId,
                 Flavor = toppingVM.Flavor,
                 PriceFactor = toppingVM.PriceFactor,
                 Description = toppingVM.Description,

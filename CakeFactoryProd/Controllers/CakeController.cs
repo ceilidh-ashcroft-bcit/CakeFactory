@@ -25,13 +25,15 @@ namespace CakeFactoryProd.Controllers
         {
             CakeRepository cakeRepo = new CakeRepository(_context);
 
-            if (id == null)
+            //Custom cake view 
+            if (id == 0)
             {
-                Cake cake = new Cake();
+                CakeOrderVM cakeOrderVM = cakeRepo.CreateCustomCake();
 
-                return View(cake);
+                return View(cakeOrderVM);
             }
 
+            //Pre ordered cake view 
             else
             {
                 CakeOrderVM cakeOrderVM = cakeRepo.GetCakeById(id);

@@ -21,7 +21,7 @@ namespace CakeFactoryProd.Controllers
         public IActionResult Index()
         {
             CakeRepository cakeRepo = new CakeRepository(_context);
-            var allCakes = cakeRepo.GetAllCakes();
+            var allCakes = cakeRepo.GetAllActivePredefinedCakes();
             return View(allCakes);
         }
 

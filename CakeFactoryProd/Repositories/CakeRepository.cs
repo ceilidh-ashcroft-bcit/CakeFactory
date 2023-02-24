@@ -37,15 +37,47 @@ namespace CakeFactoryProd.Repositories
             return cakes.ToList();
         }
 
-        public List<Cake> GetAllCakes()
+        public List<Cake> GetAllActivePredefinedCakes()
+
         {
-            return _context.Cakes.ToList();
+            return _context.Cakes.Where(x => x.IsActive == true && x.IsPredefined == true).ToList();
         }
 
         public CakeOrderVM GetCakeById(int id)
         {
             Cake cake = _context.Cakes.Find(id);
 
+            Order order = new Order();
+            OrderHasCake orderHasCake = new OrderHasCake();
+
+
+            List<Shape> shapes = _context.Shapes.ToList();
+            List<Size> sizes = _context.Sizes.ToList();
+
+            return new CakeOrderVM
+            {
+                CakeVM = new CakeVM
+                {
+                    CakeId = cake.Id,
+                    Name = cake.Name,
+                    Description = cake.Description,
+                    CakeImage = cake.ImagePath,
+                    FillingId = cake.FillingId,
+                    SizeId = cake.SizeId,
+                    ShapeId = cake.ShapeId,
+                    Price = cake.Price,
+                },
+                Shapes = new SelectList(shapes, "Id", "Value"),
+                Sizes = new SelectList(sizes, "Id", "Value"),
+
+                PickupDate = order.PickupDate,
+                Quantity = orderHasCake.Quantity,
+            };
+        }
+
+        public CakeOrderVM CreateCustomCake()
+        {
+            Cake cake = new Cake();
             Order order = new Order();
             OrderHasCake orderHasCake = new OrderHasCake();
 
@@ -56,44 +88,46 @@ namespace CakeFactoryProd.Repositories
 
             return new CakeOrderVM
             {
-                Cake = new Cake
+                CakeVM = new CakeVM
                 {
-                    Id = cake.Id,
+                    CakeId = cake.Id,
                     Name = cake.Name,
                     Description = cake.Description,
-                    ImagePath = cake.ImagePath,
+                    CakeImage = cake.ImagePath,
                     FillingId = cake.FillingId,
                     SizeId = cake.SizeId,
                     ShapeId = cake.ShapeId,
                     Price = cake.Price,
                 },
 
+                PickupDate = order.PickupDate,
+
                 Shapes = new SelectList(shapes, "Id", "Value"),
                 Sizes = new SelectList(sizes, "Id", "Value"),
                 Fillings = new SelectList(fillings, "Id", "Flavor"),
-                Toppings = new SelectList(toppings, "Id", "Flavor"),
 
+                Toppings = toppings,
                 Quantity = orderHasCake.Quantity,
             };
         }
-
+        
         public void AddCake(Cake cake)
         {
             _context.Cakes.Add(cake);
-            //_context.SaveChanges();
+            _context.SaveChanges();
         }
 
         public void UpdateCake(Cake cake)
         {
             _context.Cakes.Update(cake);
-            //_context.SaveChanges();
+            _context.SaveChanges();
         }
 
         public void DeleteCake(int id)
         {
             Cake cake = _context.Cakes.Find(id);
             _context.Cakes.Remove(cake);
-            //_context.SaveChanges();
+            _context.SaveChanges();
         }   
 
     }
