@@ -73,7 +73,7 @@ namespace CakeFactoryProd.Controllers
             {
                 Flavor = filling.Flavor,
                 PriceFactor = filling.PriceFactor,
-                Id = filling.Id,
+                FillingId = filling.Id,
                 Description = filling.Description,
                 IsActive = filling.IsActive
             };
