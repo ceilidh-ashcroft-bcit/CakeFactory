@@ -1,0 +1,58 @@
+﻿@model CakeFactoryProd.ViewModels.UserVM
+
+@{
+    ViewData["Title"] = "UserProfile";
+}
+
+
+
+<div style="border: 2px solid green;">
+    @*<h1>Your Profile</h1>
+    <h4>Welcome to your dashboard</h4>*@
+
+    <div style="overflow:auto; padding:30px; align-content:center;">
+        <img style="float:left;width:125px; height:125px;background: #000; display:block; mat" />
+        <div style="align-content:baseline; padding:10px;">
+            <h2>Your Profile</h2>
+            <h6 style="padding:15px">Welcome to your dashboard</h6>
+        </div>
+    </div>
+
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PrefferedName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PrefferedName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+        @*  <dt class = "col-sm-2">
+        @Html.DisplayNameFor(model => model.TotalNumberOfOrders)
+        </dt>
+        <dd class = "col-sm-10">
+        @Html.DisplayFor(model => model.TotalNumberOfOrders)
+        </dd>*@
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.UserId">Edit</a>
+
+</div>

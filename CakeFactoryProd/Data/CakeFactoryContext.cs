@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
+using CakeFactoryProd.ViewModels;
 
 namespace CakeFactoryProd.Data
 {
@@ -27,6 +28,8 @@ namespace CakeFactoryProd.Data
         public virtual DbSet<Size> Sizes { get; set; } = null!;
         public virtual DbSet<Topping> Toppings { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
+
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -322,5 +325,7 @@ namespace CakeFactoryProd.Data
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+        public DbSet<CakeFactoryProd.ViewModels.UserVM> UserVM { get; set; } = default!;
     }
 }
