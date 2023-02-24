@@ -8,7 +8,7 @@
 <h1>Cakes</h1>
 
 <p>
-    <a asp-action="Create">Add Cake</a>
+    <a class="btn btn-primary float-right" asp-area="" asp-controller="Cake" asp-action="Create">Add Cake</a>
 </p>
 <table class="table">
     <thead>
@@ -26,14 +26,14 @@
         
         <tr>
             <td>@item.Name</td>
-            <td>@item.Price</td>
+                <td>@string.Format("{0:0.00}", @item.Price)</td>
             <td>@item.Size</td>
             <td>@item.Shape</td>
             <td>@item.IsActive</td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-controller="Cake" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-controller="Cake" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-controller="Cake" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
 }
@@ -43,7 +43,7 @@
 <h1>Topping</h1>
 
 <p>
-    <a asp-action="Create">Add Topping</a>
+    <a class="btn btn-primary float-right" asp-area="" asp-controller="Toppings" asp-action="Create">Add Topping</a>
 </p>
 <table class="table">
     <thead>
@@ -59,12 +59,12 @@
         
         <tr>
             <td>@item.Flavor</td>
-            <td>@item.PriceFactor</td>
+                <td>@string.Format("{0:0.00}", @item.PriceFactor)</td>
             <td>@item.IsActive</td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-controller="Toppings" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-controller="Toppings" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-controller="Toppings" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
 }
@@ -75,7 +75,7 @@
 <h1>Filling</h1>
 
 <p>
-    <a asp-action="Create">Add Filling</a>
+    <a class="btn btn-primary btn-right" asp-area="" asp-controller="Fillings" asp-action="Create">Add Filling</a>
 </p>
 <table class="table">
     <thead>
@@ -92,12 +92,12 @@
 
             <tr>
                 <td>@item.Flavor</td>
-                <td>@item.PriceFactor</td>
+                <td>@string.Format("{0:0.00}", @item.PriceFactor)</td>
                 <td>@item.IsActive</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-controller="Fillings" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-controller="Fillings" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-controller="Fillings" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>
         }

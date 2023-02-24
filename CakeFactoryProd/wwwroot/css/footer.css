@@ -1,0 +1,37 @@
+﻿.footer-info {
+    flex-direction: column;
+    text-align: center
+}
+
+.footer-items {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.footer-img {
+    max-width: 300px;
+    justify-content: center
+}
+
+@media (min-width: 768px) {
+    .footer-img {
+        max-width: 300px;
+    }
+
+    .footer-info {
+        display: flex;
+        justify-content: center;
+        flex-direction: row;
+    }
+
+    .footer-items {
+        margin: 0;
+        margin-right: 50px;
+    }
+
+    .footer-info article {
+        margin-top: 10px;
+    }
+}

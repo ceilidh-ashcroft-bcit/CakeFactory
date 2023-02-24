@@ -29,7 +29,7 @@ namespace CakeFactoryProd.Repositories
         /* For Lisa Cake Edit Page */
         public List<ToppingVM> GetToppingAll()
         {
-            IQueryable<ToppingVM> topping = _context.Toppings.Select(t => new ToppingVM { Flavor = t.Flavor, PriceFactor = t.PriceFactor, IsActive = t.IsActive });
+            IQueryable<ToppingVM> topping = _context.Toppings.Select(t => new ToppingVM { Id = t.Id, Flavor = t.Flavor, PriceFactor = t.PriceFactor, IsActive = t.IsActive });
 
             return topping.ToList();
         }
@@ -49,6 +49,7 @@ namespace CakeFactoryProd.Repositories
         {
             Topping removedTopping = GetToppingById(id);
             _context.Toppings.Remove(removedTopping);
+            _context.SaveChanges();
 
             return $"Topping with id ${id} successfully deleted";
         }
@@ -60,14 +61,11 @@ namespace CakeFactoryProd.Repositories
                               select t).FirstOrDefault();
             if (topping != null)
             {
-                topping = new Topping()
-                {
-                    Id = toppingVM.Id,
-                    Flavor = toppingVM.Flavor,
-                    PriceFactor = toppingVM.PriceFactor,
-                    Description = toppingVM.Description,
-                    IsActive = toppingVM.IsActive
-                };
+                topping.Id = toppingVM.Id;
+                topping.Flavor = toppingVM.Flavor;
+                topping.PriceFactor = toppingVM.PriceFactor;
+                topping.Description = toppingVM.Description;
+                topping.IsActive = toppingVM.IsActive;
 
                 _context.SaveChanges();
                 return Tuple.Create(topping, "Updated Topping");
@@ -89,6 +87,7 @@ namespace CakeFactoryProd.Repositories
             };
 
             _context.Toppings.Add(newTopping);
+            _context.SaveChanges();
 
             return newTopping;
         }

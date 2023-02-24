@@ -29,24 +29,25 @@ namespace CakeFactoryProd.Repositories
         /* For Lisa Cake Edit Page */
         public List<FillingVM> GetFillingAll()
         {
-            IQueryable<FillingVM> filling = _context.Fillings.Select(f => new FillingVM { Flavor = f.Flavor, PriceFactor = f.PriceFactor, IsActive = f.IsActive });
+            IQueryable<FillingVM> filling = _context.Fillings.Select(f => new FillingVM { Id = f.Id, Flavor = f.Flavor, PriceFactor = f.PriceFactor, IsActive = f.IsActive });
             return filling.ToList();
         }
         public Filling GetFillingById(int id)
         {
-            var topping = _context.Fillings.FirstOrDefault(t => t.Id == id);
-            if (topping == null)
+            var filling = _context.Fillings.FirstOrDefault(t => t.Id == id);
+            if (filling == null)
             {
                 return new Filling();
             }
 
-            return topping;
+            return filling;
         }
 
         public string DeleteFillingById(int id)
         {
             Filling removedFilling = GetFillingById(id);
             _context.Fillings.Remove(removedFilling);
+            _context.SaveChanges();
 
             return $"Filling with id ${id} successfully deleted";
         }
@@ -58,21 +59,17 @@ namespace CakeFactoryProd.Repositories
                                 select t).FirstOrDefault();
             if (filling != null)
             {
-                filling = new Filling()
-                {
-                    Id = filling.Id,
-                    Flavor = filling.Flavor,
-                    PriceFactor = filling.PriceFactor,
-                    Description = filling.Description,
-                    IsActive = filling.IsActive
-
-                };
+                filling.Id = fillingVM.Id;
+                filling.Flavor = fillingVM.Flavor;
+                filling.PriceFactor = fillingVM.PriceFactor;
+                filling.Description = fillingVM.Description;
+                filling.IsActive = fillingVM.IsActive;
 
                 _context.SaveChanges();
                 return Tuple.Create(filling, "Updated Filling");
             }
 
-            return Tuple.Create(new Filling(), "Failed to update topping");
+            return Tuple.Create(new Filling(), "Failed to update filling");
 
         }
 
@@ -88,6 +85,7 @@ namespace CakeFactoryProd.Repositories
             };
 
             _context.Fillings.Add(newFilling);
+            _context.SaveChanges();
 
             return newFilling;
         }

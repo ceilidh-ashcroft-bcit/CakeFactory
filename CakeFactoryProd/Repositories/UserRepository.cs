@@ -1,7 +1,6 @@
 ﻿using CakeFactoryProd.Data;
 using CakeFactoryProd.Models;
 using CakeFactoryProd.ViewModels;
-using Microsoft.EntityFrameworkCore;
 
 namespace CakeFactoryProd.Repositories
 {
