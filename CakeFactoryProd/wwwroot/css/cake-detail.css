@@ -65,17 +65,17 @@
 }
 
     .cake-size-shape > label {
-        font-size: 2rem
+        font-size: 2rem;
     }
 
-.cake-select-size {
+select#Sizes {
     margin-left: 36px;
     font-size: 1.5rem;
     border-radius: 5px;
     width: 60%;
 }
 
-.cake-select-shape {
+select#Shapes {
     margin-left: 10px;
     font-size: 1.5rem;
     padding-right: 20px;
@@ -83,12 +83,17 @@
     width: 60%;
 }
 
-.cake-select-fillings {
+select#Fillings {
     margin-left: 12px;
     font-size: 1.5rem;
     padding-right: 20px;
     border-radius: 5px;
     width: 60%;
+}
+
+.cake-edit-topping-contianer {
+    display: flex;
+    justify-content: space-between;
 }
 
 .choco-plaque-container h2 {
@@ -117,15 +122,15 @@
         font-weight: bold;
     }
 
-    .cake-select-size {
+    select#Sizes {
         margin-left: 41px;
     }
 
-    .cake-select-shape {
+    select#Shapes {
         margin-left: 10px;
     }
 
-    .cake-select-fillings{
+    select#Fillings {
         margin-left: 12px;
     }
 
