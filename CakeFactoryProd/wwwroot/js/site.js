@@ -5,4 +5,18 @@
 
 
 
-// Price Factor Dynamic update 
+//Limit Date picker dates to Wednesday to Sunday
+$(document).ready(function () {
+    var now = new Date();
+    var thirtyDaysFromNow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 30);
+
+    $('.datePicker').datepicker({
+        minDate: 0,
+        maxDate: thirtyDaysFromNow,
+        beforeShowDay: function (date) {
+            var day = date.getDay();
+            return [(day == 3 || day == 4 || day == 5 || day == 6 || day == 0), ''];
+        }
+    });
+})
+

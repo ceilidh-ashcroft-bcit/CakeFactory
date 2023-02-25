@@ -19,7 +19,7 @@
                 <h2>Custom Cake</h2>
                 <p>$50.00 - $100.00</p>
                 <h4>
-                    Create the cake of your dreams with our customizable cake option. Start by selecting the shape of your cake - round, square, or even diamond. Then, choose from our range of delicious flavors, including classic vanilla, rich chocolate, fresh strawberry, and more. Next, select the size of your cake based on the number of servings you need.
+                    Create the cake of your dreams with our customizable cake option. Choose from our range of delicious flavors, including classic vanilla, rich chocolate, fresh strawberry, and more. Next, select the size of your cake based on the number of servings you need.
                     Now comes the fun part - choosing your toppings! Get creative and choose from a variety of choices to create a cake that is uniquely yours. From chocolate to caramel, mix and even multicolor. You can also add a personalized message or design to make your cake even more special.
                     Our team of expert bakers will craft your custom cake to perfection, using only the freshest ingredients. Whether you're celebrating a birthday, wedding, or any other occasion, our customizable cakes are sure to impress. Place your order today and let us bring your cake vision to life!
                 </h4>
@@ -34,23 +34,23 @@
             <a asp-controller="Home" asp-action="Index">Back to the cakes!</a>
         </div>
     </div>
-
     <div class="cake-edit-container">
-        <form class="cake-order-form">
+        <form class="cake-order-form" method="POST">
         <div class="cake-size-shape">
             <h2>Select a size and shape</h2>
-                <label asp-for="Sizes" >Size</label>
-                @Html.DropDownListFor(model => model.Sizes, Model.Sizes, "Select a size", new { @class = "cake-sel-size" })
-                <br>  
-                <label asp-for="Shapes">Shape</label>
-                @Html.DropDownListFor(model => model.Shapes, Model.Shapes, "Select a shape", new { @class = "cake-sel-shape" })           
-                <br>
 
+                
                 @if (Model.CakeVM.CakeId == 0)
                 {
+                    <label asp-for="Sizes">Size</label>
+                    @Html.DropDownListFor(model => model.Sizes, Model.Sizes, "Select a size", new { @class = "cake-sel-size" })
+                    <br/>
+                    <label asp-for="Shapes">Shape</label>
+                    @Html.DropDownListFor(model => model.Shapes, Model.Shapes, "Select a shape", new { @class = "cake-sel-shape" })
+                    <br/>
                     <label asp-for="Fillings">Filling</label>
                     @Html.DropDownListFor(model => model.Fillings, Model.Fillings, "Select a filling", new { @class = "cake-sel-filling" })
-                    <br>
+                    <br/>
                     <label asp-for="Toppings">Topping</label>
                     <div class="cake-edit-topping-contianer">
                         @foreach (var topping in Model.Toppings)
@@ -61,6 +61,19 @@
                         }
                     </div>
                 }
+                else
+                {
+                    <label asp-for="@Model.CakeVM.SizeId">Size: </label>
+                    <select asp-for="@Model.CakeVM.SizeId" asp-items="@Model.Sizes" disabled></select>
+                    <br />
+                    <label asp-for="@Model.CakeVM.ShapeId">Shape: </label>
+                    <select asp-for="@Model.CakeVM.ShapeId" asp-items="@Model.Shapes" disabled></select>
+                    <br />
+                    <label asp-for="@Model.CakeVM.FillingId">Filling: </label>
+                    <select asp-for="@Model.CakeVM.FillingId" asp-items="@Model.Fillings" disabled></select>
+                    <br />
+                }
+
             </div>
         <div class="choco-plaque-container">
             <h2>Custom Chocolate Plaque</h2>
@@ -72,11 +85,12 @@
         </div>
         <div class="cake-pickup-date">
             <h2>Pickup Date</h2>
-                <input asp-for="PickupDate" asp-format="{0:yyyy-MM-dd}">
+                <input asp-for="PickupDate"  type="date" class="datePicker">
         </div>
         <div class="cake-to-cart-container">
+            <h2>Quantity</h2>
             <input type="number" min="1" max="3" placeholder="Qty" name="quantity-input" value="@Model.Quantity">
-            <button>Add to Cart</button>
+            <button type="submit">Add to Cart</button>
         </div>
         </form>
     </div>
@@ -97,6 +111,4 @@
             <li>With 8 days notice and beyond- A full credit will be issued at our earliest convenience, and we hope to see you back soon!</li>
         </ul>
     </div>
-    
 
-<script src="~/js/site.js"></script>
