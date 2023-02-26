@@ -54,7 +54,7 @@ namespace CakeFactoryProd.Data
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Description)
-                    .HasMaxLength(200)
+                    .HasMaxLength(500)
                     .IsUnicode(false)
                     .HasColumnName("description");
 
