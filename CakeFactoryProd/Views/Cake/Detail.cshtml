@@ -57,6 +57,7 @@
                     @Html.DropDownListFor(model => model.Fillings, Model.Fillings, "Select a filling", new { @class = "cake-sel-filling" })
                     <br/>
                     <label asp-for="Toppings">Topping</label>
+
                     <div class="cake-edit-topping-contianer">
                         @foreach (var topping in Model.Toppings)
                         {
