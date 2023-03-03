@@ -14,7 +14,7 @@ namespace CakeFactoryProd.Models
         public int Id { get; set; }
         public string Email { get; set; } = null!;
         public string Name { get; set; } = null!;
-        public bool IsAdmin { get; set; }
+       // public bool IsAdmin { get; set; }
         public string? PreferredName { get; set; }
         public string? PhoneNumber { get; set; }
         public bool? IsActive { get; set; }
