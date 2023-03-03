@@ -29,5 +29,22 @@ namespace CakeFactoryProd.Repositories
             return users;
 
         }
+
+
+        public User GetUserProfile(string email)
+        {
+
+            var user = _context.Users.Where(u => u.Email == email).FirstOrDefault();
+            return user;
+
+        }
+
+        public string Edit(User user)
+        {
+
+            _context.Users.Update(user);
+            _context.SaveChanges();
+            return "";
+        }
     }
 }

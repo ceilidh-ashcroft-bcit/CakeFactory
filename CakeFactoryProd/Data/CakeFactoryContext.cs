@@ -29,6 +29,8 @@ namespace CakeFactoryProd.Data
         public virtual DbSet<Topping> Toppings { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
 
+
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -303,7 +305,7 @@ namespace CakeFactoryProd.Data
                     .HasColumnName("isActive")
                     .HasDefaultValueSql("((1))");
 
-                entity.Property(e => e.IsAdmin).HasColumnName("isAdmin");
+                //entity.Property(e => e.IsAdmin).HasColumnName("isAdmin");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(60)
@@ -327,5 +329,7 @@ namespace CakeFactoryProd.Data
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 
         public DbSet<CakeFactoryProd.ViewModels.CakeVM> CakeVM { get; set; } = default!;
+
+        public DbSet<CakeFactoryProd.ViewModels.UserVM> UserVM { get; set; } = default!;
     }
 }
