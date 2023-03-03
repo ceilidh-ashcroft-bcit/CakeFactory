@@ -27,7 +27,15 @@ namespace CakeFactoryProd.Repositories
             _context.Users.Select(u => new UserVM() { Email = u.Email });
 
             return users;
+        }
 
+        public User GetUserByEmail(string email)
+        {
+            List<User> users = _context.Users.ToList();
+            //.Where(u => u.Email == email).FirstOrDefault();
+            User user = users.Where(u => u.Email == email).FirstOrDefault();
+
+            return user;
         }
     }
 }

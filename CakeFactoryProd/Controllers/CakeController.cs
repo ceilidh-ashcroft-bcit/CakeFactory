@@ -28,7 +28,7 @@ namespace CakeFactoryProd.Controllers
             //Custom cake view 
             if (id == 0)
             {
-                CakeOrderVM cakeOrderVM = cakeRepo.CreateCustomCake();
+                CakeOrderVM cakeOrderVM = cakeRepo.GetCustomCake();
 
                 return View(cakeOrderVM);
             }

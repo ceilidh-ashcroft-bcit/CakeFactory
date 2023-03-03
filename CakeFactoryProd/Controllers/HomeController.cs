@@ -20,6 +20,13 @@ namespace CakeFactoryProd.Controllers
 
         public IActionResult Index()
         {
+            if (User != null && User.Identity.IsAuthenticated)
+            {
+                UserRepository userRepo = new UserRepository(_context);
+                User user = userRepo.GetUserByEmail(User.Identity.Name);
+                HttpContext.Session.SetString("Preffered Name", user.PreferredName);
+            }
+
             CakeRepository cakeRepo = new CakeRepository(_context);
             var allCakes = cakeRepo.GetAllActivePredefinedCakes();
             return View(allCakes);
