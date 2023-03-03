@@ -38,11 +38,10 @@
     <div class="cake-edit-container">
         <form class="cake-order-form" method="post" action="/cart">
             <input type="hidden" name="name" value="@Model.CakeVM.Name" />
-            <input type="hidden" name="description" value="@Model.CakeVM.Description"/>
+            <input type="hidden" name="description" value="@Model.CakeVM.Description "/>
             <input type="hidden" name="imagePath" value="@Model.CakeVM.CakeImage"/>
 
-        <form class="cake-order-form" method="post" action="/cart">
-        <div class="cake-size-shape">
+            <div class="cake-size-shape">
             <h2>Select a size and shape</h2>
 
                 
@@ -61,27 +60,28 @@
                     <div class="cake-edit-topping-contianer">
                         @foreach (var topping in Model.Toppings)
                         {
-                            <input type="checkbox" id="topping" name="topping" value="@topping.Id" />
+                            <input type="checkbox" id="topping" name="Toppings" value="@topping.Id" />
 
                             @topping.Flavor
                         }
                     </div>
                 }
-                else {
-                    <input type="hidden" name="topping" value="@Model.CakeVM.ToppingId" />
-                    <input type="hidden" name="filling" value="@Model.CakeVM.FillingId" />
-                };
+
                 else
                 {
                     <label asp-for="@Model.CakeVM.SizeId">Size: </label>
-                    <select asp-for="@Model.CakeVM.SizeId" asp-items="@Model.Sizes" disabled id="Sizes"></select>
+                    <select asp-for="@Model.CakeVM.SizeId" asp-items="@Model.Sizes" disabled name="Sizes" id="Sizes"></select>
                     <br />
                     <label asp-for="@Model.CakeVM.ShapeId">Shape: </label>
-                    <select asp-for="@Model.CakeVM.ShapeId" asp-items="@Model.Shapes" disabled id="Shapes"></select>
+                    <select asp-for="@Model.CakeVM.ShapeId" asp-items="@Model.Shapes" disabled name="Shapes" id="Shapes"></select>
                     <br />
                     <label asp-for="@Model.CakeVM.FillingId">Filling: </label>
-                    <select asp-for="@Model.CakeVM.FillingId" asp-items="@Model.Fillings" disabled id="Fillings"></select>
+                    <select asp-for="@Model.CakeVM.FillingId" asp-items="@Model.Fillings" disabled name="Fillings" id="Fillings"></select>
                     <br />
+                    <input type="hidden" name="Sizes" value="@Model.CakeVM.SizeId" />
+                    <input type="hidden" name="Shapes" value="@Model.CakeVM.ShapeId" />
+                    <input type="hidden" name="Fillings" value="@Model.CakeVM.FillingId" />
+                    <input type="hidden" name="Toppings" value="@Model.CakeVM.ToppingId" />
                 }
 
             </div>
@@ -104,7 +104,7 @@
             <button type="submit">Add to Cart</button>
             <button type="submit">Add to Cart</button>
         </div>
-        </form>
+       </form>
     </div>
     <div class="cake-detail-info-container">
         <h2>Important Information</h2>
