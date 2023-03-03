@@ -33,7 +33,7 @@ namespace CakeFactoryProd.Controllers
                 return View(cakeOrderVM);
             }
 
-            //Pre ordered cake view 
+            //Pre made cake view 
             else
             {
                 CakeOrderVM cakeOrderVM = cakeRepo.GetCakeById(id);
@@ -41,6 +41,11 @@ namespace CakeFactoryProd.Controllers
                 return View(cakeOrderVM);
             }
             
+        }
+
+        public IActionResult Create()
+        {
+         return View();
         }
     }
 }

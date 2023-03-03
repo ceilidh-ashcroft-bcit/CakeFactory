@@ -15,7 +15,7 @@ namespace CakeFactoryProd.ViewModels
         public string? CustomMessage { get; set; }
 
         [Required(ErrorMessage = "Please select a date")]
-        [BindProperty,DisplayFormat(DataFormatString = "{0:yyyy-MM-ddTHH:mm}", ApplyFormatInEditMode = true)]
+        [BindProperty,DisplayFormat(DataFormatString = "{yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? PickupDate { get; set; }
 
         [Required(ErrorMessage = "Please enter in a quantity")]
