@@ -19,9 +19,10 @@
                 <h2>Custom Cake</h2>
                 <p>$50.00 - $100.00</p>
                 <h4>
-                    Create the cake of your dreams with our customizable cake option. Choose from our range of delicious flavors, including classic vanilla, rich chocolate, fresh strawberry, and more. Next, select the size of your cake based on the number of servings you need.
-                    Now comes the fun part - choosing your toppings! Get creative and choose from a variety of choices to create a cake that is uniquely yours. From chocolate to caramel, mix and even multicolor. You can also add a personalized message or design to make your cake even more special.
-                    Our team of expert bakers will craft your custom cake to perfection, using only the freshest ingredients. Whether you're celebrating a birthday, wedding, or any other occasion, our customizable cakes are sure to impress. Place your order today and let us bring your cake vision to life!
+                    Create the cake of your dreams with our customizable cake option. You can also add a personalized message or design to make your cake even more special.
+                    Our team of expert bakers will craft your custom cake to perfection, using only the freshest ingredients. 
+                    Whether you're celebrating a birthday, wedding, or any other occasion, our customizable cakes are sure to impress.
+                    Place your order today and let us bring your cake vision to life!
                 </h4>
             }
             else
@@ -64,13 +65,13 @@
                 else
                 {
                     <label asp-for="@Model.CakeVM.SizeId">Size: </label>
-                    <select asp-for="@Model.CakeVM.SizeId" asp-items="@Model.Sizes" disabled></select>
+                    <select asp-for="@Model.CakeVM.SizeId" asp-items="@Model.Sizes" disabled id="Sizes"></select>
                     <br />
                     <label asp-for="@Model.CakeVM.ShapeId">Shape: </label>
-                    <select asp-for="@Model.CakeVM.ShapeId" asp-items="@Model.Shapes" disabled></select>
+                    <select asp-for="@Model.CakeVM.ShapeId" asp-items="@Model.Shapes" disabled id="Shapes"></select>
                     <br />
                     <label asp-for="@Model.CakeVM.FillingId">Filling: </label>
-                    <select asp-for="@Model.CakeVM.FillingId" asp-items="@Model.Fillings" disabled></select>
+                    <select asp-for="@Model.CakeVM.FillingId" asp-items="@Model.Fillings" disabled id="Fillings"></select>
                     <br />
                 }
 
@@ -85,7 +86,7 @@
         </div>
         <div class="cake-pickup-date">
             <h2>Pickup Date</h2>
-                <input asp-for="PickupDate"  type="date" class="datePicker">
+                <input asp-for="PickupDate" type="date" id="datePicker">
         </div>
         <div class="cake-to-cart-container">
             <h2>Quantity</h2>
