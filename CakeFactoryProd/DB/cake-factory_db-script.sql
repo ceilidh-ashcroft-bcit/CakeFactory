@@ -1,4 +1,3 @@
-
 -------------------------------------------------------------
 --- #1- Handle DATABASE
 -------------------------------------------------------------
@@ -47,7 +46,6 @@ CREATE TABLE [User]
     id	INT PRIMARY KEY IDENTITY (1, 1),
     email VARCHAR(100) NOT NULL UNIQUE,
     [name] VARCHAR(60) NOT NULL,
-	[password] VARCHAR(50) NOT NULL,
 	preferredName VARCHAR(60),
 	phoneNumber VARCHAR(12),
 	isActive BIT DEFAULT 1 NOT NULL
@@ -219,10 +217,10 @@ ELSE
 -------------------------------------------------------------
 PRINT CHAR(10) + '#3- INSERT data';
 PRINT CHAR(10) + '#3.1- INSERT data INTO ''User''';
-INSERT INTO [User] VALUES ('admin@cakefactory.ca', 'First System Admin', 'P@ssw0rd!', 'Admin1', '', 1);
-INSERT INTO [User] VALUES ('manager@cakefactory.ca', 'The Store Manager', 'P@ssw0rd!', 'Manager', '777-123-4567', 1);
-INSERT INTO [User] VALUES ('customer01@email.ca', 'Customer01', 'P@ssw0rd!', 'Customer ONE', '123-456-7890', 1);
-INSERT INTO [User] VALUES ('customer02@email.ca', 'Customer02', 'P@ssw0rd!', 'Customer TWO', '123-456-7890', 1);
+INSERT INTO [User] VALUES ('admin@cakefactory.ca', 'First System Admin', 'Admin1', '', 1);
+INSERT INTO [User] VALUES ('manager@cakefactory.ca', 'The Store Manager', 'Manager', '777-123-4567', 1);
+INSERT INTO [User] VALUES ('customer01@email.ca', 'Customer01', 'Customer ONE', '123-456-7890', 1);
+INSERT INTO [User] VALUES ('customer02@email.ca', 'Customer02', 'Customer TWO', '123-456-7890', 1);
 
 INSERT INTO AspNetUsers VALUES ('1', 'First System Admin', 'First System Admin', 'firstadmin@bcit.ca',
 '', '', '', '', '', '', '', '', '', '', '');

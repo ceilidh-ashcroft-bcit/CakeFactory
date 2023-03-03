@@ -11,6 +11,7 @@ using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
 using CakeFactoryProd.Data;
+using CakeFactoryProd.Data.Services;
 using CakeFactoryProd.Models;
 using CakeFactoryProd.Repositories;
 using Microsoft.AspNetCore.Authentication;
@@ -21,6 +22,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using static CakeFactoryProd.Data.Services.ReCAPTCHA;
 
 namespace CakeFactoryProd.Areas.Identity.Pages.Account
 {
@@ -33,6 +35,8 @@ namespace CakeFactoryProd.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly CakeFactoryContext _context;
+        private readonly IEmailService _emailService;
+        private readonly IConfiguration _configuration;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -40,7 +44,9 @@ namespace CakeFactoryProd.Areas.Identity.Pages.Account
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            CakeFactoryContext context)
+            CakeFactoryContext context,
+            IEmailService emailService,
+            IConfiguration configuration)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -49,6 +55,8 @@ namespace CakeFactoryProd.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _context = context;
+            _emailService = emailService;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -77,14 +85,13 @@ namespace CakeFactoryProd.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required(ErrorMessage = "Please enter in your full name")]
-            //[RegularExpression(@"^[a-zA-Z]+[a-zA-Z]*$", ErrorMessage = "Please only use alphabetical charachters")]
+            [RegularExpression(@"^[a-zA-Z ]+[a-zA-Z ]*$", ErrorMessage = "Please only use alphabetical charachters")]
             [Display(Name = "Full Name")]
             public string Name { get; set; }
 
-            [RegularExpression(@"^[a-zA-Z]+[a-zA-Z]*$", ErrorMessage = "Please only use alphabetical charachters")]
+            [RegularExpression(@"^[a-zA-Z ]+[a-zA-Z ]*$", ErrorMessage = "Please only use alphabetical charachters")]
             [Display(Name = "Prefered Name")]
-
-            [Required(ErrorMessage = "Please enter in your phone number")]            
+            [Required(ErrorMessage = "Please enter in your preffered name")]            
             public string PreferredName { get; set; }
 
             [Display(Name = "Phone Number")]
@@ -122,6 +129,8 @@ namespace CakeFactoryProd.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+            ViewData["SiteKey"] = _configuration["Recaptcha:SiteKey"];
+
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
@@ -130,6 +139,20 @@ namespace CakeFactoryProd.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+            string captchaResponse = Request.Form["g-Recaptcha-Response"];
+            string secret = _configuration["Recaptcha:SecretKey"];
+            ReCaptchaValidationResult resultCaptcha =
+                ReCaptchaValidator.IsValid(secret, captchaResponse);
+
+            // Invalidate the form if the captcha is invalid.
+            if (!resultCaptcha.Success)
+            {
+                ModelState.AddModelError(string.Empty,
+                    "The ReCaptcha is invalid.");
+            }
+
+
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
@@ -163,12 +186,31 @@ namespace CakeFactoryProd.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                    // $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                    //SendGrid email service
+                    var response = await _emailService.SendSingleEmail(new Models.ComposeEmailModel
+                    {
+                        FirstName = "Team",
+                        LastName = "Orange",
+                        Subject = "Confirm your email",
+                        Email = Input.Email,
+                        Body = $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>."
+                    });
+
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        //return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+
+                        return RedirectToPage("RegisterConfirmation", new
+                        {
+                            email = Input.Email,
+                            returnUrl = returnUrl,
+                            DisplayConfirmAccountLink = true
+                        });
+
                     }
                     else
                     {
