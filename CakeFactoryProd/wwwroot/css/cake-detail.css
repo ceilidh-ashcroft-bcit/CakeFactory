@@ -7,11 +7,10 @@
 
 .cake-detail-image {
     width: 40%;
-    display: flex;
 }
 
 .cake-detail-image img{
-    border-radius: 25% 10%;
+    border-radius: 10%;
 }
 
 .cake-detail-info {
