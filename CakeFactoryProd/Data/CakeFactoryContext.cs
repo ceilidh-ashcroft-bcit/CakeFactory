@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
+using CakeFactoryProd.ViewModels;
 
 namespace CakeFactoryProd.Data
 {
@@ -324,5 +325,7 @@ namespace CakeFactoryProd.Data
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+        public DbSet<CakeFactoryProd.ViewModels.CakeVM> CakeVM { get; set; } = default!;
     }
 }

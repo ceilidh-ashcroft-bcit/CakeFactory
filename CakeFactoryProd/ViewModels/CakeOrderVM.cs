@@ -7,6 +7,7 @@ namespace CakeFactoryProd.ViewModels
 {
     public class CakeOrderVM
     {
+        [Key]
         public int OrderId { get; set; }
         public CakeVM? CakeVM { get; set; }
 

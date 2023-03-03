@@ -8,6 +8,7 @@ namespace CakeFactoryProd.ViewModels
         public bool? IsActive { get; set; }
         public string Size { get; set; }
         public string Shape { get; set; }
+        [Key]
         public int CakeId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }

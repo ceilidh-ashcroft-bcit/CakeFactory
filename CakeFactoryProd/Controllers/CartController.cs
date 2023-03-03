@@ -15,27 +15,43 @@ namespace CakeFactoryProd.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        [HttpPost]
+        public IActionResult Index(IFormCollection pairs)
         {
-            var cart = HttpContext.Session.GetComplexData<List<CakeVM>>("_Cart");
+            CakeVM cakeVM = new CakeVM()
+            {
+                SizeId = Int32.Parse(pairs["Sizes"]),
+                ShapeId = Int32.Parse(pairs["Shapes"]),
+            };
+
+            CakeOrderVM cakeOrder = new CakeOrderVM()
+            {
+                CakeVM =cakeVM,
+                CustomMessage = pairs["custom-plaque"],
+                PickupDate = DateTime.Parse(pairs["PickupDate"]),
+                Quantity = Int32.Parse(pairs["quantity-input"])
+            };
+
+            AddToCart(cakeOrder);
+            var cart = HttpContext.Session.GetComplexData<List<CakeOrderVM>>("_Cart");
             return View(cart);
         }
 
-        [HttpPost]
-        public void AddToCart(CakeVM cakeVM)
+
+        public void AddToCart(CakeOrderVM cakeOrderVM)
         {
-            var currentCart = HttpContext.Session.GetComplexData<List<CakeVM>>("_Cart");
+            var currentCart = HttpContext.Session.GetComplexData<List<CakeOrderVM>>("_Cart");
             if (currentCart == null)
             {
-                List<CakeVM> list = new List<CakeVM>();
-                list.Add(cakeVM);
+                List<CakeOrderVM> list = new List<CakeOrderVM>();
+                list.Add(cakeOrderVM);
                 HttpContext.Session.SetComplexData("_Cart", list);
             }
 
             else
             {
-                currentCart.Add(cakeVM);
-                HttpContext.Session.SetComplexData("_Cart", currentCart);
+                currentCart.Add(cakeOrderVM);
+                HttpContext.Session.SetComplexData("_Cart", currentCart); 
             }
 
             return;
