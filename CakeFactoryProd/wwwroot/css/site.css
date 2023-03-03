@@ -1,7 +1,16 @@
+@import 'nav.css';
+@import "home-page.css";
+@import "cake-detail.css";
+@import "footer.css";
+
 html {
     box-sizing: border-box;
     scroll-behavior: smooth;
     font-size: 14px;
+}
+
+body {
+    font-family: 'Source Sans Pro', sans-serif;
 }
 
 *, *:before, *:after {
@@ -13,13 +22,9 @@ img {
     height: auto;
 }
 
-.cake-logo-nav {
-    max-width: 100px;
-}
 
 .wrapper {
     max-width: 1500px;
-    height: 1500px;
     margin: 0;
     background-color: white;
     min-height: 100vh;
@@ -29,39 +34,7 @@ img {
     text-align: center;
 }
 
-.items img {
-    display: block;
-}
-
-.items {
-    margin-top: 20px;
-    display: flex;
-    text-align: center;
-    justify-content: space-between;
-}
-
-.row {
-    display: flex;
-    justify-content: center;
-}
-
-.col-md-4{
-    width: 40%;
-}
-
-.footer-info {
-    flex-direction: column;
-    text-align: center
-}
-.footer-img {
-    max-width: 300px;
-    justify-content: center
-}
-
-
 /*above information is anything smaller than 768px*/
-
-
 @media (min-width: 768px) {
     html {
     font-size: 16px;
@@ -75,26 +48,6 @@ img {
     body {
         margin-bottom: 60px;
     }
-
-    .cake-logo-nav {
-        max-width: 100px;
-    }
-
-    .footer-img {
-        max-width: 300px;
-    }
-
-    .footer-info {
-        display: flex;
-        justify-content: center;
-        flex-direction: row;
-    }
-
-    .footer-info article {
-        margin-top: 50px;
-        margin-left: 20px
-    }
-
 }
 
 

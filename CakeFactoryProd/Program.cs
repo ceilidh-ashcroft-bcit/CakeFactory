@@ -1,11 +1,13 @@
 using CakeFactoryProd.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Drawing;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
-
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = builder.Configuration["ConnectionStrings:DefaultConnection"];
 //builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDbContext<CakeFactoryContext>(options =>
     options.UseSqlServer(connectionString));
@@ -15,6 +17,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<CakeFactoryContext>();
     //.AddEntityFrameworkStores<ApplicationDbContext>();
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
 

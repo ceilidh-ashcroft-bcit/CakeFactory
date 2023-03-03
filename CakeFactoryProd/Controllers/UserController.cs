@@ -30,14 +30,10 @@ namespace CakeFactoryProd.Controllers
             UserRepository userRepo = new UserRepository(_context);
             var user = userRepo.GetUserProfile(email);
 
-            CakeOrderRepository cakeOrderRepository = new CakeOrderRepository();
-            //var orders = cakeOrderRepo.GetUserOrders(user.Id);
-
-            //int count = cakeOrderRepository.GetAllUserOrders(user.Id);   
-            //System.Console.WriteLine("Total number of cakes   "+count);
-
-
-
+            CakeOrderRepository cakeOrderRepository = new CakeOrderRepository(_context);
+           
+            var orders = cakeOrderRepository.GetAllOrders(user.Id);   
+          
             UserVM userVM = new UserVM
             {
                 UserId = user.Id,
@@ -45,7 +41,7 @@ namespace CakeFactoryProd.Controllers
                 Email = user.Email,
                 PrefferedName = user.PreferredName,
                 PhoneNumber = user.PhoneNumber,
-                //TotalNumberOfOrders = orders.Id
+                TotalNumberOfOrders = orders.Count,
 
             };
             return View(userVM);
@@ -69,9 +65,6 @@ namespace CakeFactoryProd.Controllers
                 Email = user.Email,
                 PrefferedName = user.PreferredName,
                 PhoneNumber = user.PhoneNumber,
-                
-
-
             };
 
             return View(userVM);
@@ -102,19 +95,25 @@ namespace CakeFactoryProd.Controllers
 
         }
 
-        //public IActionResult OrderHistory()
-        //{
-        //    CakeOrderRepository cakeOrderRepository = new CakeOrderRepository();
+        public IActionResult OrderHistory()
+        {
+            CakeOrderRepository cakeOrderRepository = new CakeOrderRepository(_context);
 
-        //    var email = User.Identity.Name;
+            var email = User.Identity.Name;
 
-        //    UserRepository userRepo = new UserRepository(_context);
-        //    var user = userRepo.GetUserProfile(email);
+            UserRepository userRepo = new UserRepository(_context);
+            var user = userRepo.GetUserProfile(email);
 
-        //    int count = cakeOrderRepository.GetAllOrders(user.Id);
+            var orders = cakeOrderRepository.GetAllOrders(user.Id);
+
+            if (orders.Count == 0)
+            {
+                return View();
+            }
+            return View(orders);
 
 
-        //}
+        }
 
 
     }

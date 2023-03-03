@@ -349,8 +349,7 @@ namespace CakeFactoryProd.Migrations
                         .HasDefaultValueSql("((1))");
 
                     b.Property<bool>("IsAdmin")
-                        .HasColumnType("bit")
-                        .HasColumnName("isAdmin");
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -390,6 +389,9 @@ namespace CakeFactoryProd.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()

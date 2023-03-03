@@ -1,0 +1,11 @@
+﻿/*Navigation styles */
+.cake-logo-nav {
+    max-width: 100px;
+}
+
+
+@media (min-width: 768px) {
+    .cake-logo-nav {
+        max-width: 100px;
+    }
+}

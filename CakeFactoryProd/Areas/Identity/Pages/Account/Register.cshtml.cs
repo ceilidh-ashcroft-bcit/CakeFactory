@@ -81,11 +81,11 @@ namespace CakeFactoryProd.Areas.Identity.Pages.Account
             [Display(Name = "Full Name")]
             public string Name { get; set; }
 
-            
             [RegularExpression(@"^[a-zA-Z]+[a-zA-Z]*$", ErrorMessage = "Please only use alphabetical charachters")]
             [Display(Name = "Prefered Name")]
 
-            [Required(ErrorMessage = "Please enter in your phone number")]            public string PreferredName { get; set; }
+            [Required(ErrorMessage = "Please enter in your phone number")]            
+            public string PreferredName { get; set; }
 
             [Display(Name = "Phone Number")]
             public string PhoneNumber { get; set; }
@@ -94,7 +94,7 @@ namespace CakeFactoryProd.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
+            [Required(ErrorMessage = "Please enter in an email address")]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
@@ -146,7 +146,9 @@ namespace CakeFactoryProd.Areas.Identity.Pages.Account
                         PreferredName = Input.PreferredName,
                         PhoneNumber = Input.PhoneNumber,
                         Email = Input.Email
+
                     };
+
                     UserRepository userRepository = new UserRepository(_context);
                     userRepository.CreateRegisteredUser(registeredUser);
 
