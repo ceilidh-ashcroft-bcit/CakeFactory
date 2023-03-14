@@ -32,9 +32,9 @@ namespace CakeFactoryProd.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
-                        .HasMaxLength(200)
+                        .HasMaxLength(500)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(200)")
+                        .HasColumnType("varchar(500)")
                         .HasColumnName("description");
 
                     b.Property<int>("FillingId")
@@ -348,9 +348,6 @@ namespace CakeFactoryProd.Migrations
                         .HasColumnName("isActive")
                         .HasDefaultValueSql("((1))");
 
-                    b.Property<bool>("IsAdmin")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(60)
@@ -376,6 +373,70 @@ namespace CakeFactoryProd.Migrations
                         .IsUnique();
 
                     b.ToTable("User", (string)null);
+                });
+
+            modelBuilder.Entity("CakeFactoryProd.ViewModels.CakeVM", b =>
+                {
+                    b.Property<int>("CakeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CakeId"));
+
+                    b.Property<string>("CakeImage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Filling")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("FillingId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("FillingPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Shape")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ShapeId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("ShapePrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Size")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SizeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ToppingId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("ToppingPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("CakeId");
+
+                    b.ToTable("CakeVM");
                 });
 
             modelBuilder.Entity("CakeFactoryProd.ViewModels.UserVM", b =>

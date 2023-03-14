@@ -1,7 +1,22 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+using Azure.Core;
+using CakeFactoryProd.Data;
+using CakeFactoryProd.Models;
+using CakeFactoryProd.Repositories;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
+using System.ComponentModel.DataAnnotations;
+using System.Security.Policy;
+using System.Text.Encodings.Web;
+using System.Text;
+
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -23,7 +38,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using static CakeFactoryProd.Data.Services.ReCAPTCHA;
-
 namespace CakeFactoryProd.Areas.Identity.Pages.Account
 {
     public class RegisterModel : PageModel
@@ -37,7 +51,6 @@ namespace CakeFactoryProd.Areas.Identity.Pages.Account
         private readonly CakeFactoryContext _context;
         private readonly IEmailService _emailService;
         private readonly IConfiguration _configuration;
-
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             IUserStore<IdentityUser> userStore,
@@ -58,26 +71,22 @@ namespace CakeFactoryProd.Areas.Identity.Pages.Account
             _emailService = emailService;
             _configuration = configuration;
         }
-
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
-
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         public string ReturnUrl { get; set; }
-
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
-
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
@@ -88,15 +97,12 @@ namespace CakeFactoryProd.Areas.Identity.Pages.Account
             [RegularExpression(@"^[a-zA-Z ]+[a-zA-Z ]*$", ErrorMessage = "Please only use alphabetical charachters")]
             [Display(Name = "Full Name")]
             public string Name { get; set; }
-
             [RegularExpression(@"^[a-zA-Z ]+[a-zA-Z ]*$", ErrorMessage = "Please only use alphabetical charachters")]
             [Display(Name = "Prefered Name")]
-            [Required(ErrorMessage = "Please enter in your preffered name")]            
+            [Required(ErrorMessage = "Please enter in your preffered name")]
             public string PreferredName { get; set; }
-
             [Display(Name = "Phone Number")]
             public string PhoneNumber { get; set; }
-
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -105,7 +111,6 @@ namespace CakeFactoryProd.Areas.Identity.Pages.Account
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
-
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -115,7 +120,6 @@ namespace CakeFactoryProd.Areas.Identity.Pages.Account
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
-
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -125,42 +129,32 @@ namespace CakeFactoryProd.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
         }
-
-
         public async Task OnGetAsync(string returnUrl = null)
         {
             ViewData["SiteKey"] = _configuration["Recaptcha:SiteKey"];
-
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
-
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-
             string captchaResponse = Request.Form["g-Recaptcha-Response"];
             string secret = _configuration["Recaptcha:SecretKey"];
             ReCaptchaValidationResult resultCaptcha =
                 ReCaptchaValidator.IsValid(secret, captchaResponse);
-
             // Invalidate the form if the captcha is invalid.
             if (!resultCaptcha.Success)
             {
                 ModelState.AddModelError(string.Empty,
                     "The ReCaptcha is invalid.");
             }
-
-
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
-
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
-
                 if (result.Succeeded)
                 {
                     User registeredUser = new User()
@@ -169,14 +163,10 @@ namespace CakeFactoryProd.Areas.Identity.Pages.Account
                         PreferredName = Input.PreferredName,
                         PhoneNumber = Input.PhoneNumber,
                         Email = Input.Email
-
                     };
-
                     UserRepository userRepository = new UserRepository(_context);
                     userRepository.CreateRegisteredUser(registeredUser);
-
                     _logger.LogInformation("User created a new account with password.");
-
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -185,10 +175,8 @@ namespace CakeFactoryProd.Areas.Identity.Pages.Account
                         pageHandler: null,
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
-
                     //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                     // $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
                     //SendGrid email service
                     var response = await _emailService.SendSingleEmail(new Models.ComposeEmailModel
                     {
@@ -198,19 +186,15 @@ namespace CakeFactoryProd.Areas.Identity.Pages.Account
                         Email = Input.Email,
                         Body = $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>."
                     });
-
-
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
                         //return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
-
                         return RedirectToPage("RegisterConfirmation", new
                         {
                             email = Input.Email,
                             returnUrl = returnUrl,
                             DisplayConfirmAccountLink = true
                         });
-
                     }
                     else
                     {
@@ -223,11 +207,9 @@ namespace CakeFactoryProd.Areas.Identity.Pages.Account
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
-
             // If we got this far, something failed, redisplay form
             return Page();
         }
-
         private IdentityUser CreateUser()
         {
             try
@@ -241,7 +223,6 @@ namespace CakeFactoryProd.Areas.Identity.Pages.Account
                     $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
             }
         }
-
         private IUserEmailStore<IdentityUser> GetEmailStore()
         {
             if (!_userManager.SupportsUserEmail)
