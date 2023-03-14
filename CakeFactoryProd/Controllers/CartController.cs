@@ -51,16 +51,16 @@ namespace CakeFactoryProd.Controllers
                 ToppingId = Int32.Parse(pairs["Toppings"]),
                 Name = pairs["name"],
                 CakeImage = pairs["imagePath"],
-                Description = pairs["description"],
+                Description = pairs["description"]
             };
 
             CakeOrderVM cakeOrder = new CakeOrderVM()
             {
-                CakeVM =cakeVM,
+                CakeVM = cakeVM,
                 CustomMessage = pairs["custom-plaque"],
                 PickupDate = DateTime.Parse(pairs["PickupDate"]),
-                Quantity = Int32.Parse(pairs["quantity-input"])
-                /*Total =*//**/ 
+                Quantity = Int32.Parse(pairs["quantity-input"]),
+                Total = Decimal.Parse(pairs["total"])
             };
 
             CartVM cartVM = new CartVM()
