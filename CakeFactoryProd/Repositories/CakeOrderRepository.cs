@@ -40,6 +40,13 @@ namespace CakeFactoryProd.Repositories
             OrderHasCake orderHasCake = _context.OrderHasCakes.Find(id);
             _context.OrderHasCakes.Remove(orderHasCake);
             _context.SaveChanges();
-        }   
+        }  
+        
+        public List<Order> GetAllOrders(int id)
+        {
+            var orders = _context.Orders.Where(o => o.UserId == id).ToList();
+            return orders;
+
+        }
     }
 }

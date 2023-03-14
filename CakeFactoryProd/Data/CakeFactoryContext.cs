@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
+using CakeFactoryProd.ViewModels;
 
 namespace CakeFactoryProd.Data
 {
@@ -40,7 +41,7 @@ namespace CakeFactoryProd.Data
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Description)
-                    .HasMaxLength(200)
+                    .HasMaxLength(500)
                     .IsUnicode(false)
                     .HasColumnName("description");
 
@@ -310,5 +311,7 @@ namespace CakeFactoryProd.Data
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+        public DbSet<CakeFactoryProd.ViewModels.UserVM> UserVM { get; set; } = default!;
     }
 }
