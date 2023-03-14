@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 
 namespace CakeFactoryProd.Data.Services
 {
@@ -13,34 +13,43 @@ namespace CakeFactoryProd.Data.Services
             [JsonProperty("error-codes")]
             public List<string> ErrorCodes { get; set; }
         }
+
         public class ReCaptchaValidator
         {
+
             public static ReCaptchaValidationResult IsValid(string secret,
-            string captchaResponse)
+                string captchaResponse)
             {
                 if (string.IsNullOrWhiteSpace(captchaResponse))
                 {
                     return new ReCaptchaValidationResult()
                     { Success = false };
                 }
+
                 HttpClient client = new HttpClient();
                 client.BaseAddress = new Uri("https://www.google.com");
+
                 var values = new List<KeyValuePair<string, string>>();
+
                 values.Add(new KeyValuePair<string, string>
                 ("secret", secret));
                 values.Add(new KeyValuePair<string, string>
-                ("response", captchaResponse));
+                    ("response", captchaResponse));
                 FormUrlEncodedContent content =
-                new FormUrlEncodedContent(values);
+                                new FormUrlEncodedContent(values);
+
                 HttpResponseMessage response = client.PostAsync
                 ("/recaptcha/api/siteverify", content).Result;
+
                 string verificationResponse = response.Content.
                 ReadAsStringAsync().Result;
+
                 var verificationResult = JsonConvert.DeserializeObject
                 <ReCaptchaValidationResult>(verificationResponse);
+
                 return verificationResult;
             }
         }
     }
-}
 
+}

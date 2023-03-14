@@ -1,4 +1,5 @@
-﻿using CakeFactoryProd.Models;
+using CakeFactoryProd.Models;
+using System.Threading.Tasks;
 using SendGrid;
 
 namespace CakeFactoryProd.Data.Services
@@ -7,4 +8,5 @@ namespace CakeFactoryProd.Data.Services
     {
         Task<Response> SendSingleEmail(ComposeEmailModel payload);
     }
+
 }
