@@ -30,22 +30,6 @@ namespace CakeFactoryProd.Data
         public virtual DbSet<User> Users { get; set; } = null!;
 
 
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=DK\\SSD_SQL_SERVER;Database=CakeFactory;Trusted_Connection=True;");
-                IConfigurationRoot configuration = new ConfigurationBuilder()
-                    .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                    .AddJsonFile("appsettings.json")
-                    .Build();
-
-                optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
-            }
-        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -187,7 +171,7 @@ namespace CakeFactoryProd.Data
 
             modelBuilder.Entity<OrderHasCake>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(o => new{o.CakeId, o.OrderId});
 
                 entity.Property(e => e.CakeId).HasColumnName("cakeId");
 
@@ -327,6 +311,8 @@ namespace CakeFactoryProd.Data
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+        public DbSet<CakeFactoryProd.ViewModels.CakeVM> CakeVM { get; set; } = default!;
 
         public DbSet<CakeFactoryProd.ViewModels.UserVM> UserVM { get; set; } = default!;
     }

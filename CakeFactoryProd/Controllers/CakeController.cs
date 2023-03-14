@@ -28,7 +28,7 @@ namespace CakeFactoryProd.Controllers
             //Custom cake view 
             if (id == 0)
             {
-                CakeOrderVM cakeOrderVM = cakeRepo.CreateCustomCake();
+                CakeOrderVM cakeOrderVM = cakeRepo.GetCustomCake();
 
                 return View(cakeOrderVM);
             }
@@ -41,6 +41,17 @@ namespace CakeFactoryProd.Controllers
                 return View(cakeOrderVM);
             }
             
+        }
+
+        public IActionResult CakeOrderDetail(int id)
+        {
+            
+            CakeOrderRepository cakeOrderRepo = new CakeOrderRepository(_context);
+
+            CakeOrderVM cakeOrderVM = cakeOrderRepo.GetCakeOrderById(id);
+
+            return View(cakeOrderVM);
+        
         }
 
         public IActionResult Create()

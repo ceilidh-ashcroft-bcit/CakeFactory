@@ -1,9 +1,45 @@
-﻿
+﻿@model IEnumerable<CakeFactoryProd.ViewModels.AdminOrderVM>
+
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Cakes";
     Layout = "~/Views/Shared/Admin/_AdminLayout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Orders</h1>
 
-<p>Admin Index View</p>
+@*<p>
+    <a class="btn btn-primary float-right" asp-area="" asp-controller="Cake" asp-action="Create">Add Cake</a>
+</p>*@
+<table class="table">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Purchase Date</th>
+            <th>Cake</th>
+            <th>User</th>
+            <th>Phone Number</th>
+            <th>Total</th>
+            <th>Pick-up Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.CakeOrderVM.OrderId</td>
+                <td>@item.CakeOrderVM.PurchaseDate</td>
+                <td>@item.CakeOrderVM.CakeVM.Name</td>
+                <td>@item.UserVM.PrefferedName</td>
+                <td>@item.UserVM.PhoneNumber</td>
+                <td>$@item.CakeOrderVM.Total.ToString("0.00")</td>
+                <td>@item.CakeOrderVM.PickupDate</td>
+                <td>
+                    @*<a asp-controller="Cake" asp-action="Edit" asp-route-id="@item.CakeId">Edit</a> |*@
+                    <a asp-controller="Cake" asp-action="CakeOrderDetail" asp-route-id="@item.CakeOrderVM.OrderId">Details</a> 
+                    @*<a asp-controller="Cake" asp-action="Delete" asp-route-id="@item.CakeId">Delete</a>*@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

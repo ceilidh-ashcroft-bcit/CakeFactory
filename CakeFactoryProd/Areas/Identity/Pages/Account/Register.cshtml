@@ -1,17 +1,16 @@
-﻿@page
+@page
 @model RegisterModel
 @{
     ViewData["Title"] = "Register";
 }
+<!-- A reference is required to the Google API -->
+<script src='https://www.google.com/recaptcha/api.js'></script>
 
 <h1>@ViewData["Title"]</h1>
 
-
-<div class="row">
+<div class="row justify-content-center mt-5">
     <div class="col-md-4">
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h2>Create a new account.</h2>
-            <hr />
             <div class="form-floating">
                 <input asp-for="Input.Name" class="form-control" autocomplete="username" aria-required="true" />
                 <label asp-for="Input.Name"></label>
@@ -43,7 +42,9 @@
                 <label asp-for="Input.ConfirmPassword"></label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+            <!-- This must be placed inside the form. -->
+            <div class="g-recaptcha mt-5" data-sitekey='@ViewData["SiteKey"]'></div>
+            <button id="registerSubmit" type="submit" class="btn btn-lg btn-primary mt-5">Register</button>
         </form>
     </div>
 </div>

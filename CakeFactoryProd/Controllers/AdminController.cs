@@ -1,4 +1,5 @@
 ﻿using CakeFactoryProd.Data;
+using CakeFactoryProd.Models;
 using CakeFactoryProd.Repositories;
 using CakeFactoryProd.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -15,9 +16,14 @@ namespace CakeFactoryProd.Controllers
         }
 
         private readonly CakeFactoryContext _context;
+
         public IActionResult Index()
         {
-            return View();
+            CakeOrderRepository cakeOrderRepo = new CakeOrderRepository(_context);
+
+            List<AdminOrderVM> adminOrderVM = cakeOrderRepo.GetAllCakeOrders();
+      
+            return View(adminOrderVM);
         }
 
         public IActionResult Cakes()
