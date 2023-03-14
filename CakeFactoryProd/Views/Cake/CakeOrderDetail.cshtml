@@ -1,0 +1,37 @@
+﻿@model CakeFactoryProd.ViewModels.CakeOrderVM
+
+@{
+    ViewData["Title"] = "Cakes";
+    Layout = "~/Views/Shared/Admin/_AdminLayout.cshtml";
+}
+
+<h1>Orders</h1>
+
+@*<p>
+    <a class="btn btn-primary float-right" asp-area="" asp-controller="Cake" asp-action="Create">Add Cake</a>
+</p>*@
+<table class="table">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Purchase Date</th>
+            <th>Cake</th>
+            <th>Total</th>
+            <th>Pick-up Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+            <tr>
+            <td>@Model.OrderId</td>
+@*            <td>@Model.PurchaseDate</td>
+            <td>@Model.CakeVM.Name</td>
+            <td>@Model.CakeVM.Filling</td>
+            <td>@Model.CakeVM.Size</td>
+            <td>@Model.CakeVM.Shape</td>
+            <td>$@Model.Total.ToString("0.00")</td>
+            <td>@Model.PickupDate</td>*@
+            </tr>
+        
+    </tbody>
+</table>
