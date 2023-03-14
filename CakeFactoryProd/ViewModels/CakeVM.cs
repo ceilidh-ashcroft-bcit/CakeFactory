@@ -5,9 +5,11 @@ namespace CakeFactoryProd.ViewModels
 {
     public class CakeVM
     {
+
         public bool? IsActive { get; set; }
         public string Size { get; set; }
         public string Shape { get; set; }
+        public string Filling { get; set; }
         public int CakeId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }

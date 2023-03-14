@@ -43,6 +43,17 @@ namespace CakeFactoryProd.Controllers
             
         }
 
+        public IActionResult CakeOrderDetail(int id)
+        {
+            
+            CakeOrderRepository cakeOrderRepo = new CakeOrderRepository(_context);
+
+            CakeOrderVM cakeOrderVM = cakeOrderRepo.GetCakeOrderById(id);
+
+            return View(cakeOrderVM);
+        
+        }
+
         public IActionResult Create()
         {
          return View();
