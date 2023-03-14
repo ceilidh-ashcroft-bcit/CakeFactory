@@ -1,4 +1,4 @@
-﻿using CakeFactoryProd.Models;
+using CakeFactoryProd.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
@@ -6,10 +6,13 @@ namespace CakeFactoryProd.ViewModels
 {
     public class CakeVM
     {
+
         public bool? IsActive { get; set; }
         public string Size { get; set; }
         public string Shape { get; set; }
+
         [Key]
+        public string Filling { get; set; }
         public int CakeId { get; set; }
         public string Name { get; set; } = "Custom Cake";
         public string Description { get; set; } = "A delicious cake made exactly to your specifications.";
