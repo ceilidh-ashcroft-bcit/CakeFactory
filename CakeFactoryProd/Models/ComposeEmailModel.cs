@@ -1,4 +1,4 @@
-﻿namespace CakeFactoryProd.Models
+namespace CakeFactoryProd.Models
 {
     public class ComposeEmailModel
     {

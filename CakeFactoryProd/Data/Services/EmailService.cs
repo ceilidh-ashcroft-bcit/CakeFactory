@@ -1,4 +1,4 @@
-﻿using CakeFactoryProd.Models;
+using CakeFactoryProd.Models;
 using SendGrid.Helpers.Mail;
 using SendGrid;
 using System.Threading.Tasks;

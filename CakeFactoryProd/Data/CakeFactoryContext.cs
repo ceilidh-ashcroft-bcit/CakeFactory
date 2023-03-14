@@ -171,7 +171,7 @@ namespace CakeFactoryProd.Data
 
             modelBuilder.Entity<OrderHasCake>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(o => new{o.CakeId, o.OrderId});
 
                 entity.Property(e => e.CakeId).HasColumnName("cakeId");
 
@@ -311,6 +311,8 @@ namespace CakeFactoryProd.Data
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+        public DbSet<CakeFactoryProd.ViewModels.CakeVM> CakeVM { get; set; } = default!;
 
         public DbSet<CakeFactoryProd.ViewModels.UserVM> UserVM { get; set; } = default!;
     }
