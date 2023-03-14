@@ -2,6 +2,7 @@
 @import "home-page.css";
 @import "cake-detail.css";
 @import "footer.css";
+@import "about-page.css";
 
 html {
     box-sizing: border-box;
