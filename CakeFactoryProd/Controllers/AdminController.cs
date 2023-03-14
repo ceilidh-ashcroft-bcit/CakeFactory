@@ -37,10 +37,15 @@ namespace CakeFactoryProd.Controllers
         }
         public IActionResult Users()
         {
-            return View();
+            //var email = User.Identity.Name;
+
+            UserRepository userRepository = new UserRepository(_context);
+            var users = userRepository.GetAllUsers();
+            return View(users);
         }
         public IActionResult Sales()
         {
+
             return View();
         }
     }

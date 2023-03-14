@@ -1,6 +1,8 @@
 ﻿using CakeFactoryProd.Data;
 using CakeFactoryProd.Models;
 using CakeFactoryProd.ViewModels;
+using System;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CakeFactoryProd.Repositories
 {
@@ -39,12 +41,56 @@ namespace CakeFactoryProd.Repositories
 
         }
 
+        public User GetUserProfileById(int id)
+        {
+
+            var user = _context.Users.Where(u => u.Id == id).FirstOrDefault();
+            return user;
+
+        }
+
+       
+        //public User GetAspUserByEmail(string email)
+        //{                  
+        //    var user = _context.AspNetUsers.FirstOrDefault();
+
+        //}
+
         public string Edit(User user)
         {
 
             _context.Users.Update(user);
             _context.SaveChanges();
             return "";
+        }
+
+        public List<User> GetAllUsers()
+        {
+            var users = _context.Users.ToList();
+            return users;
+        }
+
+        public void DeleteUser(int id)
+        {
+            var user = _context.Users.Where(u => u.Id == id).FirstOrDefault();
+            user.IsActive = false;
+            _context.Users.Update(user);
+            _context.SaveChanges();
+        }
+
+
+        public UserRoleVM GetUserRole(int id)
+        {
+            var userRole = _context.UserRoles.Where(u => u.UserId == Convert.ToString(id)).FirstOrDefault();
+            int userId = int.Parse(userRole.UserId);
+
+            UserRoleVM userRoleVM = new UserRoleVM()
+            {
+                Role = userRole.RoleId,
+               // ID =   user22Id,
+            };
+
+            return userRoleVM;
         }
     }
 }

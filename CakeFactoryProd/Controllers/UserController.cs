@@ -3,7 +3,7 @@ using CakeFactoryProd.Models;
 using CakeFactoryProd.Repositories;
 using CakeFactoryProd.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-
+using System.Collections.Generic;
 
 namespace CakeFactoryProd.Controllers
 {
@@ -95,6 +95,9 @@ namespace CakeFactoryProd.Controllers
 
         }
 
+
+
+
         public IActionResult OrderHistory()
         {
             CakeOrderRepository cakeOrderRepository = new CakeOrderRepository(_context);
@@ -116,5 +119,97 @@ namespace CakeFactoryProd.Controllers
         }
 
 
+        /*******************    ADMIN CURD OPERATONS  ****************/
+
+        public IActionResult Details(int id)
+        {
+            UserRepository userRepo = new UserRepository(_context);
+            var user = userRepo.GetUserProfileById(id);
+
+            UserVM userVM = new UserVM
+            {
+                UserId = user.Id,
+                UserName = user.Name,
+                PrefferedName = user.PreferredName,
+                PhoneNumber = user.PhoneNumber,
+                Email = user.Email,
+                IsActive = (bool)user.IsActive
+            };
+            return View(userVM);
+        }
+
+
+
+        public IActionResult EditUserByAdmin(int id)
+        {
+
+            UserRepository userRepo = new UserRepository(_context);
+            var user = userRepo.GetUserProfileById(id);
+
+           
+            //var aspUser = userRepo.GetAspUserByEmail(user.Email);
+
+            // Fetching ASPNetUserRoles by passing the "id"
+            //var userRoleVM = new UserRoleVM();
+            //userRoleVM = userRepo.GetUserRole(id);
+
+            // Fetching ASPNetRoles  by passing the "roleId"
+            //userRepo.GetRoleByRoleId();
+
+            UserVM userVM = new UserVM
+            {
+                UserId = user.Id,
+                UserName = user.Name,
+                PrefferedName = user.PreferredName,
+                PhoneNumber = user.PhoneNumber,
+                Email = user.Email,
+                IsActive = (bool)user.IsActive
+            };
+
+            return View(userVM);
+
+        }
+
+        [HttpPost]
+
+        public IActionResult EditUserByAdmin([Bind("UserId,UserName,Email,PrefferedName,PhoneNumber,IsActive")] UserVM theaccount)
+        {
+            UserRepository userRepo = new UserRepository(_context);
+
+            if (ModelState.IsValid)
+            {
+
+                userRepo.Edit(new User
+                {
+                    Id = theaccount.UserId,
+                    Name = theaccount.UserName,
+                    Email = theaccount.Email,
+                    PreferredName = theaccount.PrefferedName,
+                    PhoneNumber = theaccount.PhoneNumber,
+                    IsActive = theaccount.IsActive,
+                });
+
+            }
+
+            return RedirectToAction("Users", "Admin");
+
+        }
+
+
+        public IActionResult Delete(int id)
+        {
+            UserRepository userRepository = new UserRepository(_context);
+            if (ModelState.IsValid)
+            {
+                userRepository.DeleteUser(id);
+            }
+
+            return RedirectToAction("Users", "Admin");
+        }
+
+     
+
+
+
     }
-    }
+}
