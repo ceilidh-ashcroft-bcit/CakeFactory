@@ -48,7 +48,7 @@ namespace CakeFactoryProd.Controllers
                 Shape = properties["Shape"],
                 FillingId = Int32.Parse(pairs["Fillings"]),
                 Filling = properties["Filling"],
-                ToppingId = Int32.Parse(pairs["Toppings"]),
+                ToppingList = (pairs["Toppings"]),
                 Name = pairs["name"],
                 CakeImage = pairs["imagePath"],
                 Description = pairs["description"]
@@ -93,6 +93,30 @@ namespace CakeFactoryProd.Controllers
             }
 
             return;
+        }
+
+        [HttpPost]
+        public IActionResult Confirmation()
+        {
+            var email = User.Identity.Name;
+            var currentCart = HttpContext.Session.GetComplexData<List<CartVM>>("_Cart");
+            CartRepo cartRepo = new CartRepo(_context);
+
+            if (currentCart == null)
+            {
+                return View("Error");
+            }
+
+             int orderNumber = cartRepo.CreateOrder(currentCart, email);
+
+
+            return View("Confirmation", orderNumber);
+
+        }
+
+        public IActionResult Confirmation(int orderNumber)
+        {
+            return View();
         }
     }
 }

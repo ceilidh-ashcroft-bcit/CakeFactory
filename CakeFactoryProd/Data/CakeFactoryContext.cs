@@ -171,7 +171,7 @@ namespace CakeFactoryProd.Data
 
             modelBuilder.Entity<OrderHasCake>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(o => new{o.CakeId, o.OrderId});
 
                 entity.Property(e => e.CakeId).HasColumnName("cakeId");
 

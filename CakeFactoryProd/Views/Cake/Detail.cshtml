@@ -54,21 +54,21 @@
                 
                 @if (Model.CakeVM.CakeId == 0)
                 {
-                    <label asp-for="Sizes">Size</label>
+                    <label asp-for="Sizes" class="property">Size</label>
                     @Html.DropDownListFor(model => model.Sizes, Model.Sizes, "Select a size", new { @class = "cake-sel-size" })
                     <br/>
-                    <label asp-for="Shapes">Shape</label>
+                    <label asp-for="Shapes"class="property">Shape</label>
                     @Html.DropDownListFor(model => model.Shapes, Model.Shapes, "Select a shape", new { @class = "cake-sel-shape" })
                     <br/>
-                    <label asp-for="Fillings">Filling</label>
+                    <label asp-for="Fillings"class="property">Filling</label>
                     @Html.DropDownListFor(model => model.Fillings, Model.Fillings, "Select a filling", new { @class = "cake-sel-filling" })
                     <br/>
-                    <label asp-for="Toppings">Topping</label>
+                    <label asp-for="Toppings"class="property">Topping</label>
 
                     <div class="cake-edit-topping-contianer">
                         @foreach (var topping in Model.Toppings)
                         {
-                            <input type="checkbox" id="topping" name="Toppings" value="@topping.Id" />
+                            <input type="checkbox" class="property" id="topping" name="Toppings" value="@topping.Id" />
 
                             @topping.Flavor
                         }
@@ -77,19 +77,19 @@
 
                 else
                 {
-                    <label asp-for="@Model.CakeVM.SizeId">Size: </label>
+                    <label asp-for="@Model.CakeVM.SizeId"class="property" >Size: </label>
                     <select asp-for="@Model.CakeVM.SizeId" asp-items="@Model.Sizes" disabled name="Sizes" id="Sizes"></select>
                     <br />
-                    <label asp-for="@Model.CakeVM.ShapeId">Shape: </label>
+                    <label asp-for="@Model.CakeVM.ShapeId"class="property" >Shape: </label>
                     <select asp-for="@Model.CakeVM.ShapeId" asp-items="@Model.Shapes" disabled name="Shapes" id="Shapes"></select>
                     <br />
-                    <label asp-for="@Model.CakeVM.FillingId">Filling: </label>
+                    <label asp-for="@Model.CakeVM.FillingId"class="property" >Filling: </label>
                     <select asp-for="@Model.CakeVM.FillingId" asp-items="@Model.Fillings" disabled name="Fillings" id="Fillings"></select>
                     <br />
-                    <input type="hidden" name="Sizes" value="@Model.CakeVM.SizeId" />
-                    <input type="hidden" name="Shapes" value="@Model.CakeVM.ShapeId" />
-                    <input type="hidden" name="Fillings" value="@Model.CakeVM.FillingId" />
-                    <input type="hidden" name="Toppings" value="@Model.CakeVM.ToppingId" />
+                    <input type="hidden" name="Sizes" class="property" value="@Model.CakeVM.SizeId" />
+                    <input type="hidden" name="Shapes" class="property" value="@Model.CakeVM.ShapeId" />
+                    <input type="hidden" name="Fillings" class="property" value="@Model.CakeVM.FillingId" />
+                    <input type="hidden" name="Toppings" class="property" value="@Model.CakeVM.ToppingId" />
                 }
 
             </div>
@@ -109,7 +109,6 @@
             <h2>Quantity</h2>
             <input type="number" min="1" max="3" placeholder="Qty" id="quantity" name="quantity-input" value="@Model.Quantity">
             <input readonly name="total" id="total" value="@Model.CakeVM.Price"/>
-            <button type="submit">Add to Cart</button>
             <button type="submit">Add to Cart</button>
         </div>
        </form>
@@ -136,12 +135,16 @@
         let quantity = document.getElementById("quantity");
         let total_field = document.getElementById("total");
         let custom_message = document.getElementById("custom-message");
+
+
         let messageFee = 0.00;
         function updateTotal(){
             if (custom_message.value.length > 0){
                 messageFee = 4.00;
             }
-            total_field.value = (@(Model.CakeVM.Price + Model.CakeVM.ShapePrice + Model.CakeVM.ToppingPrice + Model.CakeVM.FillingPrice) * quantity.value) + messageFee;
+            let toppingCount = document.querySelectorAll('input[type="checkbox"]:checked').length;
+            let toppingTotal = @Model.CakeVM.ToppingPrice * toppingCount;
+            total_field.value = ((@(Model.CakeVM.Price + Model.CakeVM.ShapePrice + Model.CakeVM.FillingPrice) + toppingTotal) * quantity.value) + messageFee;
         }
 
         quantity.addEventListener("change", updateTotal);

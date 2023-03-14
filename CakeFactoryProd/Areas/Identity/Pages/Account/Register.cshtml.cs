@@ -1,20 +1,4 @@
-﻿
-using Azure.Core;
-using CakeFactoryProd.Data;
-using CakeFactoryProd.Models;
-using CakeFactoryProd.Repositories;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.WebUtilities;
-using System.ComponentModel.DataAnnotations;
-using System.Security.Policy;
-using System.Text.Encodings.Web;
-using System.Text;
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the.NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 using System;
@@ -52,9 +36,9 @@ namespace CakeFactoryProd.Areas.Identity.Pages.Account
         private readonly IEmailService _emailService;
         private readonly IConfiguration _configuration;
         public RegisterModel(
-            UserManager<IdentityUser> userManager,
-            IUserStore<IdentityUser> userStore,
-            SignInManager<IdentityUser> signInManager,
+        UserManager<IdentityUser> userManager,
+        IUserStore<IdentityUser> userStore,
+        SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
             CakeFactoryContext context,

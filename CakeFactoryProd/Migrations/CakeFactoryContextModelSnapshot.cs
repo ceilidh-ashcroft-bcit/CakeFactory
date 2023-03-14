@@ -192,19 +192,19 @@ namespace CakeFactoryProd.Migrations
                         .HasColumnType("int")
                         .HasColumnName("cakeId");
 
-                    b.Property<decimal>("Cost")
-                        .HasColumnType("money")
-                        .HasColumnName("cost");
-
                     b.Property<int>("OrderId")
                         .HasColumnType("int")
                         .HasColumnName("orderId");
+
+                    b.Property<decimal>("Cost")
+                        .HasColumnType("money")
+                        .HasColumnName("cost");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int")
                         .HasColumnName("quantity");
 
-                    b.HasIndex("CakeId");
+                    b.HasKey("CakeId", "OrderId");
 
                     b.HasIndex("OrderId");
 
@@ -356,6 +356,7 @@ namespace CakeFactoryProd.Migrations
                         .HasColumnName("name");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
                         .HasMaxLength(12)
                         .IsUnicode(false)
                         .HasColumnType("varchar(12)")
@@ -430,6 +431,9 @@ namespace CakeFactoryProd.Migrations
 
                     b.Property<int>("ToppingId")
                         .HasColumnType("int");
+
+                    b.Property<string>("ToppingList")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("ToppingPrice")
                         .HasColumnType("decimal(18,2)");
