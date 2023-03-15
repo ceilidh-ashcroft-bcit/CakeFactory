@@ -24,7 +24,13 @@ namespace CakeFactoryProd.Controllers
             {
                 UserRepository userRepo = new UserRepository(_context);
                 User user = userRepo.GetUserByEmail(User.Identity.Name);
-                HttpContext.Session.SetString("Preffered Name", user.PreferredName);
+                try
+                {
+                    HttpContext.Session.SetString("Preffered Name", user.PreferredName);
+                } catch
+                {
+                    HttpContext.Session.SetString("Preffered Name", "Friend");
+                }
             }
 
             CakeRepository cakeRepo = new CakeRepository(_context);
