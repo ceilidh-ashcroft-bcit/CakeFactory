@@ -18,7 +18,7 @@ namespace CakeFactoryProd.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public IActionResult Index() 
         {
             if (User != null && User.Identity.IsAuthenticated)
             {
