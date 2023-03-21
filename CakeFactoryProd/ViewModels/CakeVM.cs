@@ -19,7 +19,7 @@ namespace CakeFactoryProd.ViewModels
         public string CakeImage { get; set; } = "~/images/emptyCake.jpg";
         public decimal Price { get; set; } = 24.99m;
         public int FillingId { get; set; }
-        public string Filling { get; set; }
+        //public string Filling { get; set; }
         public decimal FillingPrice { get; set; } = 1.99m;
         public int SizeId { get; set; }
         public int ShapeId { get; set; }

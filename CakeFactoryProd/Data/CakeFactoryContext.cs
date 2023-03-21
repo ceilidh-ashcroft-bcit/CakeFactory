@@ -28,6 +28,7 @@ namespace CakeFactoryProd.Data
         public virtual DbSet<Size> Sizes { get; set; } = null!;
         public virtual DbSet<Topping> Toppings { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
+        public virtual DbSet<Ipn> Ipns { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -305,6 +306,78 @@ namespace CakeFactoryProd.Data
                     .HasMaxLength(60)
                     .IsUnicode(false)
                     .HasColumnName("preferredName");
+            });
+
+            modelBuilder.Entity<Ipn>(entity =>
+            {
+                entity.HasKey(e => e.Id).HasName("PK__IPN__3213E83F616ED7C5");
+
+                entity.ToTable("IPN");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Amount)
+                    .HasColumnType("money")
+                    .HasColumnName("amount");
+                entity.Property(e => e.Cart)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("cart");
+                entity.Property(e => e.CreateTime)
+                    .HasColumnType("date")
+                    .HasColumnName("create_time");
+                entity.Property(e => e.Currency)
+                    .HasMaxLength(3)
+                    .IsUnicode(false)
+                    .HasColumnName("currency");
+                entity.Property(e => e.Custom)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("custom");
+                entity.Property(e => e.Intent)
+                    .HasMaxLength(15)
+                    .IsUnicode(false)
+                    .HasColumnName("intent");
+                entity.Property(e => e.OrderId).HasColumnName("orderId");
+                entity.Property(e => e.PayerCountryCode)
+                    .HasMaxLength(3)
+                    .IsUnicode(false)
+                    .HasColumnName("payerCountryCode");
+                entity.Property(e => e.PayerEmail)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("payerEmail");
+                entity.Property(e => e.PayerFirstName)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("payerFirstName");
+                entity.Property(e => e.PayerId)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("payerID");
+                entity.Property(e => e.PayerLastName)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("payerLastName");
+                entity.Property(e => e.PayerMiddleName)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("payerMiddleName");
+                entity.Property(e => e.PayerStatus)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("payerStatus");
+                entity.Property(e => e.PaymentId)
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("paymentID");
+                entity.Property(e => e.PaymentMethod)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("paymentMethod");
+                entity.Property(e => e.PaymentState)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("paymentState");
             });
 
             OnModelCreatingPartial(modelBuilder);
