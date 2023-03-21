@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CakeFactoryProd.Models;
 
-public partial class Ipn
+public partial class IPN
 {
     public int Id { get; set; }
 
@@ -13,7 +13,7 @@ public partial class Ipn
 
     public string? Cart { get; set; }
 
-    public DateTime? CreateTime { get; set; }
+    public string CreateTime { get; set; } = null!;
 
     public string? PayerId { get; set; }
 
@@ -29,7 +29,7 @@ public partial class Ipn
 
     public string? PayerStatus { get; set; }
 
-    public decimal? Amount { get; set; }
+    public string? Amount { get; set; }
 
     public string? Currency { get; set; }
 
@@ -40,4 +40,6 @@ public partial class Ipn
     public string? PaymentState { get; set; }
 
     public int? OrderId { get; set; }
+    public virtual Order Order { get; set; } = null!;
+
 }

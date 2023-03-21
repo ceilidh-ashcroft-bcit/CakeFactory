@@ -28,7 +28,7 @@ namespace CakeFactoryProd.Data
         public virtual DbSet<Size> Sizes { get; set; } = null!;
         public virtual DbSet<Topping> Toppings { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
-        public virtual DbSet<Ipn> Ipns { get; set; }
+        public virtual DbSet<IPN> IPNs { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -308,7 +308,7 @@ namespace CakeFactoryProd.Data
                     .HasColumnName("preferredName");
             });
 
-            modelBuilder.Entity<Ipn>(entity =>
+            modelBuilder.Entity<IPN>(entity =>
             {
                 entity.HasKey(e => e.Id).HasName("PK__IPN__3213E83F616ED7C5");
 
@@ -316,14 +316,16 @@ namespace CakeFactoryProd.Data
 
                 entity.Property(e => e.Id).HasColumnName("id");
                 entity.Property(e => e.Amount)
-                    .HasColumnType("money")
+                    //.HasColumnType("money")
+                    .HasMaxLength(20)
                     .HasColumnName("amount");
                 entity.Property(e => e.Cart)
                     .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("cart");
                 entity.Property(e => e.CreateTime)
-                    .HasColumnType("date")
+                    //.HasColumnType("date")
+                    .HasMaxLength(20)
                     .HasColumnName("create_time");
                 entity.Property(e => e.Currency)
                     .HasMaxLength(3)
