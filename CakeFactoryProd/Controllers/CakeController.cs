@@ -43,7 +43,7 @@ namespace CakeFactoryProd.Controllers
             
         }
 
-        public IActionResult CakeOrderDetail(int id)
+    public IActionResult CakeOrderDetail(int id)
         {
             
             CakeOrderRepository cakeOrderRepo = new CakeOrderRepository(_context);
