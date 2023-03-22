@@ -51,26 +51,6 @@ namespace CakeFactoryProd.Controllers
         }
 
 
-        //public List<IPN> GetAllIPNs()
-        //{
-        //    //try
-        //    //{
-        //        var temp = _context.IPNs.ToList();
-        //        //return temp;
-        //    //}
-        //    //catch (SqlException e)
-        //    //{
-        //    //    Console.WriteLine("###ERROR: " + e.Message);
-        //    //}
-        //    //catch (Exception ex)
-        //    //{
-        //    //    Console.WriteLine("###ERROR: " + ex.Message);
-        //    //}
-        //    return View(temp);
-
-        //}
-
-
         public async Task<IActionResult> Test()
         {
             using (var client = new HttpClient())
@@ -81,22 +61,24 @@ namespace CakeFactoryProd.Controllers
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
+                var a1 = DateTime.Now.ToString("dd'/'MM'/'yyyy , HH:mm");
                 // Create the post data
                 var postData = new Dictionary<string, string>
                 {
-                    //Custom data goes here!  2PD58250V9407081E   2023-02-02T01:33:02Z M9CECTMTQJ2M4   Purchase First   Purchase purchaserfakeemail1@tk.ca US  VERIFIED    3.79    CAD sale    paypal approved
-                    { "paymentID", "PAYID-MPIH5HA4J269406WS7648845" },
+                    { "paymentID", "PAYID-MPIH5HA4J269406WS7648801" },
                     {"create_time", DateTime.Now.ToString("dd'/'MM'/'yyyy , HH:mm")},
                     {"payerFirstName", "CackeFactory" },
                     {"amount", "123.46" },
                     {"paymentMethod", "paypal" },
-                    {"orderId", "7" }
+                    {"orderId", "3" }
                 };
 
                 // Send the request
                 var response = await client.PostAsync("Payment/PaySuccess", new StringContent(JsonConvert.SerializeObject(postData), Encoding.UTF8, "application/json"));
                 var responseContent = await response.Content.ReadAsStringAsync();
-                return Confirmation("PAYID-MPIH5HA4J269406WS7648845");
+                IPN res = JsonConvert.DeserializeObject<IPN>(responseContent);
+                //return Confirmation("PAYID-MPIH5HA4J269406WS7648847");
+                return Confirmation(res.PaymentId);
             }
         }
         public IActionResult Confirmation(string confirmationId)
@@ -106,7 +88,8 @@ namespace CakeFactoryProd.Controllers
             if (confirmationId != null)
             {
                 IPN transaction = _context.IPNs
-                                    .FirstOrDefault(t => t.PaymentId== confirmationId);
+                                    .Where(t => t.PaymentId == confirmationId)
+                                    .FirstOrDefault()!;
 
                 return View("Confirmation", transaction);
             }
@@ -114,7 +97,7 @@ namespace CakeFactoryProd.Controllers
             //this is temporary with hardcoded data
             var temp = new IPN
             {
-                PaymentId = "PAYID-MPIH5HA4J269406WS7648845",
+                PaymentId = "",
                 CreateTime = DateTime.Now.ToString("f"),
                 PayerFirstName = "CackeFactory - it is error",
                 Amount = "123.46",

@@ -1,43 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace CakeFactoryProd.Models;
 
 public partial class IPN
 {
+    [Key]
     public int Id { get; set; }
 
-    public string? Custom { get; set; }
+    public string Custom { get; set; } = string.Empty;
 
-    public string? PaymentId { get; set; }
+    public string PaymentId { get; set; } = string.Empty;
 
-    public string? Cart { get; set; }
+    public string Cart { get; set; } = string.Empty;
 
-    public string CreateTime { get; set; } = null!;
+    public string CreateTime { get; set; } = string.Empty;
 
-    public string? PayerId { get; set; }
+    public string PayerId { get; set; } = string.Empty;
 
-    public string? PayerFirstName { get; set; }
+    public string PayerFirstName { get; set; } = string.Empty;
 
-    public string? PayerLastName { get; set; }
+    public string PayerLastName { get; set; } = string.Empty;
 
-    public string? PayerMiddleName { get; set; }
+    public string PayerMiddleName { get; set; } = string.Empty;
 
-    public string? PayerEmail { get; set; }
+    public string PayerEmail { get; set; } = string.Empty;
 
-    public string? PayerCountryCode { get; set; }
+    public string PayerCountryCode { get; set; } = string.Empty;
 
-    public string? PayerStatus { get; set; }
+    public string PayerStatus { get; set; } = string.Empty;
 
-    public string? Amount { get; set; }
+    public string Amount { get; set; } = string.Empty;
 
-    public string? Currency { get; set; }
+    public string Currency { get; set; } = string.Empty;
 
-    public string? Intent { get; set; }
+    public string Intent { get; set; } = string.Empty;
 
-    public string? PaymentMethod { get; set; }
+    public string PaymentMethod { get; set; } = string.Empty;
 
-    public string? PaymentState { get; set; }
+    public string PaymentState { get; set; } = string.Empty;
 
     public int? OrderId { get; set; }
     public virtual Order Order { get; set; } = null!;
