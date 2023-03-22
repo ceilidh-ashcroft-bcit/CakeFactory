@@ -329,5 +329,7 @@ namespace CakeFactoryProd.Data
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 
         public DbSet<CakeFactoryProd.ViewModels.UserVM> UserVM { get; set; } = default!;
+
+        public DbSet<CakeFactoryProd.ViewModels.UserAdminVM> UserAdminVM { get; set; } = default!;
     }
 }

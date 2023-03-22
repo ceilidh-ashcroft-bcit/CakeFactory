@@ -9,6 +9,8 @@ namespace CakeFactoryProd.Repositories
     public class UserRepository
     {
         CakeFactoryContext _context;
+        private IServiceProvider _serviceProvider;
+
 
         public UserRepository(CakeFactoryContext context)
         {
@@ -92,5 +94,7 @@ namespace CakeFactoryProd.Repositories
 
             return userRoleVM;
         }
+
+        
     }
 }
