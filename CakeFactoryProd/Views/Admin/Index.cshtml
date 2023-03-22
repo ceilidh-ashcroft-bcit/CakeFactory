@@ -1,4 +1,8 @@
-﻿@model IEnumerable<CakeFactoryProd.ViewModels.AdminOrderVM>
+﻿@*@model IEnumerable<CakeFactoryProd.ViewModels.AdminOrderVM>*@
+
+@using CakeFactoryProd.Utilities
+@model PaginatedList<AdminOrderVM>
+@using CakeFactoryProd.ViewModels
 
 @{
     ViewData["Title"] = "Cakes";
@@ -10,16 +14,38 @@
 @*<p>
     <a class="btn btn-primary float-right" asp-area="" asp-controller="Cake" asp-action="Create">Add Cake</a>
 </p>*@
+
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            <div class="form-group" style="display: inline-block">
+                <span>Search on Name:</span>
+                <input type="text" name="SearchString" 
+                       value="@ViewData["currentFilter"]" required/>
+            </div>
+            <div class="form-group" style="display: inline-block">
+                <input type="submit" value="Search" class="btn btn-primary" />
+            </div>
+            <a asp-action="Index">Reset search filter</a>
+        </p>
+    </div>
+</form>
+
 <table class="table">
     <thead>
         <tr>
             <th>Order ID</th>
             <th>Purchase Date</th>
             <th>Cake</th>
-            <th>User</th>
+            <th>Customer Name</th>
             <th>Phone Number</th>
             <th>Total</th>
-            <th>Pick-up Date</th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["orderSortParm"]">
+                    Pick-up Date
+                </a>
+            </th>
+            <th>Is Picked</th>
         </tr>
     </thead>
     <tbody>
@@ -34,8 +60,9 @@
                 <td>@item.UserVM.PhoneNumber</td>
                 <td>$@item.CakeOrderVM.Total.ToString("0.00")</td>
                 <td>@item.CakeOrderVM.PickupDate?.ToString("ddd, MMM d, yyyy")</td>
+                <td>@item.IsPicked</td>
                 <td>
-                    @*<a asp-controller="Cake" asp-action="Edit" asp-route-id="@item.CakeId">Edit</a> |*@
+                    <a asp-controller="Cake" asp-action="CakeOrderEdit" asp-route-id="@item.CakeOrderVM.OrderId">Edit</a> |
                     <a asp-controller="Cake" asp-action="CakeOrderDetail" asp-route-id="@item.CakeOrderVM.OrderId">Details</a> 
                     @*<a asp-controller="Cake" asp-action="Delete" asp-route-id="@item.CakeId">Delete</a>*@
                 </td>
@@ -43,3 +70,25 @@
         }
     </tbody>
 </table>
+
+
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>

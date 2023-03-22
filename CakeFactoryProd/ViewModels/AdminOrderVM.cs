@@ -7,6 +7,8 @@ namespace CakeFactoryProd.ViewModels
     {
         public decimal Cost { get; set; }
 
+        public bool IsPicked { get; set; }
+
         public CakeOrderVM CakeOrderVM { get; set; }
 
         public ToppingVM ToppingVM { get; set; }
