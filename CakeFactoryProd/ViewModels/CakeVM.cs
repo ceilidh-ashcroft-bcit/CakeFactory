@@ -10,7 +10,6 @@ namespace CakeFactoryProd.ViewModels
         public bool? IsActive { get; set; }
         public string Size { get; set; }
         public string Shape { get; set; }
-
         [Key]
         public int CakeId { get; set; }
         public string Name { get; set; } = "Custom Cake";
@@ -18,7 +17,6 @@ namespace CakeFactoryProd.ViewModels
         public string CakeImage { get; set; } = "~/images/emptyCake.jpg";
         public decimal Price { get; set; } = 24.99m;
         public int FillingId { get; set; }
-        public string Filling { get; set; }
         public decimal FillingPrice { get; set; } = 1.99m;
         public int SizeId { get; set; }
         public int ShapeId { get; set; }
