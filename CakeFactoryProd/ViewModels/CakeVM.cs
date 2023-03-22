@@ -12,7 +12,6 @@ namespace CakeFactoryProd.ViewModels
         public string Shape { get; set; }
 
         [Key]
-        public string Filling { get; set; }
         public int CakeId { get; set; }
         public string Name { get; set; } = "Custom Cake";
         public string Description { get; set; } = "A delicious cake made exactly to your specifications.";
