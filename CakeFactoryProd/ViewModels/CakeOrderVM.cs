@@ -19,6 +19,8 @@ namespace CakeFactoryProd.ViewModels
         [BindProperty,DisplayFormat(DataFormatString = "{yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? PickupDate { get; set; }
 
+        public DateTime? PurchaseDate { get; set; }
+
         [Required(ErrorMessage = "Please enter in a quantity")]
         public int Quantity { get; set; }
 
