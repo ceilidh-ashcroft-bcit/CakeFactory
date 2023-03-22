@@ -33,7 +33,7 @@
                 <td>@item.UserVM.PrefferedName</td>
                 <td>@item.UserVM.PhoneNumber</td>
                 <td>$@item.CakeOrderVM.Total.ToString("0.00")</td>
-                <td>@item.CakeOrderVM.PickupDate</td>
+                <td>@item.CakeOrderVM.PickupDate?.ToString("ddd, MMM d, yyyy")</td>
                 <td>
                     @*<a asp-controller="Cake" asp-action="Edit" asp-route-id="@item.CakeId">Edit</a> |*@
                     <a asp-controller="Cake" asp-action="CakeOrderDetail" asp-route-id="@item.CakeOrderVM.OrderId">Details</a> 

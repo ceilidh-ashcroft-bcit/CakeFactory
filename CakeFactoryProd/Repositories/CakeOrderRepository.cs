@@ -67,21 +67,91 @@ namespace CakeFactoryProd.Repositories
             return orders.ToList();
         }
 
+        //public AdminOrderVM GetCakeOrderById(int id)
+        //{
+        //    var orders = from o in _context.Orders
+        //                 join oc in _context.OrderHasCakes on o.Id equals oc.OrderId
+        //                 join c in _context.Cakes on oc.CakeId equals c.Id
+        //                 join ct in _context.CakeHasToppings on c.Id equals ct.CakeId
+        //                 join t in _context.Toppings on ct.ToppingId equals t.Id
+        //                 join u in _context.Users on o.UserId equals u.Id
+
+        //                 select new AdminOrderVM
+        //                 {
+
+        //                 };
+
+        //    return (AdminOrderVM)orders;
+        //}
+
         public AdminOrderVM GetCakeOrderById(int id)
         {
-            var orders = from o in _context.Orders
+            var order = (from o in _context.Orders
+                         where o.Id == id
                          join oc in _context.OrderHasCakes on o.Id equals oc.OrderId
                          join c in _context.Cakes on oc.CakeId equals c.Id
                          join ct in _context.CakeHasToppings on c.Id equals ct.CakeId
                          join t in _context.Toppings on ct.ToppingId equals t.Id
+                         join s in _context.Sizes on c.SizeId equals s.Id
+                         join sp in _context.Shapes on c.ShapeId equals sp.Id
                          join u in _context.Users on o.UserId equals u.Id
-
-                         select new AdminOrderVM
+                         select new
                          {
+                             OrderId = o.Id,
+                             CakeName = c.Name,
+                             Cost = oc.Cost,
+                             Total = o.TotalAmount,
+                             OrderDate = o.PurchaseDate,
+                             Filling = c.Filling.Flavor,
+                             Topping = t.Flavor,
+                             Size = s.Value,
+                             Shape = sp.Value,
+                             Quantity = oc.Quantity,
+                             Name = u.Name,
+                             PrefferedName = u.PreferredName,
+                             PhoneNumber = u.PhoneNumber,
+                             PickupDate = o.PickupDate,
+                             PurchaseDate = o.PurchaseDate,      
 
-                         };
+                         }).FirstOrDefault();
 
-            return (AdminOrderVM)orders;
+
+            var adminOrderVM = new AdminOrderVM
+            {
+                Cost = order.Cost,
+
+                CakeOrderVM = new CakeOrderVM
+                {
+                    OrderId = order.OrderId,
+                    Quantity = order.Quantity,
+                    PickupDate = order.PickupDate,
+                    PurchaseDate = order.PurchaseDate,
+                    Total = order.Total,
+
+                    CakeVM = new CakeVM
+                    {
+                        Name = order.CakeName,
+                        Filling = order.Filling,
+                        Size = order.Size,
+                        Shape = order.Shape,
+                 
+                    },
+                }, 
+                
+                ToppingVM= new ToppingVM
+                {
+                    Flavor = order.Topping
+                },
+
+                UserVM = new UserVM
+                {
+                    UserName = order.Name,
+                    PrefferedName = order.PrefferedName,
+                    PhoneNumber = order.PhoneNumber
+                }
+            };
+
+            return adminOrderVM;
         }
 
         public void AddCakeOrder(OrderHasCake orderHasCake)
