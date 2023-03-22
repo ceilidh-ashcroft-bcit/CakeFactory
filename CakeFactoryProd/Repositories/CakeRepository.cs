@@ -74,7 +74,7 @@ namespace CakeFactoryProd.Repositories
             };
         }
 
-        public CakeOrderVM CreateCustomCake()
+        public CakeOrderVM GetCustomCake()
         {
             Cake cake = new Cake();
             Order order = new Order();

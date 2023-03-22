@@ -22,8 +22,7 @@
     {
        <a asp-controller="Cake" asp-action="Detail" asp-route-id="@cake.Id" class="cake-item">             
         <div class="cake-image">
-            @*<img src="@cake.ImagePath" alt="@cake.Name">*@
-          <img src="~/images/chocolateCake.jpg" alt="@cake.Name">
+            <img src="~/images/@cake.ImagePath" alt="@cake.Name">
         </div>
         <div class="cake-contents">
             <h2 class="cake-name">@cake.Name</h2>
