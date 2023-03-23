@@ -326,7 +326,8 @@ namespace CakeFactoryProd.Data
                 entity.Property(e => e.CreateTime)
                     //.HasColumnType("date")
                     .HasMaxLength(20)
-                    .HasColumnName("create_time");
+                    //.HasColumnName("create_time");
+                    .HasColumnName("createTime");
                 entity.Property(e => e.Currency)
                     .HasMaxLength(3)
                     .IsUnicode(false)

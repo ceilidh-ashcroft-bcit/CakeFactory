@@ -95,31 +95,52 @@ namespace CakeFactoryProd.Controllers
             return;
         }
 
-        [HttpPost]
-        public IActionResult Confirmation()
-        {
-            var email = User.Identity.Name;
-            var currentCart = HttpContext.Session.GetComplexData<List<CartVM>>("_Cart");
-            CartRepo cartRepo = new CartRepo(_context);
 
-            if (currentCart == null)
+        [HttpPost]
+        //public IActionResult Confirmation([FromBody] IPN ipn)
+        public JsonResult Confirmation([FromBody] IPN ipn)
+        {
+            try
+            {
+                var email = User.Identity.Name;
+                var currentCart = HttpContext.Session.GetComplexData<List<CartVM>>("_Cart");
+                CartRepo cartRepo = new CartRepo(_context);
+
+                int orderNumber = cartRepo.CreateOrder(currentCart, email, ipn);
+                HttpContext.Session.SetComplexData("_Cart", new List<CartVM>());
+
+                var temp = Json(new
+                {
+                    Status = "Success",
+                    TransactionId = ipn.PaymentId
+                });
+
+                return(temp);
+            } catch(Exception ex)
+            {
+                //return View("Error");
+                return Json(ex.Message);
+            }
+        }
+
+        public IActionResult Success(string paymentId)
+        {
+            try
+            {
+                CartRepo cartRepo = new CartRepo(_context);
+                var ipn = cartRepo.GetIPNDetails(paymentId);
+                
+                return View(ipn);
+            }
+            catch (Exception ex)
             {
                 return View("Error");
             }
-
-            int orderNumber = cartRepo.CreateOrder(currentCart, email);
-            HttpContext.Session.SetComplexData("_Cart", new List<CartVM>());   
-
-            ViewBag.OrderNumber = orderNumber;
-
-            return View("Confirmation", orderNumber);
-
         }
 
-        public IActionResult Confirmation(int orderNumber)
+        public IActionResult Error()
         {
-            ViewBag.OrderNumber = orderNumber;
-            return View();
+            return View("Error");
         }
     }
 }

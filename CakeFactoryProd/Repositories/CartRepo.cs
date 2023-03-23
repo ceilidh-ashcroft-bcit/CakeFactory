@@ -1,6 +1,7 @@
 ﻿using CakeFactoryProd.Data;
 using CakeFactoryProd.Models;
 using CakeFactoryProd.ViewModels;
+using Newtonsoft.Json;
 
 namespace CakeFactoryProd.Repositories
 {
@@ -28,7 +29,15 @@ namespace CakeFactoryProd.Repositories
             };
         }
 
-        public int CreateOrder(List<CartVM> orderList, string email)
+
+        /// <summary>
+        /// Method responsable for recording data in DB, tables:
+        /// Order, OrderHasCakes, Cakes and IPN
+        /// </summary>
+        /// <param name="orderList">CartVM object</param>
+        /// <param name="email">Customer's Email</param>
+        /// <returns>View for displaying either Success or Error, both with information</returns>
+        public int CreateOrder(List<CartVM> orderList, string email, IPN ipn)
         {
             UserRepository userRepository = new UserRepository(_context);
             User user = userRepository.GetUserByEmail(email);
@@ -39,10 +48,15 @@ namespace CakeFactoryProd.Repositories
                 PickupDate = orderList.FirstOrDefault().OrderVM.PickupDate,
                 IsPicked = false,
                 User = user,
-                UserId = user.Id
+                UserId = user.Id,
+                //TotalAmount = Decimal.Parse(ipn.Amount)
             };
-
             _context.Orders.Add(newOrder);
+            _context.SaveChanges();
+
+            ipn.OrderId = newOrder.Id;
+            _context.IPNs.Add(ipn);
+            _context.SaveChanges();
 
             foreach (CartVM cartVM in orderList)
             {
@@ -80,6 +94,21 @@ namespace CakeFactoryProd.Repositories
             }
 
             return newOrder.Id;
+        }
+
+
+        public IPN GetIPNDetails(string paymentID)
+        {
+            try
+            {
+                var ipn = _context.IPNs
+                        .Where(ipn => ipn.PaymentId == paymentID)
+                        .FirstOrDefault()!;
+                return ipn;
+            } catch (Exception ex)
+            {
+                return null!;
+            }
         }
     }
 }

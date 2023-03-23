@@ -1,0 +1,25 @@
+﻿@model IPN;
+
+<div style="text-align: center">
+    <h2 style="color:green; margin-top: 50px;">Congratulations @Model.PayerFirstName!</h2>
+    <div style="color:green; margin-top: 30px; font-size: 1em; align-items: center;">
+        <p style="line-height: 4em;">
+            Your $@Model.Amount @Model.Currency Paypal transaction was successful.
+        </p>
+        <p style="color: green;">
+            Keep this transaction Id for future reference:
+            <span style="color: black; font-weight: bold">
+                @Model.PaymentId
+            </span>
+        </p>
+    </div>
+</div>
+<hr />
+
+@{
+    if (ViewBag.temp != null)
+    {
+        <p>* this is a sample page with hardcoded data.</p>
+        <p>The system will display live data when perfoming a purchase.</p>
+    }
+}
