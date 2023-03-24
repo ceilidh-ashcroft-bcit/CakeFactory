@@ -49,7 +49,6 @@ namespace CakeFactoryProd.Controllers
             CakeOrderRepository cakeOrderRepo = new CakeOrderRepository(_context);
             AdminOrderVM adminOrderVM = cakeOrderRepo.GetAdminCakeOrderById(id);
 
-
             return View(adminOrderVM);
         
         }
