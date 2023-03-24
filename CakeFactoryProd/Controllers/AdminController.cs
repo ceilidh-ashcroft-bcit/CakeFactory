@@ -19,15 +19,6 @@ namespace CakeFactoryProd.Controllers
 
         private readonly CakeFactoryContext _context;
 
-        //public IActionResult Index()
-        //{
-        //    CakeOrderRepository cakeOrderRepo = new CakeOrderRepository(_context);
-
-        //    List<AdminOrderVM> adminOrderVM = cakeOrderRepo.GetAllAdminCakeOrders();
-      
-        //    return View(adminOrderVM);
-        //}
-
         public IActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
 
