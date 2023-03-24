@@ -11,27 +11,24 @@
 
 <h1>Orders</h1>
 
-@*<p>
-    <a class="btn btn-primary float-right" asp-area="" asp-controller="Cake" asp-action="Create">Add Cake</a>
-</p>*@
-
 <form asp-action="Index" method="get">
-    <div class="form-actions no-color">
-        <p>
-            <div class="form-group" style="display: inline-block">
-                <span>Search on Name:</span>
-                <input type="text" name="SearchString" 
-                       value="@ViewData["currentFilter"]" required/>
+    <div class="form-row">
+        <div class="">
+            <label for="SearchString">Search on Name:</label>
+            <div class="input-group">
+                <input type="text" name="SearchString" id="SearchString"
+                       value="@ViewData["currentFilter"]" class="form-control mr-2" required />
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary ml-1">Search</button>
+                    <a asp-action="Index" class="btn btn-secondary">Reset</a>
+                </div>
             </div>
-            <div class="form-group" style="display: inline-block">
-                <input type="submit" value="Search" class="btn btn-primary" />
-            </div>
-            <a asp-action="Index">Reset search filter</a>
-        </p>
+        </div>
     </div>
 </form>
 
-<table class="table">
+
+<table class="table table-hover">
     <thead>
         <tr>
             <th>Order ID</th>
@@ -46,25 +43,24 @@
                 </a>
             </th>
             <th>Is Picked</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
-        
         @foreach (var item in Model)
         {
             <tr>
                 <td>@item.CakeOrderVM.OrderId</td>
-                <td>@item.CakeOrderVM.PurchaseDate</td>
+                <td>@item.CakeOrderVM.PurchaseDate?.ToString("ddd, MMM d, yyyy")</td>
                 <td>@item.CakeOrderVM.CakeVM.Name</td>
                 <td>@item.UserVM.PrefferedName</td>
                 <td>@item.UserVM.PhoneNumber</td>
                 <td>$@item.CakeOrderVM.Total.ToString("0.00")</td>
                 <td>@item.CakeOrderVM.PickupDate?.ToString("ddd, MMM d, yyyy")</td>
                 <td>@item.IsPicked</td>
-                <td>
-                    <a asp-controller="Cake" asp-action="CakeOrderEdit" asp-route-id="@item.CakeOrderVM.OrderId">Edit</a> |
-                    <a asp-controller="Cake" asp-action="CakeOrderDetail" asp-route-id="@item.CakeOrderVM.OrderId">Details</a> 
-                    @*<a asp-controller="Cake" asp-action="Delete" asp-route-id="@item.CakeId">Delete</a>*@
+                <td class="row">
+                    <a asp-controller="Cake" asp-action="CakeOrderEdit" asp-route-id="@item.CakeOrderVM.OrderId" class="btn btn-primary btn-sm mb-2">Edit</a>
+                    <a asp-controller="Cake" asp-action="CakeOrderDetail" asp-route-id="@item.CakeOrderVM.OrderId" class="btn btn-primary btn-sm">Details</a>
                 </td>
             </tr>
         }
