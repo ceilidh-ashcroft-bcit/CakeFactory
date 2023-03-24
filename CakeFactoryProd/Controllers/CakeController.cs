@@ -43,20 +43,44 @@ namespace CakeFactoryProd.Controllers
             
         }
 
-        public IActionResult CakeOrderDetail(int id)
+    public IActionResult CakeOrderDetail(int id)
         {
             
             CakeOrderRepository cakeOrderRepo = new CakeOrderRepository(_context);
+            AdminOrderVM adminOrderVM = cakeOrderRepo.GetAdminCakeOrderById(id);
 
-            AdminOrderVM cakeOrderVM = cakeOrderRepo.GetCakeOrderById(id);
-
-            return View(cakeOrderVM);
+            return View(adminOrderVM);
         
         }
 
-        public IActionResult Create()
+
+        public IActionResult CakeOrderEdit(int id)
         {
-         return View();
+            CakeOrderRepository cakeOrderRepo = new CakeOrderRepository(_context);
+
+            AdminOrderVM adminOrderVM = cakeOrderRepo.CakeOrderAdminEdit(id);
+
+            return View(adminOrderVM);
+        }
+
+        [HttpPost]
+        public IActionResult CakeOrderEdit(Order order)
+        {
+            CakeOrderRepository cakeOrderRepo = new CakeOrderRepository(_context);
+            AdminOrderVM adminOrderVM = new AdminOrderVM()
+            {
+                IsPicked = order.IsPicked,
+
+                CakeOrderVM = new CakeOrderVM
+                {
+                    OrderId = order.Id
+                },
+            };
+
+            cakeOrderRepo.CakeOrderAdminUpdate(adminOrderVM);
+
+            return RedirectToAction("Index", "Admin");
+
         }
     }
 }

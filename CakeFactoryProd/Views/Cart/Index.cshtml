@@ -1,4 +1,7 @@
 ﻿@model IEnumerable<CakeFactoryProd.ViewModels.CartVM>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 
 @{
     ViewData["Title"] = "Index";
@@ -59,8 +62,8 @@
             <td>
                 @Html.DisplayFor(modelItem => item.OrderVM.CustomMessage)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OrderVM.Total)
+            <td class="total">
+                    @Html.DisplayFor(modelItem => item.OrderVM.Total)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.OrderVM.Quantity)
@@ -76,8 +79,39 @@
     </tbody>
 </table>
 
-<div id="paypal-button"></div>
+<div>Total: $<span id="purchase-total">0.00</span></div>
 
-<form asp-controller="Cart" asp-action="Confirmation">
-<button type="submit" class="btn btn-outline-primary" >Submit</button>
-</form>
+@if (SignInManager.IsSignedIn(User))
+{
+    @if (Model.Count() > 0)
+    {
+        <div id="paypal-button"></div>
+
+        <form asp-controller="Cart" asp-action="Confirmation">
+            <button type="submit" class="btn btn-outline-primary" >Submit</button>
+        </form>
+    } 
+    else
+    {
+        <div>No items in cart.</div>
+    }
+} 
+else
+{
+    <div>
+        <p>Please log in to complete your order.</p>
+        <a class="btn btn-outline-primary" asp-area="Identity" asp-page="/Account/Login">Login</a>
+    </div>
+}
+<script>
+    let prices = document.querySelectorAll(".total");
+    let totalPrice = 0.00;
+    const cartTotal = document.getElementById("purchase-total");
+
+    prices.forEach((price)=> {
+        decimalPrice = parseFloat(price.innerText)
+        totalPrice += decimalPrice;
+    })
+
+    cartTotal.innerHTML = totalPrice;
+</script>

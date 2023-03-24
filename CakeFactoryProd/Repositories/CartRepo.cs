@@ -72,11 +72,14 @@ namespace CakeFactoryProd.Repositories
                     Cost = cakeOrderVM.Total
                 };
 
+                newOrder.TotalAmount += orderHasCake.Cost;
+
                 _context.Cakes.Add(newCake);
                 _context.OrderHasCakes.Add(orderHasCake);
                 _context.SaveChanges();
             }
-            return 1;
+
+            return newOrder.Id;
         }
     }
 }
