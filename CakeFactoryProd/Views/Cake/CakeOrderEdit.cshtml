@@ -14,14 +14,15 @@
         <form asp-action="CakeOrderEdit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" asp-for="CakeOrderVM.OrderId" />
-            <div class="form-group">
+                    <h4>Order ID: @Model.CakeOrderVM.OrderId</h4>
+@*            <div class="form-group">
                 <label asp-for="CakeOrderVM.OrderId" class="control-label"></label>
                         <input asp-for="CakeOrderVM.OrderId" class="form-control" disabled />
                         <span asp-validation-for="CakeOrderVM.OrderId" class="text-danger"></span>
-            </div></br>
+            </div>*@</br>
             <div class="form-group">
-                <label asp-for="IsPicked" class="control-label"></label>
-                        <select asp-for="IsPicked">
+                <label asp-for="IsPicked" class="control-label"></label><br />
+                        <select asp-for="IsPicked"><br />
                             <option value="true">True</option>
                             <option value="false">False</option>
                         </select>
