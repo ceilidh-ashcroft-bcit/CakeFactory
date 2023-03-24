@@ -107,8 +107,10 @@ namespace CakeFactoryProd.Controllers
                 return View("Error");
             }
 
-             int orderNumber = cartRepo.CreateOrder(currentCart, email);
+            int orderNumber = cartRepo.CreateOrder(currentCart, email);
+            HttpContext.Session.SetComplexData("_Cart", new List<CartVM>());   
 
+            ViewBag.OrderNumber = orderNumber;
 
             return View("Confirmation", orderNumber);
 
@@ -116,6 +118,7 @@ namespace CakeFactoryProd.Controllers
 
         public IActionResult Confirmation(int orderNumber)
         {
+            ViewBag.OrderNumber = orderNumber;
             return View();
         }
     }
