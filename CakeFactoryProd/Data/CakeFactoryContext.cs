@@ -315,5 +315,7 @@ namespace CakeFactoryProd.Data
         public DbSet<CakeFactoryProd.ViewModels.CakeVM> CakeVM { get; set; } = default!;
 
         public DbSet<CakeFactoryProd.ViewModels.UserVM> UserVM { get; set; } = default!;
+
+        public DbSet<CakeFactoryProd.ViewModels.UserAdminVM> UserAdminVM { get; set; } = default!;
     }
 }
