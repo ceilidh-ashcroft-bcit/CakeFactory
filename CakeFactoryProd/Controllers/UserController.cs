@@ -4,6 +4,7 @@ using CakeFactoryProd.Repositories;
 using CakeFactoryProd.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Data;
 
 namespace CakeFactoryProd.Controllers
 {
@@ -11,10 +12,12 @@ namespace CakeFactoryProd.Controllers
     {
 
         CakeFactoryContext _context;
+        IServiceProvider _serviceProvider;
 
-        public UserController(CakeFactoryContext context)
+        public UserController(CakeFactoryContext context, IServiceProvider serviceProvider)
         {
             _context = context;
+            _serviceProvider = serviceProvider;
         }
         public IActionResult Index()
         {
@@ -146,27 +149,19 @@ namespace CakeFactoryProd.Controllers
             UserRepository userRepo = new UserRepository(_context);
             var user = userRepo.GetUserProfileById(id);
 
-           
-            //var aspUser = userRepo.GetAspUserByEmail(user.Email);
-
-            // Fetching ASPNetUserRoles by passing the "id"
-            //var userRoleVM = new UserRoleVM();
-            //userRoleVM = userRepo.GetUserRole(id);
-
-            // Fetching ASPNetRoles  by passing the "roleId"
-            //userRepo.GetRoleByRoleId();
-
-            UserVM userVM = new UserVM
+            UserAdminVM userAdminVM = new UserAdminVM
             {
                 UserId = user.Id,
                 UserName = user.Name,
                 PrefferedName = user.PreferredName,
                 PhoneNumber = user.PhoneNumber,
                 Email = user.Email,
-                IsActive = (bool)user.IsActive
+                IsActive = (bool)user.IsActive,
+                
+
             };
 
-            return View(userVM);
+            return View(userAdminVM);
 
         }
 
