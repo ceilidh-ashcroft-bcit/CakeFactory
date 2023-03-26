@@ -3,6 +3,7 @@ using SendGrid.Helpers.Mail;
 using SendGrid;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using CakeFactoryProd.ViewModels;
 
 namespace CakeFactoryProd.Data.Services
 {
@@ -33,5 +34,4 @@ namespace CakeFactoryProd.Data.Services
             return request;
         }
     }
-
 }

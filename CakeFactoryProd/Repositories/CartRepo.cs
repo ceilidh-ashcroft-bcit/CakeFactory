@@ -15,8 +15,8 @@ namespace CakeFactoryProd.Repositories
 
         public Dictionary<string, string> GetDetails(int shapeID, int sizeID, int fillingID)
         {
-            var size = _context.Sizes.Where(s=> s.Id == sizeID).FirstOrDefault();
-            var shape = _context.Shapes.Where(s=> s.Id == shapeID).FirstOrDefault();
+            var size = _context.Sizes.Where(s => s.Id == sizeID).FirstOrDefault();
+            var shape = _context.Shapes.Where(s => s.Id == shapeID).FirstOrDefault();
             var filling = _context.Fillings.Where(f => fillingID == f.Id).FirstOrDefault();
             /*var topping = _context.Toppings.Where(t => t.Id == toppingID).FirstOrDefault();*/
 
@@ -105,7 +105,23 @@ namespace CakeFactoryProd.Repositories
                         .Where(ipn => ipn.PaymentId == paymentID)
                         .FirstOrDefault()!;
                 return ipn;
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
+            {
+                return null!;
+            }
+        }
+
+        public IPN GetIPNDetailsByOrderId(int orderId)
+        {
+            try
+            {
+                var ipn = _context.IPNs
+                        .Where(ipn => ipn.OrderId == orderId)
+                        .FirstOrDefault()!;
+                return ipn;
+            }
+            catch (Exception ex)
             {
                 return null!;
             }

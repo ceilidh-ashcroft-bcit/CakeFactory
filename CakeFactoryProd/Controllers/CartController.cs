@@ -4,16 +4,23 @@ using CakeFactoryProd.Repositories;
 using CakeFactoryProd.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SendGrid.Helpers.Mail;
+using SendGrid;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace CakeFactoryProd.Controllers
 {
     public class CartController : Controller
     {
         private readonly CakeFactoryContext _context;
-        public CartController(CakeFactoryContext context)
+        private readonly IConfiguration _configuration;
+        public CartController(
+            CakeFactoryContext context,
+            IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
 
@@ -112,7 +119,8 @@ namespace CakeFactoryProd.Controllers
                 var temp = Json(new
                 {
                     Status = "Success",
-                    TransactionId = ipn.PaymentId
+                    //Status = "Error",
+                    orderId = orderNumber
                 });
 
                 return(temp);
@@ -123,13 +131,29 @@ namespace CakeFactoryProd.Controllers
             }
         }
 
-        public IActionResult Success(string paymentId)
+        public async Task<IActionResult> Success(int orderId)
         {
             try
             {
+                OrderRepository or = new OrderRepository(_context);
+                var order = or.GetOrderById(orderId);
                 CartRepo cartRepo = new CartRepo(_context);
-                var ipn = cartRepo.GetIPNDetails(paymentId);
-                
+                var ipn = cartRepo.GetIPNDetailsByOrderId(order.Id);
+                UserRepository ur = new UserRepository(_context);
+                var user = ur.GetUserProfileById(order.UserId);
+
+                var emailInfo = new EmailVM()
+                {
+                    OrderId = order.Id,
+                    Email = user.Email,
+                    Name = user.Name,
+                    TotalAmount = order.TotalAmount,
+                    PurchaseDate = order.PurchaseDate,
+                    PickupDate = order.PickupDate
+                };
+
+                await PurchaseEmail(emailInfo);
+
                 return View(ipn);
             }
             catch (Exception ex)
@@ -137,6 +161,38 @@ namespace CakeFactoryProd.Controllers
                 return View("Error");
             }
         }
+
+        public async Task<IActionResult> PurchaseEmail(EmailVM emailInfo)
+        {
+            try
+            {
+                var sendGridApiKey = _configuration.GetSection("SendGrid")["ApiKey"];
+                var sendGridClient = new SendGridClient(sendGridApiKey);
+                var from = new EmailAddress("ssd.team.orange@gmail.com", "Team Orange");
+                var subject = "Cake Factory - Purchase Success";
+                var to = new EmailAddress(emailInfo.Email, emailInfo.Name);
+
+                var purchaseDate = emailInfo.PurchaseDate?.ToString("dddd, dd MMMM yyyy");
+                var pickupDate = emailInfo.PickupDate?.ToString("dddd, dd MMMM yyyy");
+                var totalAmount = emailInfo.TotalAmount.ToString("0.00");
+
+                var plainContent = "Congratulation!";
+                var msgTitle = $"<h2>Hello {emailInfo.Name}</h2><br>";
+                var msgBody = "<p>Thank you for purchasing with Cake Factory!</p><p>We received your order and we will make it a delicous experience.</p>";
+                var msgInfo = $"<b><span>Order #: {emailInfo.OrderId}</span><br><span>Purchase Date: {purchaseDate}</span><br><span>Pick up Date: {pickupDate}</span><br><span>Total $: CAD {totalAmount}</span></b>";
+                var msgFooter = $"<p>Thank you. :)</p><p style=\"color:blue;\"><b>Cake Factory</b></p>";
+                var htmlContent = msgTitle + msgBody + msgInfo + msgFooter;
+                
+                var mailMessage = MailHelper.CreateSingleEmail(from, to, subject, plainContent, htmlContent);
+                await sendGridClient.SendEmailAsync(mailMessage);
+                
+                return Ok();
+            } catch (Exception ex)
+            {
+                return View("Error");
+            }
+        }
+
 
         public IActionResult Error()
         {

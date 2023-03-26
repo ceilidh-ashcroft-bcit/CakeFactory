@@ -136,10 +136,6 @@
                     },
                     onAuthorize: function (data, actions) {
                         return actions.payment.execute().then(function (payment) {
-                            console.log("This is what comes back from Paypal: ")
-                            console.log(payment);
-                            //alert("This JSON is from Paypal: " + JSON.stringify(payment));
-                            console.log("-------------------------------------")
                             var dataObject = {
                                 "cart": payment.cart,
                                 "intent": payment.intent,
@@ -170,18 +166,13 @@
 
                                 //after success
                                 success: function (msg) {
-                                    console.log("Data: " + JSON.stringify(data));
-                                    console.log("msg from AJAX:::::::", msg );
                                     window.location.href
-                                        //= "/Cart/Success?paymentID=" + data.paymentID;
-                                        = "/Cart/Error";
+                                        = "/Cart/Success?orderId=" + msg.orderId;
                                 },
                                 //after fail
                                 error: function (msg) {
                                     // ******* instead of sending alert, load an error page
                                     //guiding the user to talk to the admin or email
-                                    console.log("faillllllllll" + msg);
-                                    //alert("fail: " + JSON.stringify(msg));
                                     window.location.href = "/Cart/Error";
                                 }
                             });
