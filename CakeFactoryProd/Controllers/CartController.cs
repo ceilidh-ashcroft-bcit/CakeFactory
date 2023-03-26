@@ -109,6 +109,10 @@ namespace CakeFactoryProd.Controllers
         {
             try
             {
+                // it simulates an error after the payment is done
+                //if (1 == 1) 
+                //    throw new NullReferenceException("ERROR test.");
+
                 var email = User.Identity.Name;
                 var currentCart = HttpContext.Session.GetComplexData<List<CartVM>>("_Cart");
                 CartRepo cartRepo = new CartRepo(_context);
@@ -119,14 +123,16 @@ namespace CakeFactoryProd.Controllers
                 var temp = Json(new
                 {
                     Status = "Success",
-                    //Status = "Error",
                     orderId = orderNumber
                 });
 
                 return(temp);
             } catch(Exception ex)
             {
-                //return View("Error");
+                // because the payment was already processed,
+                // cart is going to be removed
+                HttpContext.Session.SetComplexData("_Cart", new List<CartVM>());
+
                 return Json(ex.Message);
             }
         }
@@ -196,6 +202,8 @@ namespace CakeFactoryProd.Controllers
 
         public IActionResult Error()
         {
+            // user is going to be redirect to an Error page
+            // with information to contact Cake Factory
             return View("Error");
         }
     }
