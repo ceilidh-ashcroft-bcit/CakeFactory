@@ -11,5 +11,7 @@ namespace CakeFactoryProd.ViewModels
         public double PriceFactor { get; set; }
         public string? Description { get; set; }
         public bool? IsActive { get; set; }
+        public bool Selected { get; set; }
+
     }
 }

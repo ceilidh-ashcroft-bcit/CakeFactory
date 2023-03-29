@@ -1,0 +1,88 @@
+﻿@model CakeFactoryProd.ViewModels.CakeVM
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/Admin/_AdminLayout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>CakeVM</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Sizes" class="control-label">Size</label> @Html.DropDownListFor(model => model.SizeId, Model.Sizes, "Select a size", new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                <label asp-for="Shapes" class="control-label">Shape</label> @Html.DropDownListFor(model => model.ShapeId, Model.Shapes, "Select a shape", new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                <label asp-for="Fillings" class="control-label">Filling</label> @Html.DropDownListFor(model => model.FillingId, Model.Fillings, "Select a filling", new { @class = "form-control" })
+            </div>
+            <div class="checkbox">
+                <label asp-for="Toppings" class="control-label">Topping</label><br />
+                @foreach (var topping in Model.Toppings)
+                {
+                    <input type="checkbox" class="toppings" name="Accepted" value="@topping.Id" />
+                    @topping.Flavor
+                }
+            </div>
+            <span asp-validation-for="Toppings" class="text-danger"></span>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" rows="5" cols="40"
+                        name="Description" class="control-label"
+                        data-val-required="The Description field is required."
+                        data-val-maxlength-max="500"
+                        data-val-maxlength="The field Description must be a string or array type with a maximum length of '500'."
+                        data-val="true"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-control">
+                <label asp-for="CakeImage" class="control-label"></label>
+                <input type="file" name="CakeImage" class="form-control-file" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input id="submitForm" type="submit" value="Create" class="btn btn-primary" />
+            </div>
+            <div id="toppingAlert" class="alert alert-danger" role="alert" style="display:none">Please select a topping.</div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-area="" asp-controller="Admin" asp-action="Cakes">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+    $(document).on('click', '#submitForm', function () {
+
+        if ($(".toppings:checked").length > 0) {
+            $("#toppingAlert").hide();
+
+        } else {
+            $("#toppingAlert").show();
+            event.preventDefault();
+        }
+    });
+
+</script>

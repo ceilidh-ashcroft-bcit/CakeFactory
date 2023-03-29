@@ -9,6 +9,8 @@ namespace CakeFactoryProd.Repositories
     public class UserRepository
     {
         CakeFactoryContext _context;
+        private IServiceProvider _serviceProvider;
+
 
         public UserRepository(CakeFactoryContext context)
         {
@@ -35,7 +37,7 @@ namespace CakeFactoryProd.Repositories
         {
             List<User> users = _context.Users.ToList();
             //.Where(u => u.Email == email).FirstOrDefault();
-            User user = users.Where(u => u.Email == email).FirstOrDefault();
+            User user = users.Where(u => u.Email == email).FirstOrDefault()!;
 
             return user;
         }
@@ -100,5 +102,7 @@ namespace CakeFactoryProd.Repositories
 
             return userRoleVM;
         }
+
+        
     }
 }

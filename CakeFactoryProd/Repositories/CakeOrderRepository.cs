@@ -13,8 +13,13 @@ namespace CakeFactoryProd.Repositories
             _context = context;
         }
 
-
-        public List<AdminOrderVM> GetAllCakeOrders()
+        /// <summary>
+        /// admin view for all cake orders 
+        /// </summary>
+        /// <returns>
+        /// all cake orders
+        /// </returns>
+        public List<AdminOrderVM> GetAllAdminCakeOrders()
         {
             var orders = from o in _context.Orders
                          join oc in _context.OrderHasCakes on o.Id equals oc.OrderId
@@ -26,6 +31,7 @@ namespace CakeFactoryProd.Repositories
                          select new AdminOrderVM
                          {
                              Cost = oc.Cost,
+                             IsPicked = o.IsPicked,
 
                              CakeOrderVM = new CakeOrderVM
                              {
@@ -58,6 +64,7 @@ namespace CakeFactoryProd.Repositories
                              UserVM = new UserVM
                              {
                                  PrefferedName = u.PreferredName,
+                                 UserName = u.Name,
                                  PhoneNumber = u.PhoneNumber
                              }
 
@@ -67,24 +74,14 @@ namespace CakeFactoryProd.Repositories
             return orders.ToList();
         }
 
-        //public AdminOrderVM GetCakeOrderById(int id)
-        //{
-        //    var orders = from o in _context.Orders
-        //                 join oc in _context.OrderHasCakes on o.Id equals oc.OrderId
-        //                 join c in _context.Cakes on oc.CakeId equals c.Id
-        //                 join ct in _context.CakeHasToppings on c.Id equals ct.CakeId
-        //                 join t in _context.Toppings on ct.ToppingId equals t.Id
-        //                 join u in _context.Users on o.UserId equals u.Id
-
-        //                 select new AdminOrderVM
-        //                 {
-
-        //                 };
-
-        //    return (AdminOrderVM)orders;
-        //}
-
-        public AdminOrderVM GetCakeOrderById(int id)
+        /// <summary>
+        /// Admin view for cake orders by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>
+        /// cake order by id
+        /// </returns>
+        public AdminOrderVM GetAdminCakeOrderById(int id)
         {
             var order = (from o in _context.Orders
                          where o.Id == id
@@ -133,8 +130,7 @@ namespace CakeFactoryProd.Repositories
                         Name = order.CakeName,
                         Filling = order.Filling,
                         Size = order.Size,
-                        Shape = order.Shape,
-                 
+                        Shape = order.Shape,       
                     },
                 }, 
                 
@@ -152,6 +148,42 @@ namespace CakeFactoryProd.Repositories
             };
 
             return adminOrderVM;
+        }
+
+        public AdminOrderVM CakeOrderAdminEdit(int id)
+        {
+            Order order = new Order();
+
+            order = _context.Orders.Find(id);
+
+            return new AdminOrderVM
+            {
+                IsPicked = order.IsPicked,
+
+                CakeOrderVM = new CakeOrderVM
+                {
+                    OrderId = order.Id,
+                    PickupDate = order.PickupDate,
+                    PurchaseDate = order.PurchaseDate,
+                }  
+            };
+        }
+
+        public Tuple<Order, string> CakeOrderAdminUpdate(AdminOrderVM adminOrderVM)
+        {
+            Order order = _context.Orders.Find(adminOrderVM.CakeOrderVM.OrderId);
+
+            if (order != null)
+            {
+                order.Id = adminOrderVM.CakeOrderVM.OrderId;
+                order.IsPicked = adminOrderVM.IsPicked;
+
+                _context.SaveChanges();
+
+                return Tuple.Create(order, "Updated Order");
+            }
+
+            return Tuple.Create(new Order(), "Failed to update order");
         }
 
         public void AddCakeOrder(OrderHasCake orderHasCake)

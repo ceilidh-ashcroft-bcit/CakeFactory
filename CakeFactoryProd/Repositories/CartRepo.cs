@@ -77,7 +77,7 @@ namespace CakeFactoryProd.Repositories
                         FillingId = cakeVM.FillingId,
                         ShapeId = cakeVM.ShapeId,
                         SizeId = cakeVM.SizeId,
-                        ImagePath = cakeVM.CakeImage
+                        //ImagePath = cakeVM.CakeImage
                     };
                     _context.Cakes.Add(newCake);
                     tempCakeId = newCake.Id;
@@ -85,6 +85,7 @@ namespace CakeFactoryProd.Repositories
 
                 // need to loop through CakeHasToppings list to add
                 // a row for each occurrancy in the table CakeHasToopin
+
 
                 OrderHasCake orderHasCake = new OrderHasCake()
                     {
