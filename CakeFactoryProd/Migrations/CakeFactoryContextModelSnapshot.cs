@@ -17,7 +17,7 @@ namespace CakeFactoryProd.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.2")
+                .HasAnnotation("ProductVersion", "7.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -41,11 +41,13 @@ namespace CakeFactoryProd.Migrations
                         .HasColumnType("int")
                         .HasColumnName("fillingId");
 
-                    b.Property<string>("ImagePath")
-                        .HasMaxLength(100)
+                    b.Property<byte[]>("ImageCake")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("ImageName")
                         .IsUnicode(false)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("imagePath");
+                        .HasColumnType("varchar(max)")
+                        .HasColumnName("ImageName");
 
                     b.Property<bool?>("IsActive")
                         .IsRequired()
@@ -89,13 +91,20 @@ namespace CakeFactoryProd.Migrations
 
             modelBuilder.Entity("CakeFactoryProd.Models.CakeHasTopping", b =>
                 {
-                    b.Property<int>("CakeId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("cakeId");
+                        .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CakeId")
+                        .HasColumnType("int");
 
                     b.Property<int>("ToppingId")
-                        .HasColumnType("int")
-                        .HasColumnName("toppingId");
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("CakeId");
 

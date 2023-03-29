@@ -45,6 +45,27 @@ namespace CakeFactoryProd.Repositories
             return topping;
         }
 
+
+
+
+        public List<ToppingVM> GetToppingByCakeId(int id)
+        {
+            List<ToppingVM> selectedToppings = (from to in _context.Toppings
+                                            join ct in _context.CakeHasToppings on to.Id equals ct.ToppingId
+                                            join c in _context.Cakes on ct.CakeId equals c.Id
+                                            select new ToppingVM
+                                            {
+                                                ToppingId = to.Id,
+                                                Flavor = to.Flavor,
+                                                CakeId = ct.CakeId,
+                                                Selected = true
+                                            }).ToList();
+
+/*            List<Topping> selectedTopping = _context.Toppings.Select(t => new ToppingVM { ToppingId = t.Id, Flavor = t.Flavor, Selected = true }).ToList();*/
+            var t = selectedToppings.Where(t => t.CakeId == id);
+            return t.ToList();
+        }
+
         public string DeleteToppingById(int id)
         {
             Topping removedTopping = GetToppingById(id);
@@ -52,6 +73,25 @@ namespace CakeFactoryProd.Repositories
             _context.SaveChanges();
 
             return $"Topping with id ${id} successfully deleted";
+        }
+        public void DeleteCakeToppingByCakeId(int cakeId)
+        {
+            try
+            {
+                List<CakeHasTopping> toppings = _context.CakeHasToppings.Where(t => t.CakeId == cakeId).ToList();
+                for (int i = 0; i < toppings.Count; i++)
+                {
+                    _context.CakeHasToppings.Remove(toppings[i]);
+                    _context.SaveChanges();
+
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+
         }
 
         public Tuple<Topping, string> UpdateToppingByID(ToppingVM toppingVM)
@@ -90,6 +130,43 @@ namespace CakeFactoryProd.Repositories
             _context.SaveChanges();
 
             return newTopping;
+        }
+        
+        public string AddCakeHasToppings(int[] toppings, int cakeId)
+        {
+            foreach(int topping in toppings)
+            {
+                CakeHasTopping newTopping = new CakeHasTopping()
+                {
+                    CakeId = cakeId,
+                    ToppingId = topping
+                };
+
+                _context.CakeHasToppings.Add(newTopping);
+                _context.SaveChanges();
+            }
+
+            return "Successfully added";
+        }
+        
+        public string EditCakeHasToppings(int[] toppings, int cakeId)
+        {
+            //delete cake topping before edit
+            DeleteCakeToppingByCakeId(cakeId);
+
+            foreach (int topping in toppings)
+            {
+                CakeHasTopping newTopping = new CakeHasTopping()
+                {
+                    CakeId = cakeId,
+                    ToppingId = topping
+                };
+
+                _context.CakeHasToppings.Update(newTopping);
+                _context.SaveChanges();
+            }
+
+            return "Successfully added";
         }
     }
 }

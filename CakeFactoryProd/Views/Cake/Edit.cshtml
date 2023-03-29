@@ -1,0 +1,140 @@
+﻿@model CakeFactoryProd.ViewModels.CakeVM
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/Admin/_AdminLayout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>CakeUpdateVM</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="CakeId" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsActive" class="control-label"></label>
+                <select asp-for="IsActive" class="form-control">
+                    <option value="True">True</option>
+                    <option value="False">False</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" rows="5" cols="40" 
+                          name="Description" class="control-label"
+                          data-val-required="The Description field is required."
+                          data-val-maxlength-max="500"
+                          data-val-maxlength="The field Description must be a string or array type with a maximum length of '500'."
+                          data-val="true"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            @if(Model.ImageName != null)
+            {
+                <span asp-for="ImageName"></span>
+                <img style="max-width: 350px;" src="data:image/png;base64, @Convert.ToBase64String(Model.ImageCake)" alt="@Model.ImageName" />
+            }
+
+            <button id="changeImage" class="btn btn-primary mr-1">Change Image </button>
+            <br />
+            <div id="selectImage" class="form-group" style="display: none;">
+                <input asp-for="CakeImage" class="form-control" />
+                <span asp-validation-for="CakeImage" class="text-danger"></span>
+                <button id="closeChangeImage" class="btn btn-close" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Size" class="control-label"></label>
+                <select asp-for="SizeId" asp-items="Model.Sizes" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Shape" class="control-label"></label>
+                <select asp-for="ShapeId" asp-items="Model.Shapes" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Filling" class="control-label"></label>
+                <select asp-for="FillingId" asp-items="Model.Fillings" class="form-control"></select>
+            </div>
+            <div class="checkbox">
+                <label asp-for="Toppings" class="control-label">Topping</label><br />
+                @foreach (var topping in Model.Toppings)
+                {
+                    var c = Model.SelectedToppings.Where(a => a.ToppingId == topping.Id);
+                    if (c.Count() > 0) {
+                        <input type="checkbox" class="toppings" name="Accepted" value="@topping.Id" checked="checked" /> @topping.Flavor
+                    }else{
+                        <input type="checkbox" class="toppings" name="Accepted" value="@topping.Id" /> @topping.Flavor
+                    }
+                }
+            </div>
+            <span asp-validation-for="SelectedToppings" class="text-danger"></span>
+            <div class="form-group">
+                <input id="submitForm" type="submit" value="Save" class="btn btn-primary" />
+
+@*                <button id="lisa">Lisa</button>
+*@            </div>
+              <div id="toppingAlert" class="alert alert-danger" role="alert" style="display:none">Please select a topping.</div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-area="" asp-controller="Admin" asp-action="Cakes">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $("#changeImage").click(function (event) {
+            event.preventDefault();
+            $("#selectImage").show();
+        });
+
+        $("#closeChangeImage").click(function (event) {
+            event.preventDefault();
+            $("#selectImage").hide();
+        });
+
+
+        //$("#submitForm").click(function (event) {
+        //    //$(".Toppings").any(function(){
+
+        //    //})
+        //    alert("0");
+
+        //    if($(".Toppings:clicked").length>0{
+        //        alert("1");
+                
+        //    }) else {alert("2");}
+        //});
+
+
+    });
+
+    $(document).on('click', '#submitForm', function () {
+
+        if ($(".toppings:checked").length > 0) {
+            $("#toppingAlert").hide();
+
+            } else {
+                $("#toppingAlert").show();
+                 event.preventDefault();
+            }
+    });
+    
+</script>

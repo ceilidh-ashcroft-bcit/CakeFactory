@@ -7,6 +7,7 @@ using System.Drawing;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
+
 var connectionString = builder.Configuration["ConnectionStrings:DefaultConnection"];
 //builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDbContext<CakeFactoryContext>(options =>
