@@ -85,13 +85,63 @@ namespace CakeFactoryProd.Controllers
             };
             return View(cakeEditVm);
         }
-        public IActionResult Users()
+        public IActionResult Users(string sortOrder, string currentFilter, string searchString, int? page)
         {
             //var email = User.Identity.Name;
 
+            // searching
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+
             UserRepository userRepository = new UserRepository(_context);
-            var users = userRepository.GetAllUsers();
-            return View(users);
+            IQueryable<UserVM> userVM = userRepository.GetAllUsers().AsQueryable();
+            // var users = userRepository.GetAllUsers();
+
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                userVM = userVM.Where(x => x.UserName.ToUpper().Contains(searchString.ToUpper()));
+
+            }
+
+
+
+            // Sorting on Email
+
+            if (string.IsNullOrEmpty(sortOrder))
+            {
+                ViewData["EmailSortParm"] = "Email";
+            }
+            else
+            {
+                ViewData["EmailSortParm"] = sortOrder == "Email" ?
+                                                        "Email_desc" : "Email";
+            }
+
+            switch (sortOrder)
+            {
+                case "Email":
+                    userVM = userVM.OrderByDescending(u => u.Email);
+                    break;
+                case "Email_desc":
+                    userVM = userVM.OrderBy(u => u.Email);
+                    break;
+                default:
+                    userVM = userVM.OrderByDescending(u => u.Email);
+                    break;
+            }
+
+            int pageSize = 10;
+            return View(PaginatedList<UserVM>.Create(userVM.AsNoTracking(), page ?? 1, pageSize));
+
         }
         public IActionResult Sales()
         {
