@@ -59,7 +59,7 @@ namespace CakeFactoryProd.Repositories
                     FillingId = cakeVM.FillingId,
                     ShapeId = cakeVM.ShapeId,
                     SizeId = cakeVM.SizeId,
-                    ImagePath = cakeVM.CakeImage
+                    ImageName = cakeVM.ImageName
                 };
 
                 OrderHasCake orderHasCake = new OrderHasCake()

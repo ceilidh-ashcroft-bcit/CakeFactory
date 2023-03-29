@@ -1,3 +1,4 @@
+
 using CakeFactoryProd.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
@@ -6,16 +7,19 @@ namespace CakeFactoryProd.ViewModels
 {
     public class CakeVM
     {
-
+        [Key]
+        public int CakeId { get; set; }
         public bool? IsActive { get; set; }
         public string Size { get; set; }
         public string Shape { get; set; }
-        [Key]
-        public int CakeId { get; set; }
-        public string Name { get; set; } = "Custom Cake";
-        public string Description { get; set; } = "A delicious cake made exactly to your specifications.";
-        public string CakeImage { get; set; } = "~/images/emptyCake.jpg";
-        public decimal Price { get; set; } = 24.99m;
+        public string Filling { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string ImageName { get; set; }
+        public byte[]? ImageCake { get; set; }
+        public byte[]? ImageData { get; set; }
+        public IFormFile? CakeImage { get; set; }
+        public decimal Price { get; set; }
         public int FillingId { get; set; }
         public decimal FillingPrice { get; set; } = 1.99m;
         public int SizeId { get; set; }
@@ -23,7 +27,24 @@ namespace CakeFactoryProd.ViewModels
         public decimal ShapePrice { get; set; } = 5.00m;
         public int ToppingId { get; set; }
 
+        [Required(ErrorMessage = "Please select a size")]
+        public SelectList Sizes { get; set; }
+
+        [Required(ErrorMessage = "Please select a shape")]
+        public SelectList Shapes { get; set; }
+
+        [Required(ErrorMessage = "Please select a filling")]
+        public SelectList Fillings { get; set; }
+
+        //[Required(ErrorMessage = "Please select a topping")]
+        public List<Topping>? Toppings { get; set; } = new List<Topping>();
+
+        [Required(ErrorMessage = "Please select a topping")]
+        public List<ToppingVM>? SelectedToppings { get; set; } = new List<ToppingVM>();
+        public int[] Accepted { get; set; }
+
         public string? ToppingList { get; set; }
         public decimal ToppingPrice { get; set; } = 1.00m;
+
     }
 }

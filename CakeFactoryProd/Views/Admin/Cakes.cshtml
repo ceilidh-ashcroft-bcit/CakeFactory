@@ -26,14 +26,13 @@
         
         <tr>
             <td>@item.Name</td>
-                <td>@string.Format("{0:0.00}", @item.Price)</td>
+            <td>@string.Format("{0:0.00}", @item.Price)</td>
             <td>@item.Size</td>
             <td>@item.Shape</td>
             <td>@item.IsActive</td>
             <td>
                     <a asp-controller="Cake" asp-action="Edit" asp-route-id="@item.CakeId">Edit</a> |
-                    <a asp-controller="Cake" asp-action="Details" asp-route-id="@item.CakeId">Details</a> |
-                    <a asp-controller="Cake" asp-action="Delete" asp-route-id="@item.CakeId">Delete</a>
+                    <a asp-controller="Cake" asp-action="AdminDetail" asp-route-id="@item.CakeId">Details</a>
             </td>
         </tr>
 }
@@ -64,7 +63,7 @@
             <td>
                 <a asp-controller="Toppings" asp-action="Edit" asp-route-id="@item.ToppingId">Edit</a> |
                 <a asp-controller="Toppings" asp-action="Details" asp-route-id="@item.ToppingId">Details</a> |
-                <a asp-controller="Toppings" asp-action="Delete" asp-route-id="@item.ToppingId">Delete</a>
+                <a asp-controller="Toppings" asp-action="Delete" asp-route-id="@item.CakeId">Delete</a>
             </td>
         </tr>
 }
