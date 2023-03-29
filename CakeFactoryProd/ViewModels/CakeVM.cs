@@ -16,9 +16,12 @@ namespace CakeFactoryProd.ViewModels
         public string Name { get; set; }
         public string Description { get; set; }
         public string ImageName { get; set; }
+        public string ImagePath { get; set; }
+
         public byte[]? ImageCake { get; set; }
         public byte[]? ImageData { get; set; }
-        public IFormFile? CakeImage { get; set; }
+        public IFormFile CakeImage { get; set; }
+        //public string CakeImage { get; set; }
         public decimal Price { get; set; }
         public int FillingId { get; set; }
         public decimal FillingPrice { get; set; } = 1.99m;

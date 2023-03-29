@@ -1,10 +1,11 @@
+
 -------------------------------------------------------------
 --- #1- Handle DATABASE
 -------------------------------------------------------------
 
 -- # assuming we already scafolded the .net Identity Entity Framework
-USE master;
-GO
+--USE master;
+--GO
 
 --PRINT '#1- CREATE database ''CakeFactory''';
 --IF DB_ID('CakeFactory') IS NOT NULL 
@@ -29,6 +30,7 @@ DROP TABLE IF EXISTS Cake;
 DROP TABLE IF EXISTS Filling;
 DROP TABLE IF EXISTS Size;
 DROP TABLE IF EXISTS Shape;
+DROP TABLE IF EXISTS IPN;
 DROP TABLE IF EXISTS [Order];
 DROP TABLE IF EXISTS [User];
 DELETE from AspNetRoles;
@@ -135,6 +137,7 @@ CREATE TABLE Cake
 	[description] VARCHAR(500),
 	isActive BIT DEFAULT 1 NOT NULL,
 	imagePath VARCHAR(100),
+	--imageCake varbinary(MAX), 
 	isPredefined BIT DEFAULT 1 NOT NULL,
 	fillingId INT NOT NULL,
     FOREIGN KEY (fillingId) REFERENCES Filling(id),
@@ -213,24 +216,63 @@ ELSE
 
 
 
+-- Handle IPN table
+PRINT CHAR(10) + '#2.10- CREATE table ''IPN - Instant Payment Notification''';
+CREATE TABLE IPN
+(
+    id INT PRIMARY KEY IDENTITY (1, 1),
+
+	[custom] VARCHAR(50) DEFAULT '',
+	paymentID VARCHAR(30),
+	cart VARCHAR(20) DEFAULT '',
+	createTime VARCHAR(25) DEFAULT '',
+	--create_time VARCHAR(25) DEFAULT '',
+	--create_time DATE DEFAULT GETDATE(),
+	payerID VARCHAR(20) DEFAULT '',
+	payerFirstName VARCHAR(20) DEFAULT '',
+	payerLastName VARCHAR(20) DEFAULT '',
+	payerMiddleName VARCHAR(20) DEFAULT '',
+	payerEmail VARCHAR(100) DEFAULT '',
+	payerCountryCode VARCHAR(3) DEFAULT '',
+	payerStatus VARCHAR(20) DEFAULT '',
+	amount VARCHAR(20) DEFAULT '',
+	currency VARCHAR(3) DEFAULT '',
+	intent VARCHAR(15) DEFAULT '',
+	paymentMethod VARCHAR(20) DEFAULT '',
+	paymentState VARCHAR(20) DEFAULT '',
+
+	--orderId INT NOT NULL,
+	orderId INT,
+    FOREIGN KEY (orderId) REFERENCES [Order](id),
+); 
+GO
+IF OBJECT_ID('IPN') IS NOT NULL 
+	PRINT '   OK: IPN table created successfully. :)';
+ELSE
+	PRINT '   ERROR: IPN table creation failed! :/';
+
+
+
 -------------------------------------------------------------
 --- #3- Handle INSERT data
 -------------------------------------------------------------
 PRINT CHAR(10) + '#3- INSERT data';
 PRINT CHAR(10) + '#3.1- INSERT data INTO ''User''';
 INSERT INTO [User] VALUES ('admin@cakefactory.ca', 'First System Admin', 'Admin1', '', 1);
-INSERT INTO [User] VALUES ('manager@cakefactory.ca', 'The Store Manager', 'Manager', '777-123-4567', 1);
-INSERT INTO [User] VALUES ('customer01@email.ca', 'Customer01', 'Customer ONE', '123-456-7890', 1);
-INSERT INTO [User] VALUES ('customer02@email.ca', 'Customer02', 'Customer TWO', '123-456-7890', 1);
+--INSERT INTO [User] VALUES ('manager@cakefactory.ca', 'The Store Manager', 'Manager', '777-123-4567', 1);
+--INSERT INTO [User] VALUES ('customer01@email.ca', 'Customer01', 'Customer ONE', '123-456-7890', 1);
+--INSERT INTO [User] VALUES ('customer02@email.ca', 'Customer02', 'Customer TWO', '123-456-7890', 1);
 
-INSERT INTO AspNetUsers VALUES ('1', 'First System Admin', 'First System Admin', 'firstadmin@bcit.ca',
+INSERT INTO AspNetUsers VALUES ('1', 'First System Admin', 'First System Admin', 'admin@cakefactory.ca',
 '', '', '', '', '', '', '', '', '', '', '');
-INSERT INTO AspNetUsers VALUES ('2', 'The Store Manager', 'THE STORE MANAGER', 'manager@cakefactory.ca',
-'', '', '', '', '', '', '', '', '', '', '');
-INSERT INTO AspNetUsers VALUES ('3', 'Customer01', 'CUSTOMER01', 'customer01@email.ca',
-'', '', '', '', '', '', '', '', '', '', '');
-INSERT INTO AspNetUsers VALUES ('4', 'Customer02', 'CUSTOMER02', 'customer02@email.ca',
-'', '', '', '', '', '', '', '', '', '', '');
+--'', 1, 'AQAAAAIAAYagAAAAEF3osI/bmAtQJr3F3NXFoOMVSfnZKyztZkFQb4rn5hzPB2AFIPvEwdOve+JFpDsYbQ==', '', '', '', '', '', 
+--'1900-01-01 00:00:00.0000000 +00:00', 0, '');
+--INSERT INTO AspNetUsers VALUES ('2', 'The Store Manager', 'THE STORE MANAGER', 'manager@cakefactory.ca',
+--'', '', '', '', '', '', '', '', '', '', '');
+--INSERT INTO AspNetUsers VALUES ('3', 'Customer01', 'CUSTOMER01', 'customer01@email.ca',
+--'', '', '', '', '', '', '', '', '', '', '');
+--INSERT INTO AspNetUsers VALUES ('4', 'Customer02', 'CUSTOMER02', 'customer02@email.ca',
+--'', '', '', '', '', '', '', '', '', '', '');
 
 
 INSERT INTO AspNetRoles VALUES ('1', 'Admin', 'ADMIN', '');
@@ -238,9 +280,9 @@ INSERT INTO AspNetRoles VALUES ('2', 'Manager', 'MANAGER', '');
 INSERT INTO AspNetRoles VALUES ('3', 'Customer', 'CUSTOMER', '');
 
 INSERT INTO AspNetUserRoles VALUES ('1', '1');
-INSERT INTO AspNetUserRoles VALUES ('2', '2');
-INSERT INTO AspNetUserRoles VALUES ('3', '3');
-INSERT INTO AspNetUserRoles VALUES ('4', '3');
+--INSERT INTO AspNetUserRoles VALUES ('2', '2');
+--INSERT INTO AspNetUserRoles VALUES ('3', '3');
+--INSERT INTO AspNetUserRoles VALUES ('4', '3');
 
 
 PRINT CHAR(10) + '#3.2- INSERT data INTO ''Shape''';
@@ -251,11 +293,9 @@ INSERT INTO Shape VALUES ('Triangle', 0.1 , 'equilateral triangle', 1);
 INSERT INTO Shape VALUES ('Diamond', 0.15 , '', 1);
 
 PRINT CHAR(10) + '#3.3- INSERT data INTO ''Size''';
---INSERT INTO Size VALUES ('Very Small', '15cm X 15cm' , 1, 8.99);
 INSERT INTO Size VALUES ('Small', '20cm X 15cm', 1, 14.99);
 INSERT INTO Size VALUES ('Medium', '25cm X 20cm', 1, 22.99);
 INSERT INTO Size VALUES ('Large', '30cm X 25cm' , 1, 32.99);
---INSERT INTO Size VALUES ('Very Large', '40cm X 30cm', 1, 49.99);
 
 PRINT CHAR(10) + '#3.4- INSERT data INTO ''Filling''';
 INSERT INTO Filling VALUES ('Chocolate', 0, 'Delicious Chocolate', 1);
@@ -274,62 +314,58 @@ INSERT INTO Topping VALUES ('Multicolor', 0.2, 'Chocolate, Vanilla and Strawberr
 INSERT INTO Topping VALUES ('Caramel', 0, 'Sweet Caramel', 1);
 
 PRINT CHAR(10) + '#3.6- INSERT data INTO ''Cake''';
---INSERT INTO Cake VALUES ('VS Special Chocolate', 8.99, 'Very Small Rectangle Chocolate', 1, null, 1, 1, 1, 1);
---INSERT INTO Cake VALUES ('S Special Chocolate', 14.99, 'Small Rectangle Chocolate', 1, 'K:\cake-images\cake1.jpg', 1, 1, 2, 1);
---INSERT INTO Cake VALUES ('M Special Chocolate', 22.99, 'Medium Rectangle Chocolate', 1, 'K:\cake-images\cake2-chocolate.jpg', 1, 1, 3, 1);
---INSERT INTO Cake VALUES ('L Special Chocolate', 32.99, 'Large Rectangle Chocolate', 1, 'K:\cake-images\cake-image3.jpg', 1, 1, 4, 1);
---INSERT INTO Cake VALUES ('VL Special Chocolate', 49.99, 'Very Large Rectangle Chocolate', 1, 'K:\cake-images\cake4.jpg', 1, 1, 5, 1);
---INSERT INTO Cake VALUES ('VS Great Vanilla', 8.99, 'Very Small Rectangle Vanilla', 1, 'K:\cake-images\cake-vanilla-1.jpg', 1, 1, 1, 1);
---INSERT INTO Cake VALUES ('S Great Vanilla', 14.99, 'Small Rectangle Vanilla', 1, 'K:\cake-images\cake-vanilla-22.jpg', 1, 1, 2, 1);
---INSERT INTO Cake VALUES ('M Great Vanilla', 22.99, 'Medium Rectangle Vanilla', 1, 'K:\cake-images\cake-vanilla-three.jpg', 1, 1, 3, 1);
---INSERT INTO Cake VALUES ('G Great Vanilla', 32.99, 'Large Rectangle Vanilla', 1, 'K:\cake-images\cake-vanilla-4444.jpg', 1, 1, 4, 1);
---INSERT INTO Cake VALUES ('VL Great Vanilla', 49.99, 'Very Large Rectangle Vanilla', 1, 'K:\cake-images\cake-vanilla-number5.jpg', 1, 1, 5, 1);
 INSERT INTO Cake VALUES ('Chocolate Cake', 22.99, 
 'A rich, decadent chocolate cake with a moist, fluffy texture. Layers of velvety chocolate cake are sandwiched between creamy chocolate frosting, and the entire cake is coated with a smooth, glossy chocolate ganache. The cake is finished off with  truffle balls of chocolate , adding a final touch of indulgence to this classic dessert.',
-1, null, 1, 1, 2, 1);
+1, 'chocolateCake.jpg', 1, 1, 2, 1);
 INSERT INTO Cake VALUES ('Carrot Cake', 22.99, 
 'A deliciously moist carrot cake with a tender crumb and warm spices. The cake is made with freshly grated carrots and a blend of cinnamon, nutmeg, and ginger, which give it a cozy, autumnal flavor. The layers are filled and topped with a luscious cream cheese frosting that complements the sweetness of the carrots perfectly.',
-1, null, 1, 2, 2, 1);
+1, 'carrotCake.jpg', 1, 2, 2, 1);
+--INSERT INTO Cake VALUES ('Chocolate Cake', 22.99, 
+--'A rich, decadent chocolate cake with a moist, fluffy texture. Layers of velvety chocolate cake are sandwiched between creamy chocolate frosting, and the entire cake is coated with a smooth, glossy chocolate ganache. The cake is finished off with  truffle balls of chocolate , adding a final touch of indulgence to this classic dessert.',
+--1, (SELECT * FROM OPENROWSET 
+--	(BULK N'K:\internal-project\CakeFactory\CakeFactoryProd\wwwroot\images\chocolateCake.jpg', SINGLE_BLOB) AS imageCake), 
+--1, 1, 2, 1);
+--INSERT INTO Cake VALUES ('Carrot Cake', 22.99, 
+--'A deliciously moist carrot cake with a tender crumb and warm spices. The cake is made with freshly grated carrots and a blend of cinnamon, nutmeg, and ginger, which give it a cozy, autumnal flavor. The layers are filled and topped with a luscious cream cheese frosting that complements the sweetness of the carrots perfectly.',
+--1, (SELECT * FROM OPENROWSET 
+--	(BULK N'K:\internal-project\CakeFactory\CakeFactoryProd\wwwroot\images\carrotCake.jpg', SINGLE_BLOB) AS imageCake), 1, 2, 2, 1);
 
 PRINT CHAR(10) + '#3.7- INSERT data INTO ''CakeHasToppings''';
 INSERT INTO CakeHasToppings VALUES (1, 1);
 INSERT INTO CakeHasToppings VALUES (2, 1);
---INSERT INTO CakeHasToppings VALUES (3, 1);
---INSERT INTO CakeHasToppings VALUES (4, 1);
---INSERT INTO CakeHasToppings VALUES (5, 1);
---INSERT INTO CakeHasToppings VALUES (6, 2);
---INSERT INTO CakeHasToppings VALUES (7, 2);
---INSERT INTO CakeHasToppings VALUES (8, 2);
---INSERT INTO CakeHasToppings VALUES (9, 2);
---INSERT INTO CakeHasToppings VALUES (10, 2);
 
 PRINT CHAR(10) + '#3.8- INSERT data INTO ''Order''';
-INSERT INTO [Order] VALUES (null, null, 0, 8.99, 1, '2022-11-20', 'CAD', 'PAYPAL-ID#00001', 3);
-INSERT INTO [Order] VALUES (null, null, 0, 12.34, 1, '2022-11-10', 'CAD', 'PAYPAL-ID#00002', 3);
-INSERT INTO [Order] VALUES ('20221201', '20221203', 1, 30.15, 0, null, 'CAD', 'PAYPAL-ID#00003', 4);
-INSERT INTO [Order] VALUES ('2022-11-30', '20221201', 1, 50, 0, null, 'CAD', 'PAYPAL-ID#00004', 4);
-INSERT INTO [Order] VALUES ('2022-11-28', '2022-11-30', 1, 90, 0, null, 'CAD', 'PAYPAL-ID#00005', 3);
-INSERT INTO [Order] VALUES ('2022-11-25', '2022-11-26', 1, 88.12, 0, '2022-11-20', 'CAD', 'PAYPAL-ID#00006', 4);
-INSERT INTO [Order] VALUES ('2022-11-23', '2022-11-24', 1, 45.67, 0, '2022-11-20', 'CAD', 'PAYPAL-ID#00007', 4);
-INSERT INTO [Order] VALUES ('2022-12-01', '2022-12-02', 1, 49.99, 0, null, 'CAD', 'PAYPAL-ID#00008', 3);
-INSERT INTO [Order] VALUES ('2022-12-02', '2022-12-03', '1', 33.99, 0, null, 'CAD', 'PAYPAL-ID#00009', 4);
+INSERT INTO [Order] VALUES (null, null, 0, 8.99, 1, '2022-11-20', 'CAD', 'PAYPAL-ID#00001', 1);
+--INSERT INTO [Order] VALUES (null, null, 0, 12.34, 1, '2022-11-10', 'CAD', 'PAYPAL-ID#00002', 3);
+--INSERT INTO [Order] VALUES ('20221201', '20221203', 1, 30.15, 0, null, 'CAD', 'PAYPAL-ID#00003', 4);
+--INSERT INTO [Order] VALUES ('2022-11-30', '20221201', 1, 50, 0, null, 'CAD', 'PAYPAL-ID#00004', 4);
+--INSERT INTO [Order] VALUES ('2022-11-28', '2022-11-30', 1, 90, 0, null, 'CAD', 'PAYPAL-ID#00005', 3);
+--INSERT INTO [Order] VALUES ('2022-11-25', '2022-11-26', 1, 88.12, 0, '2022-11-20', 'CAD', 'PAYPAL-ID#00006', 4);
+--INSERT INTO [Order] VALUES ('2022-11-23', '2022-11-24', 1, 45.67, 0, '2022-11-20', 'CAD', 'PAYPAL-ID#00007', 4);
+--INSERT INTO [Order] VALUES ('2022-12-01', '2022-12-02', 1, 49.99, 0, null, 'CAD', 'PAYPAL-ID#00008', 3);
+--INSERT INTO [Order] VALUES ('2022-12-02', '2022-12-03', '1', 33.99, 0, null, 'CAD', 'PAYPAL-ID#00009', 4);
 
 PRINT CHAR(10) + '#3.9- INSERT data INTO ''OrderHasCakes''';
 INSERT INTO OrderHasCakes VALUES (1, 8.99, 1, 1);
-INSERT INTO OrderHasCakes VALUES (1, 14.99, 2, 2);
-INSERT INTO OrderHasCakes VALUES (1, 8.99, 3, 1);
-INSERT INTO OrderHasCakes VALUES (1, 14.99, 3, 2);
-INSERT INTO OrderHasCakes VALUES (2, 8.99, 4, 1);
-INSERT INTO OrderHasCakes VALUES (2, 14.99, 4, 2);
-INSERT INTO OrderHasCakes VALUES (2, 22.99, 5, 1);
-INSERT INTO OrderHasCakes VALUES (1, 8.99, 5, 1);
-INSERT INTO OrderHasCakes VALUES (2, 14.99, 5, 2);
-INSERT INTO OrderHasCakes VALUES (3, 22.99, 6, 1);
-INSERT INTO OrderHasCakes VALUES (1, 14.99, 6, 2);
-INSERT INTO OrderHasCakes VALUES (2, 22.99, 7, 2);
-INSERT INTO OrderHasCakes VALUES (1, 49.99, 8, 2);
-INSERT INTO OrderHasCakes VALUES (1, 32.99, 9, 2);
+--INSERT INTO OrderHasCakes VALUES (1, 14.99, 2, 2);
+--INSERT INTO OrderHasCakes VALUES (1, 8.99, 3, 1);
+--INSERT INTO OrderHasCakes VALUES (1, 14.99, 3, 2);
+--INSERT INTO OrderHasCakes VALUES (2, 8.99, 4, 1);
+--INSERT INTO OrderHasCakes VALUES (2, 14.99, 4, 2);
+--INSERT INTO OrderHasCakes VALUES (2, 22.99, 5, 1);
+--INSERT INTO OrderHasCakes VALUES (1, 8.99, 5, 1);
+--INSERT INTO OrderHasCakes VALUES (2, 14.99, 5, 2);
+--INSERT INTO OrderHasCakes VALUES (3, 22.99, 6, 1);
+--INSERT INTO OrderHasCakes VALUES (1, 14.99, 6, 2);
+--INSERT INTO OrderHasCakes VALUES (2, 22.99, 7, 2);
+--INSERT INTO OrderHasCakes VALUES (1, 49.99, 8, 2);
+--INSERT INTO OrderHasCakes VALUES (1, 32.99, 9, 2);
 
+
+--IPN test
+--insert into IPN values ('custom1', '1','','','','','','','','','','','','','','',1);
+--insert into IPN values ('custom2', '1','','','','','','','','','','','','','','',2);
+--insert into IPN values ('custom3', '1','','','','','','','','','','','','','','',3);
 
 
 -------------------------------------------------------------
