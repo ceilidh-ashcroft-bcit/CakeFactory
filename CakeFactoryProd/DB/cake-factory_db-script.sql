@@ -155,11 +155,12 @@ ELSE
 PRINT CHAR(10) + '#2.7- CREATE table ''CakeHasToppings''';
 CREATE TABLE CakeHasToppings
 (
+    id INT PRIMARY KEY IDENTITY (1, 1),
 	cakeId int NOT NULL,
     FOREIGN KEY (cakeId) REFERENCES Cake(id),
 	toppingId INT NOT NULL,
     FOREIGN KEY (toppingId) REFERENCES Topping(id),
-);
+); 
 GO
 IF OBJECT_ID('CakeHasToppings') IS NOT NULL 
 	PRINT '   OK: CakeHasToppings table created successfully. :)';
