@@ -1,9 +1,90 @@
-﻿
+﻿@*@model IEnumerable<CakeFactoryProd.ViewModels.AdminOrderVM>*@
+
+@using CakeFactoryProd.Utilities
+@model PaginatedList<AdminOrderVM>
+@using CakeFactoryProd.ViewModels
+
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Cakes";
     Layout = "~/Views/Shared/Admin/_AdminLayout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Orders</h1>
 
-<p>Admin Index View</p>
+<form asp-action="Index" method="get">
+    <div class="form-row">
+        <div class="">
+            <label for="SearchString">Search on Name:</label>
+            <div class="input-group">
+                <input type="text" name="SearchString" id="SearchString"
+                       value="@ViewData["currentFilter"]" class="form-control mr-2" required />
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary ml-1">Search</button>
+                    <a asp-action="Index" class="btn btn-secondary">Reset</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Purchase Date</th>
+            <th>Cake</th>
+            <th>Customer Name</th>
+            <th>Phone Number</th>
+            <th>Total</th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["orderSortParm"]">
+                    Pick-up Date
+                </a>
+            </th>
+            <th>Is Picked</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.CakeOrderVM.OrderId</td>
+                <td>@item.CakeOrderVM.PurchaseDate?.ToString("ddd, MMM d, yyyy")</td>
+                <td>@item.CakeOrderVM.CakeVM.Name</td>
+                <td>@item.UserVM.PrefferedName</td>
+                <td>@item.UserVM.PhoneNumber</td>
+                <td>$@item.CakeOrderVM.Total.ToString("0.00")</td>
+                <td>@item.CakeOrderVM.PickupDate?.ToString("ddd, MMM d, yyyy")</td>
+                <td>@item.IsPicked</td>
+                <td class="row">
+                    <a asp-controller="Cake" asp-action="CakeOrderEdit" asp-route-id="@item.CakeOrderVM.OrderId" class="btn btn-primary btn-sm mb-2">Edit</a>
+                    <a asp-controller="Cake" asp-action="CakeOrderDetail" asp-route-id="@item.CakeOrderVM.OrderId" class="btn btn-primary btn-sm">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>

@@ -7,6 +7,7 @@ namespace CakeFactoryProd.ViewModels
 {
     public class CakeOrderVM
     {
+        [Key]
         public int OrderId { get; set; }
         public CakeVM? CakeVM { get; set; }
 
@@ -15,8 +16,10 @@ namespace CakeFactoryProd.ViewModels
         public string? CustomMessage { get; set; }
 
         [Required(ErrorMessage = "Please select a date")]
-        [BindProperty,DisplayFormat(DataFormatString = "{0:yyyy-MM-ddTHH:mm}", ApplyFormatInEditMode = true)]
+        [BindProperty,DisplayFormat(DataFormatString = "{yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? PickupDate { get; set; }
+
+        public DateTime? PurchaseDate { get; set; }
 
         [Required(ErrorMessage = "Please enter in a quantity")]
         public int Quantity { get; set; }

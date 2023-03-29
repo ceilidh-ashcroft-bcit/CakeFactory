@@ -1,4 +1,7 @@
-﻿namespace CakeFactoryProd.ViewModels
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+
+namespace CakeFactoryProd.ViewModels
 {
     public class ToppingVM
     {

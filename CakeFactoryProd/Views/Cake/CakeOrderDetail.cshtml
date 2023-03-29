@@ -1,0 +1,52 @@
+﻿@model CakeFactoryProd.ViewModels.AdminOrderVM
+
+@{
+    ViewData["Title"] = "Cakes";
+    //Layout = "~/Views/Shared/Admin/_AdminLayout.cshtml";
+}
+
+<h1>Orders</h1>
+
+@*<p>
+    <a class="btn btn-primary float-right" asp-area="" asp-controller="Cake" asp-action="Create">Add Cake</a>
+</p>*@
+<table class="table">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Purchase Date</th>
+            <th>Cost</th>
+            <th>Quantity</th>
+            <th>Total</th>
+            <th>Cake</th>
+            <th>Filling</th>
+            <th>Size</th>
+            <th>Shape</th>
+            <th>Topping</th>
+            <th>Pick-up Date</th>
+            <th>Customer Name</th>
+            <th>Preffered Name</th>
+            <th>Phone Number</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+            <tr>
+            <td>@Model.CakeOrderVM.OrderId</td>
+            <td>@Model.CakeOrderVM.PurchaseDate?.ToString("ddd, MMM d, yyyy")</td>
+            <td>$@Model.Cost.ToString("0.00")</td>
+            <td>@Model.CakeOrderVM.Quantity</td>
+            <td>$@Model.CakeOrderVM.Total.ToString("0.00")</td>
+            <td>@Model.CakeOrderVM.CakeVM.Name</td>
+            <td>@Model.CakeOrderVM.CakeVM.Filling</td>
+            <td>@Model.CakeOrderVM.CakeVM.Size</td>
+            <td>@Model.CakeOrderVM.CakeVM.Shape</td>
+            <td>@Model.ToppingVM.Flavor</td>
+            <td>@Model.CakeOrderVM.PickupDate?.ToString("ddd, MMM d, yyyy")</td>
+            <td>@Model.UserVM.UserName</td>
+            <td>@Model.UserVM.PrefferedName</td>
+            <td>@Model.UserVM.PhoneNumber</td>
+            </tr>
+        
+    </tbody>
+</table>

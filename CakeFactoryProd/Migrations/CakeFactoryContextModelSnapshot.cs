@@ -17,7 +17,7 @@ namespace CakeFactoryProd.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.3")
+                .HasAnnotation("ProductVersion", "7.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -32,9 +32,9 @@ namespace CakeFactoryProd.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
-                        .HasMaxLength(200)
+                        .HasMaxLength(500)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(200)")
+                        .HasColumnType("varchar(500)")
                         .HasColumnName("description");
 
                     b.Property<int>("FillingId")
@@ -45,8 +45,9 @@ namespace CakeFactoryProd.Migrations
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("ImageName")
+                        .HasMaxLength(100)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(max)")
+                        .HasColumnType("varchar(100)")
                         .HasColumnName("ImageName");
 
                     b.Property<bool?>("IsActive")
@@ -201,19 +202,19 @@ namespace CakeFactoryProd.Migrations
                         .HasColumnType("int")
                         .HasColumnName("cakeId");
 
-                    b.Property<decimal>("Cost")
-                        .HasColumnType("money")
-                        .HasColumnName("cost");
-
                     b.Property<int>("OrderId")
                         .HasColumnType("int")
                         .HasColumnName("orderId");
+
+                    b.Property<decimal>("Cost")
+                        .HasColumnType("money")
+                        .HasColumnName("cost");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int")
                         .HasColumnName("quantity");
 
-                    b.HasIndex("CakeId");
+                    b.HasKey("CakeId", "OrderId");
 
                     b.HasIndex("OrderId");
 
@@ -357,10 +358,6 @@ namespace CakeFactoryProd.Migrations
                         .HasColumnName("isActive")
                         .HasDefaultValueSql("((1))");
 
-                    b.Property<bool>("IsAdmin")
-                        .HasColumnType("bit")
-                        .HasColumnName("isAdmin");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(60)
@@ -369,6 +366,7 @@ namespace CakeFactoryProd.Migrations
                         .HasColumnName("name");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
                         .HasMaxLength(12)
                         .IsUnicode(false)
                         .HasColumnType("varchar(12)")
@@ -386,6 +384,95 @@ namespace CakeFactoryProd.Migrations
                         .IsUnique();
 
                     b.ToTable("User", (string)null);
+                });
+
+            modelBuilder.Entity("CakeFactoryProd.ViewModels.RoleVM", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RoleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("UserAdminVMUserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserAdminVMUserId");
+
+                    b.ToTable("RoleVM");
+                });
+
+            modelBuilder.Entity("CakeFactoryProd.ViewModels.UserAdminVM", b =>
+                {
+                    b.Property<int>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PrefferedName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TotalNumberOfOrders")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("UserAdminVM");
+                });
+
+            modelBuilder.Entity("CakeFactoryProd.ViewModels.UserVM", b =>
+                {
+                    b.Property<int>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PrefferedName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TotalNumberOfOrders")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("UserVM");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -666,6 +753,13 @@ namespace CakeFactoryProd.Migrations
                     b.Navigation("Order");
                 });
 
+            modelBuilder.Entity("CakeFactoryProd.ViewModels.RoleVM", b =>
+                {
+                    b.HasOne("CakeFactoryProd.ViewModels.UserAdminVM", null)
+                        .WithMany("Roles")
+                        .HasForeignKey("UserAdminVMUserId");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -735,6 +829,11 @@ namespace CakeFactoryProd.Migrations
             modelBuilder.Entity("CakeFactoryProd.Models.User", b =>
                 {
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("CakeFactoryProd.ViewModels.UserAdminVM", b =>
+                {
+                    b.Navigation("Roles");
                 });
 #pragma warning restore 612, 618
         }

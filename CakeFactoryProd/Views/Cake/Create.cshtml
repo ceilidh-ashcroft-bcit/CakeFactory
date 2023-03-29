@@ -31,7 +31,7 @@
                 <label asp-for="Toppings" class="control-label">Topping</label><br />
                 @foreach (var topping in Model.Toppings)
                 {
-                    <input type="checkbox" id="Toppings" name="Accepted" value="@topping.Id" />
+                    <input type="checkbox" class="Toppings" name="Accepted" value="@topping.Id" />
                     @topping.Flavor
                 }
             </div>
@@ -57,8 +57,9 @@
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input id="submitForm" type="submit" value="Create" class="btn btn-primary" />
             </div>
+            <div id="toppingAlert" class="alert alert-danger" role="alert" style="display:none">Please select a topping.</div>
         </form>
     </div>
 </div>
@@ -70,3 +71,18 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+    $(document).on('click', '#submitForm', function () {
+
+        if ($(".toppings:checked").length > 0) {
+            $("#toppingAlert").hide();
+
+        } else {
+            $("#toppingAlert").show();
+            event.preventDefault();
+        }
+    });
+
+</script>

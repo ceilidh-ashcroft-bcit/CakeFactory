@@ -162,7 +162,7 @@ namespace CakeFactoryProd.Repositories
                     ToppingId = topping
                 };
 
-                _context.CakeHasToppings.Update(newTopping);
+                _context.CakeHasToppings.Add(newTopping);
                 _context.SaveChanges();
             }
 

@@ -1,4 +1,5 @@
-﻿using CakeFactoryProd.Models;
+
+using CakeFactoryProd.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
@@ -20,8 +21,10 @@ namespace CakeFactoryProd.ViewModels
         public IFormFile? CakeImage { get; set; }
         public decimal Price { get; set; }
         public int FillingId { get; set; }
+        public decimal FillingPrice { get; set; } = 1.99m;
         public int SizeId { get; set; }
         public int ShapeId { get; set; }
+        public decimal ShapePrice { get; set; } = 5.00m;
         public int ToppingId { get; set; }
 
         [Required(ErrorMessage = "Please select a size")]
@@ -39,6 +42,9 @@ namespace CakeFactoryProd.ViewModels
         [Required(ErrorMessage = "Please select a topping")]
         public List<ToppingVM>? SelectedToppings { get; set; } = new List<ToppingVM>();
         public int[] Accepted { get; set; }
+
+        public string? ToppingList { get; set; }
+        public decimal ToppingPrice { get; set; } = 1.00m;
 
     }
 }

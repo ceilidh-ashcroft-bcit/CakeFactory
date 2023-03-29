@@ -18,7 +18,6 @@ namespace CakeFactoryProd.Models
         public int FillingId { get; set; }
         public int SizeId { get; set; }
         public int ShapeId { get; set; }
-
         public virtual Filling Filling { get; set; } = null!;
         public virtual Shape Shape { get; set; } = null!;
         public virtual Size Size { get; set; } = null!;

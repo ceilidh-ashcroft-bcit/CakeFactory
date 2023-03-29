@@ -55,13 +55,14 @@ namespace CakeFactoryProd.Data
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Description)
-                    .HasMaxLength(200)
+                    .HasMaxLength(500)
                     .IsUnicode(false)
                     .HasColumnName("description");
 
                 entity.Property(e => e.FillingId).HasColumnName("fillingId");
 
                 entity.Property(e => e.ImageName)
+                    .HasMaxLength(100)
                     .IsUnicode(false)
                     .HasColumnName("ImageName");
 
@@ -186,7 +187,7 @@ namespace CakeFactoryProd.Data
 
             modelBuilder.Entity<OrderHasCake>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(o => new{o.CakeId, o.OrderId});
 
                 entity.Property(e => e.CakeId).HasColumnName("cakeId");
 
@@ -304,7 +305,7 @@ namespace CakeFactoryProd.Data
                     .HasColumnName("isActive")
                     .HasDefaultValueSql("((1))");
 
-                entity.Property(e => e.IsAdmin).HasColumnName("isAdmin");
+                //entity.Property(e => e.IsAdmin).HasColumnName("isAdmin");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(60)
@@ -327,5 +328,11 @@ namespace CakeFactoryProd.Data
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 
+
+  /*      public DbSet<CakeFactoryProd.ViewModels.CakeVM> CakeVM { get; set; } = default!;*/
+
+        public DbSet<CakeFactoryProd.ViewModels.UserVM> UserVM { get; set; } = default!;
+
+        public DbSet<CakeFactoryProd.ViewModels.UserAdminVM> UserAdminVM { get; set; } = default!;
     }
 }

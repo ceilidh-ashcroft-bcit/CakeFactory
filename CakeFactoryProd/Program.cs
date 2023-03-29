@@ -1,4 +1,5 @@
 using CakeFactoryProd.Data;
+using CakeFactoryProd.Data.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Drawing;
@@ -14,10 +15,12 @@ builder.Services.AddDbContext<CakeFactoryContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<CakeFactoryContext>();
     //.AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.AddTransient<IEmailService, EmailService>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
