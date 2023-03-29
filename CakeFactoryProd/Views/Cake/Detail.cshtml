@@ -15,7 +15,8 @@
             }
             else
             {
-                <img src="~/images/@Model.CakeVM.CakeImage" alt="@Model.CakeVM.Name" />        
+                <img style="max-width: 350px; max-height: 350px" src="data:image/png;base64, @Convert.ToBase64String(Model.CakeVM.ImageCake)" alt="@Model.CakeVM.ImageName" />
+                @*<img src="~/images/@Model.CakeVM.CakeImage" alt="@Model.CakeVM.Name" />        *@
             }
             
         </div>
