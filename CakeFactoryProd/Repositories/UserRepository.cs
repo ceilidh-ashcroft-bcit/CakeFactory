@@ -74,10 +74,23 @@ namespace CakeFactoryProd.Repositories
             return "";
         }
 
-        public List<User> GetAllUsers()
+        //public List<User> GetAllUsers()
+        //{
+        //    var users = _context.Users.ToList();
+        //    return users;
+        //}
+
+        public List<UserVM> GetAllUsers()
         {
             var users = _context.Users.ToList();
-            return users;
+            var userVMs = users.Select(u => new UserVM
+            {
+                UserId = u.Id,
+                UserName = u.Name,
+                PhoneNumber= u.PhoneNumber,
+                Email = u.Email
+            }).ToList();
+            return userVMs;
         }
 
         public void DeleteUser(int id)
