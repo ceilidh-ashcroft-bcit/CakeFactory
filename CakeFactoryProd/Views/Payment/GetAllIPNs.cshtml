@@ -1,0 +1,132 @@
+﻿@model IEnumerable<CakeFactoryProd.Models.IPN>
+
+@{
+    ViewData["Title"] = "GetAllIPNs";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>GetAllIPNs</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Custom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cart)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PayerId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PayerFirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PayerLastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PayerMiddleName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PayerEmail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PayerCountryCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PayerStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Currency)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Intent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentMethod)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentState)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Order)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Custom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cart)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PayerId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PayerFirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PayerLastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PayerMiddleName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PayerEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PayerCountryCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PayerStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Currency)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Intent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentMethod)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentState)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Order.Id)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
