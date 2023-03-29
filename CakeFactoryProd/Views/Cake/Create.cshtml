@@ -9,7 +9,7 @@
 
 <h4>CakeVM</h4>
 <hr />
-<div class="row">
+<div class="row justify-content-around">
     <div class="col-md-4">
         <form asp-action="Create" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -31,7 +31,7 @@
                 <label asp-for="Toppings" class="control-label">Topping</label><br />
                 @foreach (var topping in Model.Toppings)
                 {
-                    <input type="checkbox" class="Toppings" name="Accepted" value="@topping.Id" />
+                    <input type="checkbox" class="toppings" name="Accepted" value="@topping.Id" />
                     @topping.Flavor
                 }
             </div>

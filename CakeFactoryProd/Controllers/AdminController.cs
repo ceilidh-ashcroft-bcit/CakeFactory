@@ -93,10 +93,10 @@ namespace CakeFactoryProd.Controllers
             var users = userRepository.GetAllUsers();
             return View(users);
         }
-        public IActionResult Sales()
+/*        public IActionResult Sales()
         {
 
             return View();
-        }
+        }*/
     }
 }
