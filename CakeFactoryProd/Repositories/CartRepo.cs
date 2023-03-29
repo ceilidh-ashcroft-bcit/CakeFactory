@@ -63,34 +63,43 @@ namespace CakeFactoryProd.Repositories
                 CakeVM cakeVM = cartVM.CakeVM;
                 CakeOrderVM cakeOrderVM = cartVM.OrderVM;
 
-
-                Cake newCake = new Cake()
+                // need to check whether Cake has Id, it means it is already in DB,
+                // otherwise need to insert it in DB
+                int tempCakeId = cartVM.CakeVM.CakeId;
+                if (tempCakeId == 0)
                 {
-                    Name = cakeVM.Name,
-                    Price = cakeVM.Price,
-                    Description = cakeVM.Description,
-                    IsActive = cakeVM.IsActive,
-                    FillingId = cakeVM.FillingId,
-                    ShapeId = cakeVM.ShapeId,
-                    SizeId = cakeVM.SizeId,
-                    ImagePath = cakeVM.CakeImage
-                };
+                    Cake newCake = new Cake()
+                    {
+                        Name = cakeVM.Name,
+                        Price = cakeVM.Price,
+                        Description = cakeVM.Description,
+                        IsActive = cakeVM.IsActive,
+                        FillingId = cakeVM.FillingId,
+                        ShapeId = cakeVM.ShapeId,
+                        SizeId = cakeVM.SizeId,
+                        ImagePath = cakeVM.CakeImage
+                    };
+                    _context.Cakes.Add(newCake);
+                    tempCakeId = newCake.Id;
+                }
+
+                // need to loop through CakeHasToppings list to add
+                // a row for each occurrancy in the table CakeHasToopin
 
                 OrderHasCake orderHasCake = new OrderHasCake()
-                {
-                    CakeId = newCake.Id,
-                    OrderId = newOrder.Id,
-                    Cake = newCake,
-                    Order = newOrder,
-                    Quantity = cakeOrderVM.Quantity,
-                    Cost = cakeOrderVM.Total
-                };
+                    {
+                        CakeId = tempCakeId,
+                        OrderId = newOrder.Id,
+                        //Cake = newCake,
+                        Order = newOrder,
+                        Quantity = cakeOrderVM.Quantity,
+                        Cost = cakeOrderVM.Total
+                    };
 
-                newOrder.TotalAmount += orderHasCake.Cost;
+                    newOrder.TotalAmount += orderHasCake.Cost;
 
-                _context.Cakes.Add(newCake);
-                _context.OrderHasCakes.Add(orderHasCake);
-                _context.SaveChanges();
+                    _context.OrderHasCakes.Add(orderHasCake);
+                    _context.SaveChanges();
             }
 
             return newOrder.Id;

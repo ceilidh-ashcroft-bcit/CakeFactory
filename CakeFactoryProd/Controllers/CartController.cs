@@ -40,6 +40,8 @@ namespace CakeFactoryProd.Controllers
         [HttpPost]
         public IActionResult Index(IFormCollection pairs)
         {
+            //if ()
+            var tempCakeID = Int32.Parse(pairs["CakeId"]);
             CartRepo cartRepo = new CartRepo(_context);
             Dictionary<string, string> properties = cartRepo.GetDetails(Int32.Parse(pairs["Shapes"]),
                                                                                 Int32.Parse(pairs["Sizes"]),
@@ -49,6 +51,7 @@ namespace CakeFactoryProd.Controllers
 
             CakeVM cakeVM = new CakeVM()
             {
+                CakeId= tempCakeID,
                 SizeId = Int32.Parse(pairs["Sizes"]),
                 Size = properties["Size"],
                 ShapeId = Int32.Parse(pairs["Shapes"]),
