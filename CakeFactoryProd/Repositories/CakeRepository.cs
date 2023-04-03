@@ -133,6 +133,7 @@ namespace CakeFactoryProd.Repositories
 
         public CakeOrderVM GetCustomCake()
         {
+            // FIGUREOUT HOW TO PASS THE PRICEFACTORS IN HERE
             Cake cake = new Cake();
             Order order = new Order();
             OrderHasCake orderHasCake = new OrderHasCake();
@@ -158,6 +159,7 @@ namespace CakeFactoryProd.Repositories
 
                 PickupDate = order.PickupDate,
 
+                //Shapes = new SelectList(shapes, "Id", "Value", "CakeBasicPrice"),
                 Shapes = new SelectList(shapes, "Id", "Value"),
                 Sizes = new SelectList(sizes, "Id", "Value"),
                 Fillings = new SelectList(fillings, "Id", "Flavor"),

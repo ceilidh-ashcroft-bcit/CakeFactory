@@ -3,6 +3,12 @@
 
 @{
     ViewData["Title"] = "Cake Order";
+    var temp = Model.Sizes.ToArray();
+    Console.WriteLine("temp:: ", temp);
+    foreach (var e in temp)
+        Console.WriteLine("- ", e.Text.ToString());
+    //var sizes = @Html.Raw(Json.Encode(Model.Sizes));
+    var sizes = @Html.Raw(Model.Sizes);
 }
 
 
@@ -56,13 +62,17 @@
                 {
                     <input type="hidden" name="CakeId" class="property" value="@Model.CakeVM.CakeId" />
                     <label asp-for="Sizes" class="property">Size</label>
-                    @Html.DropDownListFor(model => model.Sizes, Model.Sizes, "Select a size", new { @class = "cake-sel-size" })
+                    @Html.DropDownListFor(model => model.Sizes, Model.Sizes, "Select a size",
+                        new { @class = "cake-sel-size", onchange = "updateTotal('size', @temp)" })
                     <br/>
+
                     <label asp-for="Shapes"class="property">Shape</label>
-                    @Html.DropDownListFor(model => model.Shapes, Model.Shapes, "Select a shape", new { @class = "cake-sel-shape" })
+                    @Html.DropDownListFor(model => model.Shapes, Model.Shapes, "Select a shape",
+                        new { @class = "cake-sel-size", onchange = "updateTotal('shape', this.value)"  })
                     <br/>
                     <label asp-for="Fillings"class="property">Filling</label>
-                    @Html.DropDownListFor(model => model.Fillings, Model.Fillings, "Select a filling", new { @class = "cake-sel-filling" })
+                    @Html.DropDownListFor(model => model.Fillings, Model.Fillings, "Select a filling",
+                        new { @class = "cake-sel-size", onchange = "updateTotal('filling', this.value)"  })
                     <br/>
                     <label asp-for="Toppings"class="property">Topping</label>
 
@@ -134,19 +144,42 @@
     </div>
 
     <script>
+        //const tempPrice = Array.from(@Model.Sizes);
+        //console.log("temp: ", tempPrice);
+        console.log("=== ", (@Html.Raw(Model.Sizes)));
         let quantity = document.getElementById("quantity");
         let total_field = document.getElementById("total");
         let custom_message = document.getElementById("custom-message");
 
 
         let messageFee = 0.00;
-        function updateTotal(){
+        function updateTotal(cakeProp, id){
+            console.log("updateTotal is being fired!!!\n", cakeProp, id.toString());
+            console.log("updateTotal is being fired!!!\n", id);
             if (custom_message.value.length > 0){
                 messageFee = 4.00;
             }
+            let basicPrice = 0;
+            let shapeFactor = 0;
+            let fillingFactor = 0;
+            if (cakeProp == "size") {
+                //CakeBasicPrice
+                //basicPrice = 
+                //const tempPrice = Array.from(@Model.Sizes.Items).filter(e => e.Id != id);
+                //const tempPrice = Array.from(@Model.Sizes.Items);
+                //console.log("tempPrice: ", tempPrice);
+                //console.log("Model: ", Model.CakeVM.Price);
+                console.log("basicPrice: ", basicPrice);
+            } 
+            //else if (cakeProp == "filling"){
+            //    console.log("filling");
+            //} else isFinite (cakeProp == "shape"){
+            //    console.log("shape");
+            //}
             let toppingCount = document.querySelectorAll('input[type="checkbox"]:checked').length;
             let toppingTotal = @Model.CakeVM.ToppingPrice * toppingCount;
             total_field.value = ((@(Model.CakeVM.Price + Model.CakeVM.ShapePrice + Model.CakeVM.FillingPrice) + toppingTotal) * quantity.value) + messageFee;
+            //const additionals = (price * ())
         }
 
         quantity.addEventListener("change", updateTotal);
