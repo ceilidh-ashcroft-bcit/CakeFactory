@@ -11,8 +11,8 @@ namespace CakeFactoryProd.ViewModels
         public string Size { get; set; }
         public string Shape { get; set; }
         public string Filling { get; set; }
-        public string Name { get; set; } = "Custom Cake";
-        public string Description { get; set; } = "A delicious cake of your own creation";
+        public string Name { get; set; }
+        public string Description { get; set; }
         public string ImageName { get; set; }
         public byte[]? ImageCake { get; set; }
         public byte[]? ImageData { get; set; }
