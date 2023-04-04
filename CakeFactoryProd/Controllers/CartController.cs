@@ -76,7 +76,7 @@ namespace CakeFactoryProd.Controllers
             var currentCart = HttpContext.Session.GetComplexData<List<CartVM>>("_Cart");
             int newID = 0;
 
-            if (currentCart != null)
+            if (currentCart != null && currentCart.Count > 0)
             {
                 newID = currentCart.Last().ID +1;
             }
@@ -218,7 +218,6 @@ namespace CakeFactoryProd.Controllers
             return View("Error");
         }
 
-        [HttpDelete]
         public IActionResult Delete(int id)
         {
             var currentCart = HttpContext.Session.GetComplexData<List<CartVM>>("_Cart");
@@ -226,7 +225,7 @@ namespace CakeFactoryProd.Controllers
 
             HttpContext.Session.SetComplexData("_Cart", newCart);
 
-            return View("Index");
+            return View("Index", newCart);
         }
     }
 }
