@@ -34,7 +34,7 @@ namespace CakeFactoryProd.ViewModels
 
         [Required(ErrorMessage = "Please select a filling")]
         public SelectList Fillings { get; set; }
-
+        public List<ToppingVM>? SelectedToppings { get; set; } = new List<ToppingVM>();
         public List<Topping>? Toppings { get; set; }
         public IpnVM IpnVM { get; internal set; }
     }

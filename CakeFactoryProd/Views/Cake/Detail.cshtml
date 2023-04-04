@@ -15,9 +15,10 @@
             }
             else
             {
-                <img src="~/images/@Model.CakeVM.CakeImage" alt="@Model.CakeVM.Name" />        
+                <img src="data:image/png;base64, @Convert.ToBase64String(Model.CakeVM.ImageCake)" alt="@Model.CakeVM.ImageName" />
+                @*<img src="~/images/@Model.CakeVM.CakeImage" alt="@Model.CakeVM.Name" />        *@
             }
-            
+
         </div>
         <div class="cake-detail-info">
             @if (Model.CakeVM.CakeId == 0)
@@ -27,7 +28,7 @@
                 <p>$50.00 - $100.00</p>
                 <h4>
                     Create the cake of your dreams with our customizable cake option. You can also add a personalized message or design to make your cake even more special.
-                    Our team of expert bakers will craft your custom cake to perfection, using only the freshest ingredients. 
+                    Our team of expert bakers will craft your custom cake to perfection, using only the freshest ingredients.
                     Whether you're celebrating a birthday, wedding, or any other occasion, our customizable cakes are sure to impress.
                     Place your order today and let us bring your cake vision to life!
                 </h4>
@@ -38,33 +39,33 @@
                 <p>$@String.Format("{0:0.00}", Model.CakeVM.Price)</p>
                 <h4>@Model.CakeVM.Description</h4>
             }
-                   
+
             <a asp-controller="Home" asp-action="Index">Back to the cakes!</a>
         </div>
     </div>
     <div class="cake-edit-container">
         <form class="cake-order-form" method="post" action="/cart">
             <input type="hidden" name="name" value="@Model.CakeVM.Name" />
-            <input type="hidden" name="description" value="@Model.CakeVM.Description "/>
+            <input type="hidden" name="description" value="@Model.CakeVM.Description " />
             <input type="hidden" name="imagePath" value="/images/emptyCake.jpg" />
 
             <div class="cake-size-shape">
-            <h2>Select a size and shape</h2>
+                <h2>Select a size and shape</h2>
 
-                
+
                 @if (Model.CakeVM.CakeId == 0)
                 {
                     <input type="hidden" name="CakeId" class="property" value="@Model.CakeVM.CakeId" />
                     <label asp-for="Sizes" class="property">Size</label>
                     @Html.DropDownListFor(model => model.Sizes, Model.Sizes, "Select a size", new { @class = "cake-sel-size" })
-                    <br/>
-                    <label asp-for="Shapes"class="property">Shape</label>
+                    <br />
+                    <label asp-for="Shapes" class="property">Shape</label>
                     @Html.DropDownListFor(model => model.Shapes, Model.Shapes, "Select a shape", new { @class = "cake-sel-shape" })
-                    <br/>
-                    <label asp-for="Fillings"class="property">Filling</label>
+                    <br />
+                    <label asp-for="Fillings" class="property">Filling</label>
                     @Html.DropDownListFor(model => model.Fillings, Model.Fillings, "Select a filling", new { @class = "cake-sel-filling" })
-                    <br/>
-                    <label asp-for="Toppings"class="property">Topping</label>
+                    <br />
+                    <label asp-for="Toppings" class="property">Topping</label>
 
                     <div class="cake-edit-topping-contianer">
                         @foreach (var topping in Model.Toppings)
@@ -78,15 +79,22 @@
 
                 else
                 {
-                    <label asp-for="@Model.CakeVM.SizeId"class="property" >Size: </label>
+                    <label asp-for="@Model.CakeVM.SizeId" class="property">Size: </label>
                     <select asp-for="@Model.CakeVM.SizeId" asp-items="@Model.Sizes" disabled name="Sizes" id="Sizes"></select>
                     <br />
-                    <label asp-for="@Model.CakeVM.ShapeId"class="property" >Shape: </label>
+                    <label asp-for="@Model.CakeVM.ShapeId" class="property">Shape: </label>
                     <select asp-for="@Model.CakeVM.ShapeId" asp-items="@Model.Shapes" disabled name="Shapes" id="Shapes"></select>
                     <br />
-                    <label asp-for="@Model.CakeVM.FillingId"class="property" >Filling: </label>
+                    <label asp-for="@Model.CakeVM.FillingId" class="property">Filling: </label>
                     <select asp-for="@Model.CakeVM.FillingId" asp-items="@Model.Fillings" disabled name="Fillings" id="Fillings"></select>
                     <br />
+                    <label asp-for="@Model.CakeVM.Toppings" class="property">Toppings: </label>
+                    <span>
+                        @foreach (var topping in Model.CakeVM.SelectedToppings)
+                        {
+                            <span class="h3">@topping.Flavor </span>
+                        }
+                    </span>
                     <input type="hidden" name="Sizes" class="property" value="@Model.CakeVM.SizeId" />
                     <input type="hidden" name="Shapes" class="property" value="@Model.CakeVM.ShapeId" />
                     <input type="hidden" name="Fillings" class="property" value="@Model.CakeVM.FillingId" />
@@ -95,25 +103,17 @@
                 }
 
             </div>
-        <div class="choco-plaque-container">
-            <h2>Custom Chocolate Plaque</h2>
-                <p>Our beautiful 3” chocolate plaques are brushed with gold dust and hand written with white chocolate. 
-                    Please keep your messages short and sweet (max. 25 characters). We do not draw emojis.
-                </p>
-            <label for="custom-plaque">Chocolate plaque with custom message (+$4.00)</label>
-            <input type="text" id="custom-message" name="custom-plaque" placeholder="Enter a message... 50 max characters" class="custom-plaque-input">
-        </div>
-        <div class="cake-pickup-date">
-            <h2>Pickup Date</h2>
+            <div class="cake-pickup-date">
+                <h2>Pickup Date</h2>
                 <input asp-for="PickupDate" type="date" id="datePicker" required>
-        </div>
-        <div class="cake-to-cart-container">
-            <h2>Quantity</h2>
-            <input type="number" min="1" max="3" placeholder="Qty" id="quantity" name="quantity-input" value="@Model.Quantity">
-            <input readonly name="total" id="total" value="@Model.CakeVM.Price"/>
-            <button type="submit">Add to Cart</button>
-        </div>
-       </form>
+            </div>
+            <div class="cake-to-cart-container">
+                <h2>Quantity</h2>
+                <input type="number" min="1" max="3" placeholder="Qty" id="quantity" name="quantity-input" value="@Model.Quantity">
+                <input readonly name="total" id="total" value="@String.Format("{0:0.00}", Model.CakeVM.Price)" />
+                <button type="submit">Add to Cart</button>
+            </div>
+        </form>
     </div>
     <div class="cake-detail-info-container">
         <h2>Important Information</h2>
@@ -136,21 +136,20 @@
     <script>
         let quantity = document.getElementById("quantity");
         let total_field = document.getElementById("total");
-        let custom_message = document.getElementById("custom-message");
 
-
-        let messageFee = 0.00;
-        function updateTotal(){
-            if (custom_message.value.length > 0){
-                messageFee = 4.00;
+        function updateTotal() {
+            const cakeID = @Model.CakeVM.CakeId
+            if (cakeID == 0) {
+                let a = @Model.CakeVM.ToppingPrice;
+                console.log(a);
+                let toppingCount = document.querySelectorAll('input[type="checkbox"]:checked').length;
+                let toppingTotal = @Model.CakeVM.ToppingPrice * toppingCount;
+                console.log("topping total : " + toppingTotal);
+                total_field.value = ((@(Model.CakeVM.Price + Model.CakeVM.ShapePrice + Model.CakeVM.FillingPrice) + toppingTotal) * quantity.value);
             }
-            let toppingCount = document.querySelectorAll('input[type="checkbox"]:checked').length;
-            let toppingTotal = @Model.CakeVM.ToppingPrice * toppingCount;
-            total_field.value = ((@(Model.CakeVM.Price + Model.CakeVM.ShapePrice + Model.CakeVM.FillingPrice) + toppingTotal) * quantity.value) + messageFee;
+            else {
+                total_field.value = (@Model.CakeVM.Price) * quantity.value
+            }
         }
-
         quantity.addEventListener("change", updateTotal);
-        custom_message.addEventListener("change", updateTotal);
-
     </script>
-
