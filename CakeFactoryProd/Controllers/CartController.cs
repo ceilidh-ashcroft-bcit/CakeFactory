@@ -63,9 +63,17 @@ namespace CakeFactoryProd.Controllers
                 Total = Decimal.Parse(pairs["total"])
             };
 
+            var currentCart = HttpContext.Session.GetComplexData<List<CartVM>>("_Cart");
+            int newID = 0;
+
+            if (currentCart != null)
+            {
+                newID = currentCart.Last().ID +1;
+            }
+
             CartVM cartVM = new CartVM()
             {
-                ID = 1,
+                ID = newID,
                 CakeVM = cakeVM,
                 OrderVM = cakeOrder
             };
@@ -117,6 +125,17 @@ namespace CakeFactoryProd.Controllers
         public IActionResult Confirmation(int orderNumber)
         {
             return View();
+        }
+
+        [HttpDelete]
+        public IActionResult Delete(int id)
+        {
+            var currentCart = HttpContext.Session.GetComplexData<List<CartVM>>("_Cart");
+            var newCart = currentCart.Except(currentCart.Where(c=> c.ID == id));
+
+            HttpContext.Session.SetComplexData("_Cart", newCart);
+
+            return View("Index");
         }
     }
 }
