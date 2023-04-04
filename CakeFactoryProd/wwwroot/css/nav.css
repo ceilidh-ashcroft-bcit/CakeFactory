@@ -16,6 +16,17 @@
     color: orange !important;
 }
 
+.nav-item button {
+    text-transform: uppercase;
+    font-size: 24px;
+    color: lightgrey;
+    margin: 0px 15px;
+}
+
+.nav-item button:hover {
+     color: orange !important;
+}
+
 
 @media (min-width: 768px) {
     .cake-logo-nav {
