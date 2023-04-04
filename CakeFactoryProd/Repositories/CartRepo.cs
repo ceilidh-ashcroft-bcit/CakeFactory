@@ -62,6 +62,7 @@ namespace CakeFactoryProd.Repositories
             {
                 CakeVM cakeVM = cartVM.CakeVM;
                 CakeOrderVM cakeOrderVM = cartVM.OrderVM;
+                ToppingsRepo toppings = new ToppingsRepo(_context);
 
                 // need to check whether Cake has Id, it means it is already in DB,
                 // otherwise need to insert it in DB
@@ -85,7 +86,8 @@ namespace CakeFactoryProd.Repositories
 
                 // need to loop through CakeHasToppings list to add
                 // a row for each occurrancy in the table CakeHasToopin
-
+                var toppingsAccepted = cakeVM.Accepted;
+                //toppings.AddCakeHasToppings(toppingsAccepted, tempCakeId);
 
                 OrderHasCake orderHasCake = new OrderHasCake()
                     {
