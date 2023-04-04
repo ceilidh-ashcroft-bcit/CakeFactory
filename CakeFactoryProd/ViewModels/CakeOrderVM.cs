@@ -28,14 +28,19 @@ namespace CakeFactoryProd.ViewModels
         public decimal Total { get; set; }
 
         [Required(ErrorMessage = "Please select a size")]
-        public SelectList Sizes { get; set; }
+
+        //public SelectList Sizes { get; set; }
+        public List<Size> Sizes { get; set; }
 
         [Required(ErrorMessage = "Please select a shape")]
-        public SelectList Shapes { get; set; }
+        //public SelectList Shapes { get; set; }
+        public List<Shape> Shapes { get; set; }
 
         [Required(ErrorMessage = "Please select a filling")]
-        public SelectList Fillings { get; set; }
-        public List<ToppingVM>? SelectedToppings { get; set; } = new List<ToppingVM>();
+        
+        //public SelectList Fillings { get; set; }
+        public List<Filling> Fillings { get; set; }
+
         public List<Topping>? Toppings { get; set; }
 
     }

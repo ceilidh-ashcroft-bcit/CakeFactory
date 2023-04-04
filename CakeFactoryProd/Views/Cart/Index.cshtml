@@ -64,6 +64,7 @@
              </td>
             <td>
                 @Html.DisplayFor(modelItem => item.OrderVM.PickupDate.Value)
+                @*format date for this info*@
             </td>
             <td>
                 <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
@@ -198,19 +199,19 @@ else
     </div>
 }
 <script>
-    let CADprice = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'CAD'
-    });
+    //let CADprice = new Intl.NumberFormat('en-US', {
+    //    style: 'currency',
+    //    currency: 'CAD'
+    //});
 
     let prices = document.querySelectorAll(".total");
     let totalPrice = 0.00;
     const cartTotal = document.getElementById("purchase-total");
-
+    console.log("cartTotal: ", cartTotal);
     prices.forEach((price)=> {
         decimalPrice = parseFloat(price.innerText)
         totalPrice += decimalPrice;
     })
 
-    cartTotal.innerHTML = CADprice.format(totalPrice)
+    cartTotal.innerHTML = totalPrice;
 </script>

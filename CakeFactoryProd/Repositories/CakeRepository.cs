@@ -73,9 +73,14 @@ namespace CakeFactoryProd.Repositories
                     Price = cake.Price,
                     SelectedToppings = toppings
                 },
-                Shapes = new SelectList(shapes, "Id", "Value"),
-                Sizes = new SelectList(sizes, "Id", "Value"),
-                Fillings = new SelectList(fillings, "Id", "Flavor"),
+                //Shapes = new SelectList(shapes, "Id", "Value"), ////////
+                //Sizes = new SelectList(sizes, "Id", "Value"),
+                //Fillings = new SelectList(fillings, "Id", "Flavor"),
+                Shapes = _context.Shapes.ToList(),
+                Sizes = _context.Sizes.ToList(),
+                Fillings = _context.Fillings.ToList(),
+                
+                Toppings = _context.Toppings.ToList(),
 
                 PickupDate = order.PickupDate,
                 Quantity = orderHasCake.Quantity,
@@ -135,14 +140,15 @@ namespace CakeFactoryProd.Repositories
 
         public CakeOrderVM GetCustomCake()
         {
+            // FIGUREOUT HOW TO PASS THE PRICEFACTORS IN HERE
             Cake cake = new Cake();
             Order order = new Order();
             OrderHasCake orderHasCake = new OrderHasCake();
 
-            List<Shape> shapes = _context.Shapes.ToList();
-            List<Size> sizes = _context.Sizes.ToList();
-            List<Filling> fillings = _context.Fillings.ToList();
-            List<Topping> toppings = _context.Toppings.ToList();
+            //List<Shape> shapes = _context.Shapes.ToList();
+            //List<Size> sizes = _context.Sizes.ToList();
+            //List<Filling> fillings = _context.Fillings.ToList();
+            //List<Topping> toppings = _context.Toppings.ToList();
 
             return new CakeOrderVM
             {
@@ -160,11 +166,15 @@ namespace CakeFactoryProd.Repositories
 
                 PickupDate = order.PickupDate,
 
-                Shapes = new SelectList(shapes, "Id", "Value"),
-                Sizes = new SelectList(sizes, "Id", "Value"),
-                Fillings = new SelectList(fillings, "Id", "Flavor"),
+                //Shapes = new SelectList(shapes, "Id", "Value", "CakeBasicPrice"),
+                //Shapes = new SelectList(shapes, "Id", "Value"),
+                //Sizes = new SelectList(sizes, "Id", "Value"),
+                //Fillings = new SelectList(fillings, "Id", "Flavor"),
+                Shapes = _context.Shapes.ToList(),
+                Sizes = _context.Sizes.ToList(),
+                Fillings = _context.Fillings.ToList(),
 
-                Toppings = toppings,
+                Toppings = _context.Toppings.ToList(),
                 Quantity = orderHasCake.Quantity,
             };
         }
