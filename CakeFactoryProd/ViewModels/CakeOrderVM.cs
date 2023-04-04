@@ -36,6 +36,6 @@ namespace CakeFactoryProd.ViewModels
         public SelectList Fillings { get; set; }
 
         public List<Topping>? Toppings { get; set; }
-
+        public IpnVM IpnVM { get; internal set; }
     }
 }
