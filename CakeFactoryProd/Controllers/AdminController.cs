@@ -9,9 +9,10 @@ using CakeFactoryProd.Utilities;
 
 namespace CakeFactoryProd.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
-        //[Authorize(Roles = "Admin")]
+        
         public AdminController(CakeFactoryContext context)
         {
             _context = context;
