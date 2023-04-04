@@ -36,6 +36,6 @@ namespace CakeFactoryProd.ViewModels
         public List<ToppingVM>? SelectedToppings { get; set; } = new List<ToppingVM>();
         public int[] Accepted { get; set; }
         public string? ToppingList { get; set; }
-        public decimal ToppingPrice { get; set; } = 1.00m;
+        /*public decimal ToppingPrice { get; set; } = 1.00m;*/
     }
 }
