@@ -95,14 +95,6 @@
                 }
 
             </div>
-        <div class="choco-plaque-container">
-            <h2>Custom Chocolate Plaque</h2>
-                <p>Our beautiful 3” chocolate plaques are brushed with gold dust and hand written with white chocolate. 
-                    Please keep your messages short and sweet (max. 25 characters). We do not draw emojis.
-                </p>
-            <label for="custom-plaque">Chocolate plaque with custom message (+$4.00)</label>
-            <input type="text" id="custom-message" name="custom-plaque" placeholder="Enter a message... 50 max characters" class="custom-plaque-input">
-        </div>
         <div class="cake-pickup-date">
             <h2>Pickup Date</h2>
                 <input asp-for="PickupDate" type="date" id="datePicker" required>
@@ -136,17 +128,18 @@
     <script>
         let quantity = document.getElementById("quantity");
         let total_field = document.getElementById("total");
-        let custom_message = document.getElementById("custom-message");
 
 
-        let messageFee = 0.00;
         function updateTotal(){
-            if (custom_message.value.length > 0){
-                messageFee = 4.00;
+            const cakeID = @Model.CakeVM.CakeId
+            if (cakeID == 0){
+                let toppingCount = document.querySelectorAll('input[type="checkbox"]:checked').length;
+                let toppingTotal = @Model.CakeVM.ToppingPrice * toppingCount;
+                total_field.value = ((@(Model.CakeVM.Price + Model.CakeVM.ShapePrice + Model.CakeVM.FillingPrice) + toppingTotal) * quantity.value);
             }
-            let toppingCount = document.querySelectorAll('input[type="checkbox"]:checked').length;
-            let toppingTotal = @Model.CakeVM.ToppingPrice * toppingCount;
-            total_field.value = ((@(Model.CakeVM.Price + Model.CakeVM.ShapePrice + Model.CakeVM.FillingPrice) + toppingTotal) * quantity.value) + messageFee;
+            else {
+                total_field.value = (@Model.CakeVM.Price) * quantity.value
+            }
         }
 
         quantity.addEventListener("change", updateTotal);
