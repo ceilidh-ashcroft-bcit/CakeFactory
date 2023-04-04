@@ -26,7 +26,7 @@ namespace CakeFactoryProd.Controllers
                 User user = userRepo.GetUserByEmail(User.Identity.Name);
                 try
                 {
-                    HttpContext.Session.SetString("Preffered Name", user.PreferredName);
+                    HttpContext.Session.SetString("Preffered Name", user?.PreferredName ?? "Friend");
                 } catch
                 {
                     HttpContext.Session.SetString("Preffered Name", "Friend");

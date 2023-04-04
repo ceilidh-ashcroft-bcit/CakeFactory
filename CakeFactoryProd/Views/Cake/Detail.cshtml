@@ -54,6 +54,7 @@
                 
                 @if (Model.CakeVM.CakeId == 0)
                 {
+                    <input type="hidden" name="CakeId" class="property" value="@Model.CakeVM.CakeId" />
                     <label asp-for="Sizes" class="property">Size</label>
                     @Html.DropDownListFor(model => model.Sizes, Model.Sizes, "Select a size", new { @class = "cake-sel-size" })
                     <br/>
@@ -90,6 +91,7 @@
                     <input type="hidden" name="Shapes" class="property" value="@Model.CakeVM.ShapeId" />
                     <input type="hidden" name="Fillings" class="property" value="@Model.CakeVM.FillingId" />
                     <input type="hidden" name="Toppings" class="property" value="@Model.CakeVM.ToppingId" />
+                    <input type="hidden" name="CakeId" class="property" value="@Model.CakeVM.CakeId" />
                 }
 
             </div>

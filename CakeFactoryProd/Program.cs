@@ -2,12 +2,14 @@ using CakeFactoryProd.Data;
 using CakeFactoryProd.Data.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using SendGrid;
 using System.Drawing;
 
 
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
+
 var connectionString = builder.Configuration["ConnectionStrings:DefaultConnection"];
 //builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDbContext<CakeFactoryContext>(options =>
@@ -23,6 +25,7 @@ builder.Services.AddTransient<IEmailService, EmailService>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
+
 
 var app = builder.Build();
 

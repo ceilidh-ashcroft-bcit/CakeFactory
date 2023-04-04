@@ -4,6 +4,8 @@ using CakeFactoryProd.Repositories;
 using CakeFactoryProd.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using CakeFactoryProd.Utilities;
 
 namespace CakeFactoryProd.Controllers
 {
@@ -17,13 +19,55 @@ namespace CakeFactoryProd.Controllers
 
         private readonly CakeFactoryContext _context;
 
-        public IActionResult Index()
+        public IActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
             CakeOrderRepository cakeOrderRepo = new CakeOrderRepository(_context);
 
-            List<AdminOrderVM> adminOrderVM = cakeOrderRepo.GetAllCakeOrders();
-      
-            return View(adminOrderVM);
+            IQueryable<AdminOrderVM> adminOrderVM = cakeOrderRepo.GetAllAdminCakeOrders().AsQueryable();
+
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                adminOrderVM = adminOrderVM.Where(x => x.UserVM.PrefferedName.Contains(searchString));
+                
+            }
+
+            if (string.IsNullOrEmpty(sortOrder))
+            {
+                ViewData["OrderSortParm"] = "PickupDate";
+            }
+            else
+            {
+                ViewData["OrderSortParm"] = sortOrder == "PickupDate" ?
+                                                        "Pickup_desc" : "PickupDate";
+            }
+
+            switch (sortOrder)
+            {
+                case "PickupDate":
+                    adminOrderVM = adminOrderVM.OrderByDescending(c => c.CakeOrderVM.PickupDate);
+                    break;
+                case "Pickup_desc":
+                    adminOrderVM = adminOrderVM.OrderBy(p => p.CakeOrderVM.PickupDate);
+                    break;
+                default:
+                    adminOrderVM = adminOrderVM.OrderByDescending(c => c.CakeOrderVM.PickupDate);
+                    break;
+            }
+
+            int pageSize = 10;
+            return View(PaginatedList<AdminOrderVM>.Create(adminOrderVM.AsNoTracking(), page ?? 1, pageSize));
+
         }
 
         public IActionResult Cakes()
@@ -41,13 +85,63 @@ namespace CakeFactoryProd.Controllers
             };
             return View(cakeEditVm);
         }
-        public IActionResult Users()
+        public IActionResult Users(string sortOrder, string currentFilter, string searchString, int? page)
         {
             //var email = User.Identity.Name;
 
+            // searching
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+
             UserRepository userRepository = new UserRepository(_context);
-            var users = userRepository.GetAllUsers();
-            return View(users);
+            IQueryable<UserVM> userVM = userRepository.GetAllUsers().AsQueryable();
+            // var users = userRepository.GetAllUsers();
+
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                userVM = userVM.Where(x => x.UserName.ToUpper().Contains(searchString.ToUpper()));
+
+            }
+
+
+
+            // Sorting on Email
+
+            if (string.IsNullOrEmpty(sortOrder))
+            {
+                ViewData["EmailSortParm"] = "Email";
+            }
+            else
+            {
+                ViewData["EmailSortParm"] = sortOrder == "Email" ?
+                                                        "Email_desc" : "Email";
+            }
+
+            switch (sortOrder)
+            {
+                case "Email":
+                    userVM = userVM.OrderByDescending(u => u.Email);
+                    break;
+                case "Email_desc":
+                    userVM = userVM.OrderBy(u => u.Email);
+                    break;
+                default:
+                    userVM = userVM.OrderByDescending(u => u.Email);
+                    break;
+            }
+
+            int pageSize = 10;
+            return View(PaginatedList<UserVM>.Create(userVM.AsNoTracking(), page ?? 1, pageSize));
+
         }
         public IActionResult Sales()
         {

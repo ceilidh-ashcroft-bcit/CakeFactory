@@ -1,0 +1,47 @@
+﻿@model CakeFactoryProd.ViewModels.CakeVM;
+
+
+@{
+    ViewData["Title"] = "Admin Cake Detail";
+}
+
+
+<div class="cake-detail-container">
+    <div class="cake-detail-top">
+        <div class="cake-detail-image">
+            @if (Model.ImageName != null)
+            {
+                <span asp-for="ImageName"></span>
+                <img style="max-width: 350px; max-height: 350px" src="data:image/png;base64, @Convert.ToBase64String(Model.ImageCake)" alt="@Model.ImageName" />
+            }else{
+            <img src="~/images/emptyCake.jpg" alt="TEST-IMAGE-PLACEHOLDER" />
+            }
+        </div>
+        <div class="cake-detail-info">
+            <h2>@Model.Name</h2>
+            <p>$@String.Format("{0:0.00}", Model.Price)</p>
+            <h5>@Model.Description</h5>
+            <br />
+            <h5>Size: @Model.Size</h5>
+            <br />
+            <h5>Shape: @Model.Shape</h5>
+            <br />
+            <h5>Filling: @Model.Filling</h5>
+            <br />
+            <div class="cake-edit-topping-contianer">
+                <h5> Toppings : 
+                @foreach (var topping in Model.SelectedToppings)
+                {
+                    <span>@topping.Flavor </span>
+                }
+                </h5>
+            </div>
+            <br />
+            <h5>IsActive: @Model.IsActive</h5>
+            <br />
+
+            <a asp-controller="Admin" asp-action="Cakes">Back to the list</a>
+        </div>
+    </div>
+
+    <script src="~/js/site.js"></script>

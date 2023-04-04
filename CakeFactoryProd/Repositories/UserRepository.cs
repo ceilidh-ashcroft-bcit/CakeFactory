@@ -9,6 +9,8 @@ namespace CakeFactoryProd.Repositories
     public class UserRepository
     {
         CakeFactoryContext _context;
+        private IServiceProvider _serviceProvider;
+
 
         public UserRepository(CakeFactoryContext context)
         {
@@ -35,7 +37,7 @@ namespace CakeFactoryProd.Repositories
         {
             List<User> users = _context.Users.ToList();
             //.Where(u => u.Email == email).FirstOrDefault();
-            User user = users.Where(u => u.Email == email).FirstOrDefault();
+            User user = users.Where(u => u.Email == email).FirstOrDefault()!;
 
             return user;
         }
@@ -72,10 +74,23 @@ namespace CakeFactoryProd.Repositories
             return "";
         }
 
-        public List<User> GetAllUsers()
+        //public List<User> GetAllUsers()
+        //{
+        //    var users = _context.Users.ToList();
+        //    return users;
+        //}
+
+        public List<UserVM> GetAllUsers()
         {
             var users = _context.Users.ToList();
-            return users;
+            var userVMs = users.Select(u => new UserVM
+            {
+                UserId = u.Id,
+                UserName = u.Name,
+                PhoneNumber= u.PhoneNumber,
+                Email = u.Email
+            }).ToList();
+            return userVMs;
         }
 
         public void DeleteUser(int id)
@@ -100,5 +115,7 @@ namespace CakeFactoryProd.Repositories
 
             return userRoleVM;
         }
+
+        
     }
 }

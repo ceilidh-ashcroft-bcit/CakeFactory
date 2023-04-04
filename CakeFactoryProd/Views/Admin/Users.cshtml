@@ -1,4 +1,7 @@
-﻿@model IEnumerable<CakeFactoryProd.Models.User>
+﻿
+@using CakeFactoryProd.Utilities
+@model PaginatedList<UserVM>
+@using CakeFactoryProd.ViewModels
 
 @{
     ViewData["Title"] = "Users";
@@ -8,37 +11,36 @@
 
 <h1>Users</h1>
 
-@*<p>
-    <a asp-controller = "User" asp-action="CreateUserByAdmin">Create New</a>
-</p>*@
-@*<p style="align-content:">
-    <form method="get" action="@Url.Action("Search", "User")">
-        <input type="text" name="query" placeholder="Search...">
-        <button type="submit">Search</button>
-    </form>
-</p>*@
+<form asp-action="Users" method="get">
+    <div class="form-row">
+        <div class="">
+            <label for="SearchString">Search on Name:</label>
+            <div class="input-group">
+                <input type="text" name="SearchString" id="SearchString"
+                       value="@ViewData["currentFilter"]" class="form-control mr-2" required />
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary ml-1">Search</button>
+                    <a asp-action="Users" class="btn btn-secondary">Reset</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 <table class="table">
     <thead>
         <tr>
 
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
+            <th>Id</th>
          
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
+            <th>User Name</th>
           
-            <th>
-                @Html.DisplayNameFor(model => model.PhoneNumber)
+            <th>PhoneNumber</th>
+
+           <th>
+                <a asp-action="Users" asp-route-sortOrder="@ViewData["EmailSortParm"]">Email</a>
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-        @*    <th>
-                @Html.DisplayNameFor(model => model.PreferredName)
-            </th>
-            <th>
+
+            @*<th>
                 @Html.DisplayNameFor(model => model.IsActive)
             </th>*@
             <th></th>
@@ -53,31 +55,48 @@
             }*@
         <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Id)
+                    @Html.DisplayFor(modelItem => item.UserId)
                 </td>
            
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                    @Html.DisplayFor(modelItem => item.UserName)
             </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.PhoneNumber)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Email)
+         
                 </td>
         @*    <td>
-                @Html.DisplayFor(modelItem => item.PreferredName)
-            </td>
-           
-            <td>
                 @Html.DisplayFor(modelItem => item.IsActive)
             </td>*@
             <td>
-                    <a asp-controller="User" asp-action="EditUserByAdmin" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-controller="User" asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-controller="User" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-controller="User" asp-action="EditUserByAdmin" asp-route-id="@item.UserId">Edit</a> |
+                    <a asp-controller="User" asp-action="Details" asp-route-id="@item.UserId">Details</a> 
+                   @* <a asp-controller="User" asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Users"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Users"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
