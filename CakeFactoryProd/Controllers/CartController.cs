@@ -60,7 +60,7 @@ namespace CakeFactoryProd.Controllers
                 Filling = properties["Filling"],
                 ToppingList = (pairs["Toppings"]),
                 Name = pairs["name"],
-                ImageName = pairs["ImageName"],
+                ImageName = pairs["imagePath"],
                 Description = pairs["description"]
             };
 

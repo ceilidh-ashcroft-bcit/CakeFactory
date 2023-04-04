@@ -11,10 +11,12 @@
         <div class="cake-detail-image">
             @if (Model.CakeVM.CakeId == 0)
             {
-                <img src="~/images/emptyCake.jpg" alt="TEST-IMAGE-PLACEHOLDER" />
+                <img src="~/images/emptyCake.jpg" id = "cake-image" alt="TEST-IMAGE-PLACEHOLDER" />
             }
             else
             {
+                <img src="data:image/png;base64, @Convert.ToBase64String(Model.CakeVM.ImageCake)" id="cake-image" alt="@Model.CakeVM.ImageName" />
+                @*<img src="~/images/@Model.CakeVM.CakeImage" alt="@Model.CakeVM.Name" />        *@
                 <img src="data:image/png;base64, @Convert.ToBase64String(Model.CakeVM.ImageCake)" alt="@Model.CakeVM.ImageName" />
                 @*<img src="~/images/@Model.CakeVM.CakeImage" alt="@Model.CakeVM.Name" />        *@
             }
@@ -46,6 +48,8 @@
     <div class="cake-edit-container">
         <form class="cake-order-form" method="post" action="/cart">
             <input type="hidden" name="name" value="@Model.CakeVM.Name" />
+            <input type="hidden" name="description" value="@Model.CakeVM.Description " />
+            <input type="hidden" id = "imagePath" name="imagePath" />
             <input type="hidden" name="description" value="@Model.CakeVM.Description " />
             <input type="hidden" name="imagePath" value="/images/emptyCake.jpg" />
 
@@ -136,6 +140,8 @@
     <script>
         let quantity = document.getElementById("quantity");
         let total_field = document.getElementById("total");
+        let image_field = document.getElementById("imagePath");
+        let cake_image = document.getElementById("cake-image")
 
         function updateTotal() {
             const cakeID = @Model.CakeVM.CakeId
@@ -152,6 +158,8 @@
             }
         }
         quantity.addEventListener("change", updateTotal);
+        image_field.value = cake_image.src;
+
 
 
         ///script for date
