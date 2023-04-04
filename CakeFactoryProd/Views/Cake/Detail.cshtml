@@ -60,8 +60,8 @@
                 {
                     <input type="hidden" name="CakeId" class="property" value="@Model.CakeVM.CakeId" />
                     <label asp-for="Sizes" class="property">Size</label>
-                    <select name="sizeDDM" class="form-control cake-sel-size"
-                        onchange="updateTotal(this)">
+                    <select name="Sizes" class="form-control cake-sel-size"
+                        id="Sizes" onchange="updateTotal(this)">
                         @foreach (var item in Model.Sizes)
                         {
                             <option value="@item.Id"
@@ -74,8 +74,8 @@
                     <br/>
 
                     <label asp-for="Shapes"class="property">Shape</label>
-                    <select name="shapeDDM" class="form-control cake-sel-size" 
-                        id="tshape" onchange="updateTotal(this)">
+                    <select name="Shapes" class="form-control cake-sel-size" 
+                        id="Shapes" onchange="updateTotal(this)">
                         @foreach (var item in Model.Shapes)
                         {
                             <option 
@@ -89,8 +89,8 @@
                     </select>
                     <br/>
                     <label asp-for="Fillings"class="property">Filling</label>
-                    <select name="fillingDDM" class="form-control cake-sel-size"
-                        onchange="updateTotal(this)">
+                    <select name="Fillings" class="form-control cake-sel-size"
+                        id="Fillings" onchange="updateTotal(this)">
                         @foreach (var item in Model.Fillings)
                         {
                             <option value="@item.Id"
@@ -118,13 +118,38 @@
                 else
                 {
                     <label asp-for="@Model.CakeVM.SizeId"class="property" >Size: </label>
-                    @*<select asp-for="@Model.CakeVM.SizeId" asp-items="@Model.Sizes" disabled name="Sizes" id="Sizes"></select>*@
+                    <select name="Sizes" class="form-control cake-sel-size"
+                        id="Sizes" onchange="updateTotal(this)" disabled>
+                        @foreach (var item in Model.Sizes)
+                        {
+                            <option value="@item.Id"
+                            >
+                                    @item.Value
+                            </option>
+                        }
+                    </select>
                     <br />
                     <label asp-for="@Model.CakeVM.ShapeId"class="property" >Shape: </label>
-                    //<select asp-for="@Model.CakeVM.ShapeId" asp-items="@Model.Shapes" disabled name="Shapes" id="Shapes"></select>
+                    <select name="Shapes" class="form-control cake-sel-size"
+                        id="Shapes" onchange="updateTotal(this)" disabled>
+                        @foreach (var item in Model.Shapes)
+                        {
+                            <option value="@item.Id">
+                                @item.Value
+                            </option>
+                        }
+                    </select>
                     <br />
                     <label asp-for="@Model.CakeVM.FillingId"class="property" >Filling: </label>
-                    @*<select asp-for="@Model.CakeVM.FillingId" asp-items="@Model.Fillings" disabled name="Fillings" id="Fillings"></select>*@
+                    <select name="Fillings" class="form-control cake-sel-size"
+                        id="Fillings" onchange="updateTotal(this)" disabled>
+                        @foreach (var item in Model.Fillings)
+                        {
+                            <option value="@item.Id">
+                                @item.Flavor
+                            </option>
+                        }
+                    </select>
                     <br />
                     <label asp-for="@Model.CakeVM.Toppings" class="property">Toppings: </label>
                     <span>
@@ -148,7 +173,6 @@
         <div class="cake-to-cart-container">
             <h2>Quantity</h2>
             <input type="number" min="1" max="3" placeholder="Qty" id="quantity" name="quantity-input" value="@Model.Quantity">
-                @*<input readonly name="total" id="total" value="@Model.CakeVM.Price" />*@
                 <input readonly name="total" id="total" value="@Model.CakeVM.Price" />
             <button type="submit">Add to Cart</button>
         </div>
@@ -173,22 +197,24 @@
     </div>
 
     <script>
+        console.log("hereeeeeeeeeee");
         let quantity = document.getElementById("quantity");
         let total_field = document.getElementById("total");
-        let custom_message = document.getElementById("custom-message");
         let basicPrice = 0;
         let fillingFactor = 0;
         let shapeFactor = 0;
         let additionals = 0;
         let temp = 0;
-
         let messageFee = 0.00;
-        function updateTotal(el){
+        function updateTotal(el) 
+        {
+            console.log("updatetotal: ", el);
             const dataArray = Array.from(el);
             const value = el.value;
             const cakePropName = dataArray[value - 1].attributes[2].value;
             const cakePropValue = dataArray[value - 1].attributes[1].value;
-            
+            console.log("updatetotal: ", value, cakePropName, cakePropValue);
+
             if (cakePropName == "size") {
                 basicPrice = cakePropValue;
                 console.log("basicPrice: ", basicPrice);
@@ -202,14 +228,22 @@
 
             let toppingCount = document.querySelectorAll('input[type="checkbox"]:checked').length;
             let toppingTotal = @Model.CakeVM.ToppingPrice * toppingCount;
-            //total_field.value = ((@(Model.CakeVM.Price + Model.CakeVM.ShapePrice + Model.CakeVM.FillingPrice) + toppingTotal) * quantity.value) + messageFee;
+            total_field.value = ((@(Model.CakeVM.Price + Model.CakeVM.ShapePrice + Model.CakeVM.FillingPrice) + toppingTotal) * quantity.value) + messageFee;
             
             additionals = basicPrice * ((shapeFactor + fillingFactor) / 100);
             temp = Number(basicPrice) + Number(additionals);
             total_field.value = temp.toFixed(2);
         }
 
-            // Check if the day falls on a Wednesday through Sunday
+        var currentDate = new Date();
+        for (var i = 0; i < 30; i++) {
+            var nextDate = new Date(currentDate);
+            nextDate.setDate(currentDate.getDate() + i);
+            // Skip over Monday and Tuesday
+            if (nextDate.getDay() == 1 || nextDate.getDay() == 2) {
+                continue;
+            }
+             //Check if the day falls on a Wednesday through Sunday
             if (nextDate.getDay() >= 3 && nextDate.getDay() <= 6) {
                 var maxDate = nextDate.toISOString().slice(0, 10);
 

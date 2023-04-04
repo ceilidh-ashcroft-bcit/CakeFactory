@@ -80,7 +80,7 @@ namespace CakeFactoryProd.Repositories
                 Sizes = _context.Sizes.ToList(),
                 Fillings = _context.Fillings.ToList(),
                 
-                Toppings = toppings,
+                Toppings = _context.Toppings.ToList(),
 
                 PickupDate = order.PickupDate,
                 Quantity = orderHasCake.Quantity,
