@@ -57,29 +57,28 @@
                 {
                     <input type="hidden" name="CakeId" class="property" value="@Model.CakeVM.CakeId" />
                     <label asp-for="Sizes" class="property">Size</label>
-                    @Html.DropDownListFor(model => model.Sizes, Model.Sizes, "Select a size",
-                        new { @class = "cake-sel-size",
-                        onchange = "updateTotal('size', this.value, temp)" })
-                    @*@Html.DropDownList("myDropdown", Model.Sizes, "Select an Option",
-                        new { @class = "cake-sel-sizes", onchange = "updateTotal('size', this.value)" })*@
-                    //@Html.DropDownList("myDropdown", 
-                    //    new SelectList(Model.Sizes, "Value", "Text",
-                    //    new { @class = "form-control cake-sel-sizes", onchange = "updateTotal('size', this.value)" }))
+                    <select name="sizeDDM" class="form-control cake-sel-size"
+                        onchange="updateTotal(this)">
+                        @foreach (var item in Model.Sizes)
+                        {
+                            <option value="@item.Id"
+                            data-price="@item.CakeBasicPrice"
+                            data-prop="size">
+                                @item.Value
+                            </option>
+                        }
+                    </select>
                     <br/>
 
                     <label asp-for="Shapes"class="property">Shape</label>
-                    //@Html.DropDownListFor(model => model.Fillings, Model.Fillings, "Select a filling",
-                    //    new { @class = "cake-sel-size", onchange = "updateTotal('filling', this.value)"  })
-                    //@Html.DropDownListFor(model => new SelectList(model.Shapes, "Id", "Value"), Model.Shapes, "Select a shape",
-                    //    new { @class = "cake-sel-size", onchange = "updateTotal('shape', this.value)"  })
                     <select name="shapeDDM" class="form-control cake-sel-size" 
                         id="tshape" onchange="updateTotal(this)">
                         @foreach (var item in Model.Shapes)
                         {
                             <option 
                                 value="@item.Id" 
-                                data-price="@item.PriceFactor" 
-                                class="shape-option"
+                                data-price="@item.PriceFactor"
+                                data-prop="shape"
                             >
                                 @item.Value
                             </option>
@@ -87,9 +86,20 @@
                     </select>
                     <br/>
                     <label asp-for="Fillings"class="property">Filling</label>
-                    @Html.DropDownListFor(model => model.Fillings, Model.Fillings, "Select a filling",
-                        new { @class = "cake-sel-size", onchange = "updateTotal('filling', this.value)"  })
+                    <select name="fillingDDM" class="form-control cake-sel-size"
+                        onchange="updateTotal(this)">
+                        @foreach (var item in Model.Fillings)
+                        {
+                            <option value="@item.Id"
+                            data-price="@item.PriceFactor"
+                            data-prop="filling">
+                                @item.Flavor
+                            </option>
+                        }
+                    </select>
                     <br/>
+
+
                     <label asp-for="Toppings"class="property">Topping</label>
 
                     <div class="cake-edit-topping-contianer">
@@ -105,13 +115,13 @@
                 else
                 {
                     <label asp-for="@Model.CakeVM.SizeId"class="property" >Size: </label>
-                    <select asp-for="@Model.CakeVM.SizeId" asp-items="@Model.Sizes" disabled name="Sizes" id="Sizes"></select>
+                    @*<select asp-for="@Model.CakeVM.SizeId" asp-items="@Model.Sizes" disabled name="Sizes" id="Sizes"></select>*@
                     <br />
                     <label asp-for="@Model.CakeVM.ShapeId"class="property" >Shape: </label>
                     //<select asp-for="@Model.CakeVM.ShapeId" asp-items="@Model.Shapes" disabled name="Shapes" id="Shapes"></select>
                     <br />
                     <label asp-for="@Model.CakeVM.FillingId"class="property" >Filling: </label>
-                    <select asp-for="@Model.CakeVM.FillingId" asp-items="@Model.Fillings" disabled name="Fillings" id="Fillings"></select>
+                    @*<select asp-for="@Model.CakeVM.FillingId" asp-items="@Model.Fillings" disabled name="Fillings" id="Fillings"></select>*@
                     <br />
                     <input type="hidden" name="Sizes" class="property" value="@Model.CakeVM.SizeId" />
                     <input type="hidden" name="Shapes" class="property" value="@Model.CakeVM.ShapeId" />
@@ -164,57 +174,41 @@
         let quantity = document.getElementById("quantity");
         let total_field = document.getElementById("total");
         let custom_message = document.getElementById("custom-message");
-        let shape = document.getElementById("tshape");
-        console.log("shape::: ", shape);
+        let basicPrice = 0;
+        let fillingFactor = 0;
+        let shapeFactor = 0;
+        let additionals = 0;
+        let temp = 0;
 
         let messageFee = 0.00;
         function updateTotal(el){
-            const cakeProp = "";
-            //console.log("--- ", $(this).attr("data-price"));
+            const dataArray = Array.from(el);
+            const value = el.value;
+            const cakePropName = dataArray[value - 1].attributes[2].value;
+            const cakePropValue = dataArray[value - 1].attributes[1].value;
             
-                var value = el.value;
-            //var price1 = el.getAttribute("data-price");
-            //var price2 = el.getAttribute("price");
-            //var price3 = el.dataset.price;
-            const t = Array.from(el);
-            //console.log("ttt", t[4].attributes[1].value);
-            console.log("factorPrice: ", t[value - 1].attributes[1].value);
-            //var price4 = el.find("option:selected").text();
-            console.log("------- ", value, el);
-            //const qaz = document.querySelector("#tshape");
-            //console.log("==== " , qaz);
-            //if (custom_message.value.length > 0){
-            //    messageFee = 4.00;
-            //}
-            let basicPrice = 0;
-            let shapeFactor = 0;
-            let fillingFactor = 0;
-            if (cakeProp == "size") {
+            if (cakePropName == "size") {
+                basicPrice = cakePropValue;
                 console.log("basicPrice: ", basicPrice);
-            } 
-            //else if (cakeProp == "filling"){
-            //    console.log("filling");
-            //} else if (cakeProp == "shape"){
-            //    console.log("shape");
-            //}
+            } else if (cakePropName == "filling"){
+                fillingFactor = cakePropValue;
+                console.log("filling", cakePropName, cakePropValue);
+            } else if (cakePropName == "shape"){
+                shapeFactor = cakePropValue;
+                console.log("shape!!!!!!!!!!!!!!!!!", cakePropName, cakePropValue, shapeFactor);
+            }
+
             let toppingCount = document.querySelectorAll('input[type="checkbox"]:checked').length;
             let toppingTotal = @Model.CakeVM.ToppingPrice * toppingCount;
-            total_field.value = ((@(Model.CakeVM.Price + Model.CakeVM.ShapePrice + Model.CakeVM.FillingPrice) + toppingTotal) * quantity.value) + messageFee;
+            //total_field.value = ((@(Model.CakeVM.Price + Model.CakeVM.ShapePrice + Model.CakeVM.FillingPrice) + toppingTotal) * quantity.value) + messageFee;
             
-            const additionals = basicPrice * ((shapeFactor + fillingFactor) / 100);
-            total_field.value = basicPrice + additionals;
+            additionals = basicPrice * ((shapeFactor + fillingFactor) / 100);
+            temp = Number(basicPrice) + Number(additionals);
+            total_field.value = temp.toFixed(2);
         }
 
         quantity.addEventListener("change", updateTotal);
         //shape.addEventListener("change", updateTotal);
 
-        //custom_message.addEventListener("change", updateTotal);
-
-        //$(document).ready(function(){
-        //    $(".shape-option").on("click", function() {
-        //        console.log("firing updateTotal");
-        //        updateTotal();
-        //    });
-        //})
     </script>
 
