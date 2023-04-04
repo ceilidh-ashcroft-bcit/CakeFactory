@@ -264,7 +264,7 @@ namespace CakeFactoryProd.Repositories
         //    _context.SaveChanges();
         //}  
         
-        public List<Order> GetAllOrders(int id)
+        public List<CakeOrderVM> GetAllOrders(int id)
         {
 
             var query = from c in _context.Cakes
