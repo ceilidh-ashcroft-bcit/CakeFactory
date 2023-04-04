@@ -9,8 +9,8 @@
 
 <h4>CakeUpdateVM</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="row justify-content-around">
+    <div class="col-md-5">
         <form asp-action="Edit" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="CakeId" />
@@ -28,7 +28,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
-                <textarea asp-for="Description" rows="5" cols="40" 
+                <textarea asp-for="Description" rows="5" cols="45" 
                           name="Description" class="control-label"
                           data-val-required="The Description field is required."
                           data-val-maxlength-max="500"
@@ -39,10 +39,10 @@
             @if(Model.ImageName != null)
             {
                 <span asp-for="ImageName"></span>
-                <img style="max-width: 350px;" src="data:image/png;base64, @Convert.ToBase64String(Model.ImageCake)" alt="@Model.ImageName" />
+                <img style="max-width: 350px; margin-bottom: 5px;" src="data:image/png;base64, @Convert.ToBase64String(Model.ImageCake)" alt="@Model.ImageName" />
             }
-
-            <button id="changeImage" class="btn btn-primary mr-1">Change Image </button>
+            <br />
+            <button id="changeImage" class="btn btn-primary mr-3">Change Image </button>
             <br />
             <div id="selectImage" class="form-group" style="display: none;">
                 <input asp-for="CakeImage" class="form-control" />

@@ -22,7 +22,8 @@
     {
        <a asp-controller="Cake" asp-action="Detail" asp-route-id="@cake.Id" class="cake-item">             
         <div class="cake-image">
-            <img src="~/images/@cake.ImageName" alt="@cake.Name">
+            <img src="data:image/png;base64, @Convert.ToBase64String(cake.ImageCake)" alt="@cake.ImageName" />
+
         </div>
         <div class="cake-contents">
             <h2 class="cake-name">@cake.Name</h2>

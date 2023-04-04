@@ -144,10 +144,10 @@ namespace CakeFactoryProd.Controllers
             return View(PaginatedList<UserVM>.Create(userVM.AsNoTracking(), page ?? 1, pageSize));
 
         }
-        public IActionResult Sales()
+/*        public IActionResult Sales()
         {
 
             return View();
-        }
+        }*/
     }
 }
