@@ -9,9 +9,10 @@ using CakeFactoryProd.Utilities;
 
 namespace CakeFactoryProd.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
-        //[Authorize(Roles = "Admin")]
+        
         public AdminController(CakeFactoryContext context)
         {
             _context = context;
@@ -143,10 +144,10 @@ namespace CakeFactoryProd.Controllers
             return View(PaginatedList<UserVM>.Create(userVM.AsNoTracking(), page ?? 1, pageSize));
 
         }
-        public IActionResult Sales()
+/*        public IActionResult Sales()
         {
 
             return View();
-        }
+        }*/
     }
 }

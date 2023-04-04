@@ -60,7 +60,7 @@ namespace CakeFactoryProd.Controllers
                 Filling = properties["Filling"],
                 ToppingList = (pairs["Toppings"]),
                 Name = pairs["name"],
-                ImageName = pairs["ImageName"],
+                ImageName = pairs["imagePath"],
                 Description = pairs["description"]
             };
 
@@ -73,9 +73,17 @@ namespace CakeFactoryProd.Controllers
                 Total = Decimal.Parse(pairs["total"])
             };
 
+            var currentCart = HttpContext.Session.GetComplexData<List<CartVM>>("_Cart");
+            int newID = 0;
+
+            if (currentCart != null && currentCart.Count > 0)
+            {
+                newID = currentCart.Last().ID +1;
+            }
+
             CartVM cartVM = new CartVM()
             {
-                ID = 1,
+                ID = newID,
                 CakeVM = cakeVM,
                 OrderVM = cakeOrder
             };
@@ -217,6 +225,16 @@ namespace CakeFactoryProd.Controllers
             // user is going to be redirect to an Error page
             // with information to contact Cake Factory
             return View("Error");
+        }
+
+        public IActionResult Delete(int id)
+        {
+            var currentCart = HttpContext.Session.GetComplexData<List<CartVM>>("_Cart");
+            var newCart = currentCart.Except(currentCart.Where(c=> c.ID == id));
+
+            HttpContext.Session.SetComplexData("_Cart", newCart);
+
+            return View("Index", newCart);
         }
     }
 }

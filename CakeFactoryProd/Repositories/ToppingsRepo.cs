@@ -56,6 +56,7 @@ namespace CakeFactoryProd.Repositories
                                             select new ToppingVM
                                             {
                                                 ToppingId = to.Id,
+                                                PriceFactor = to.PriceFactor,
                                                 Flavor = to.Flavor,
                                                 CakeId = ct.CakeId,
                                                 Selected = true

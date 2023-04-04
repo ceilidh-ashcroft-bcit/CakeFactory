@@ -51,11 +51,12 @@ namespace CakeFactoryProd.Repositories
 
             Order order = new Order();
             OrderHasCake orderHasCake = new OrderHasCake();
+            ToppingsRepo toppingsRepo = new ToppingsRepo(_context);
 
             List<Shape> shapes = _context.Shapes.ToList();
             List<Size> sizes = _context.Sizes.ToList(); 
             List<Filling> fillings = _context.Fillings.ToList();
-            List<Topping> toppings = _context.Toppings.ToList();
+            List<ToppingVM> toppings = toppingsRepo.GetToppingByCakeId(id);
 
             return new CakeOrderVM
             {
@@ -65,10 +66,12 @@ namespace CakeFactoryProd.Repositories
                     Name = cake.Name,
                     Description = cake.Description,
                     ImageName = cake.ImageName,
+                    ImageCake = cake.ImageCake,
                     FillingId = cake.FillingId,
                     SizeId = cake.SizeId,
                     ShapeId = cake.ShapeId,
                     Price = cake.Price,
+                    SelectedToppings = toppings
                 },
                 //Shapes = new SelectList(shapes, "Id", "Value"), ////////
                 //Sizes = new SelectList(sizes, "Id", "Value"),
