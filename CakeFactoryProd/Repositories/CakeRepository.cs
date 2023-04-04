@@ -70,7 +70,8 @@ namespace CakeFactoryProd.Repositories
                     ShapeId = cake.ShapeId,
                     Price = cake.Price,
                 },
-                Shapes = new SelectList(shapes, "Id", "Value"),
+                //Shapes = new SelectList(shapes, "Id", "Value"), ////////
+                Shapes = _context.Shapes.ToList(),
                 Sizes = new SelectList(sizes, "Id", "Value"),
                 Fillings = new SelectList(fillings, "Id", "Flavor"),
                 Toppings = toppings,
@@ -160,7 +161,8 @@ namespace CakeFactoryProd.Repositories
                 PickupDate = order.PickupDate,
 
                 //Shapes = new SelectList(shapes, "Id", "Value", "CakeBasicPrice"),
-                Shapes = new SelectList(shapes, "Id", "Value"),
+                //Shapes = new SelectList(shapes, "Id", "Value"),
+                Shapes = _context.Shapes.ToList(),
                 Sizes = new SelectList(sizes, "Id", "Value"),
                 Fillings = new SelectList(fillings, "Id", "Flavor"),
 
