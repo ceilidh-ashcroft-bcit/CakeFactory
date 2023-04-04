@@ -73,18 +73,20 @@ namespace CakeFactoryProd.Repositories
                         Name = cakeVM.Name,
                         Price = cakeVM.Price,
                         Description = cakeVM.Description,
-                        IsActive = cakeVM.IsActive,
+                        //IsActive = cakeVM.IsActive,
+                        IsActive = false,
                         FillingId = cakeVM.FillingId,
                         ShapeId = cakeVM.ShapeId,
                         SizeId = cakeVM.SizeId,
                         //ImagePath = cakeVM.CakeImage
                     };
                     _context.Cakes.Add(newCake);
+                    _context.SaveChanges();
                     tempCakeId = newCake.Id;
                 }
 
                 // need to loop through CakeHasToppings list to add
-                // a row for each occurrancy in the table CakeHasToopin
+                // a row for each occurrancy in the table CakeHasTopping
 
 
                 OrderHasCake orderHasCake = new OrderHasCake()
@@ -97,10 +99,10 @@ namespace CakeFactoryProd.Repositories
                         Cost = cakeOrderVM.Total
                     };
 
-                    newOrder.TotalAmount += orderHasCake.Cost;
+                newOrder.TotalAmount += orderHasCake.Cost;
 
-                    _context.OrderHasCakes.Add(orderHasCake);
-                    _context.SaveChanges();
+                _context.OrderHasCakes.Add(orderHasCake);
+                _context.SaveChanges();
             }
 
             return newOrder.Id;

@@ -11,18 +11,20 @@ namespace CakeFactoryProd.ViewModels
         public string Size { get; set; }
         public string Shape { get; set; }
         public string Filling { get; set; }
-        public string Name { get; set; } = "Custom Cake";
-        public string Description { get; set; } = "A delicious cake of your own creation";
+        public string Name { get; set; }
+        public string Description { get; set; }
         public string ImageName { get; set; }
         public byte[]? ImageCake { get; set; }
         public byte[]? ImageData { get; set; }
         public IFormFile CakeImage { get; set; }
         public decimal Price { get; set; }
         public int FillingId { get; set; }
-        public decimal FillingPrice { get; set; } = 1.99m;
+        //public decimal FillingPrice { get; set; } = 1.99m;
+        public decimal FillingPrice { get; set; }
         public int SizeId { get; set; }
         public int ShapeId { get; set; }
-        public decimal ShapePrice { get; set; } = 5.00m;
+        //public decimal ShapePrice { get; set; } = 5.00m;
+        public decimal ShapePrice { get; set; }
         public int ToppingId { get; set; }
         [Required(ErrorMessage = "Please select a size")]
         public SelectList Sizes { get; set; }
@@ -36,6 +38,7 @@ namespace CakeFactoryProd.ViewModels
         public List<ToppingVM>? SelectedToppings { get; set; } = new List<ToppingVM>();
         public int[] Accepted { get; set; }
         public string? ToppingList { get; set; }
-        public decimal ToppingPrice { get; set; } = 1.00m;
+        //public decimal ToppingPrice { get; set; } = 1.00m;
+        public decimal ToppingPrice { get; set; }
     }
 }

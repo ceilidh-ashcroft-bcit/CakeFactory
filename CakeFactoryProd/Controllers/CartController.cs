@@ -96,10 +96,19 @@ namespace CakeFactoryProd.Controllers
 
         public void AddToCart(CartVM cartVM)
         {
+            if (cartVM.CakeVM.CakeId == 0)
+            {
+                cartVM.CakeVM.Name = "-";
+                cartVM.CakeVM.Description = "Custom Cake";
+                cartVM.CakeVM.Price = cartVM.OrderVM.Total;
+                //pickeupdate should be for the order not cake
+            }
+
             var currentCart = HttpContext.Session.GetComplexData<List<CartVM>>("_Cart");
             if (currentCart == null)
             {
                 List<CartVM> list = new List<CartVM>();
+
                 list.Add(cartVM);
                 HttpContext.Session.SetComplexData("_Cart", list);
             }
