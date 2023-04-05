@@ -60,7 +60,7 @@
                 {
                     <input type="hidden" name="CakeId" class="property" value="@Model.CakeVM.CakeId" />
                     <label asp-for="Sizes" class="property">Size</label>
-                    <select name="Sizes" class="form-control cake-sel-size"
+                    <select name="Sizes" class="cake-sel-size"
                         id="Sizes" onchange="updateTotal(this)">
                         @foreach (var item in Model.Sizes)
                         {
@@ -74,7 +74,7 @@
                     <br/>
 
                     <label asp-for="Shapes"class="property">Shape</label>
-                    <select name="Shapes" class="form-control cake-sel-size" 
+                    <select name="Shapes" class="cake-sel-size" 
                         id="Shapes" onchange="updateTotal(this)">
                         @foreach (var item in Model.Shapes)
                         {
@@ -89,7 +89,7 @@
                     </select>
                     <br/>
                     <label asp-for="Fillings"class="property">Filling</label>
-                    <select name="Fillings" class="form-control cake-sel-size"
+                    <select name="Fillings" class="cake-sel-size"
                         id="Fillings" onchange="updateTotal(this)">
                         @foreach (var item in Model.Fillings)
                         {
@@ -118,7 +118,7 @@
                 else
                 {
                     <label asp-for="@Model.CakeVM.SizeId"class="property" >Size: </label>
-                    <select name="Sizes" class="form-control cake-sel-size"
+                    <select name="Sizes" class="cake-sel-size"
                         id="Sizes" onchange="updateTotal(this)" disabled>
                         @foreach (var item in Model.Sizes)
                         {
@@ -130,7 +130,7 @@
                     </select>
                     <br />
                     <label asp-for="@Model.CakeVM.ShapeId"class="property" >Shape: </label>
-                    <select name="Shapes" class="form-control cake-sel-size"
+                    <select name="Shapes" class="cake-sel-size"
                         id="Shapes" onchange="updateTotal(this)" disabled>
                         @foreach (var item in Model.Shapes)
                         {
@@ -141,7 +141,7 @@
                     </select>
                     <br />
                     <label asp-for="@Model.CakeVM.FillingId"class="property" >Filling: </label>
-                    <select name="Fillings" class="form-control cake-sel-size"
+                    <select name="Fillings" class="cake-sel-size"
                         id="Fillings" onchange="updateTotal(this)" disabled>
                         @foreach (var item in Model.Fillings)
                         {
