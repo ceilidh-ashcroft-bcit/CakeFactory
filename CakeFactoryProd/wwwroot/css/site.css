@@ -3,6 +3,7 @@
 @import "cake-detail.css";
 @import "footer.css";
 @import "about-page.css";
+@import "profile-page.css";
 
 html {
     box-sizing: border-box;
@@ -34,6 +35,19 @@ img {
 .container {
     text-align: center;
 }
+
+
+.img-all {
+    width: 25px;
+    height: 25px;
+}
+
+.itemX-profile {
+    text-align: left;
+    padding-left: 1rem;
+    padding-bottom: 20px;
+}
+    
 
 /*above information is anything smaller than 768px*/
 @media (min-width: 768px) {

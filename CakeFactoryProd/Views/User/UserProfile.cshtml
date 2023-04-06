@@ -1,5 +1,7 @@
 ﻿@model CakeFactoryProd.ViewModels.UserVM
 
+
+
 @{
     ViewData["Title"] = "UserProfile";
 }
@@ -8,19 +10,36 @@
 
 <div>
     <br />
-    <h3>Welcome to your dashboard</h3>
+    <h3>Welcome to dashboard</h3>
     <hr />
     
     <dl class="row">
 
-        <div >     
-
-            <h4>@Model.PrefferedName</h4>
-            <p><img src="../images/email.png" width="25" height="25" alt="email image"/>   @Model.Email</p>
-            <p><img src="../images/phone.jpg" width="25" height="25" alt="phone image" />  @Model.PhoneNumber</p>
-            <p>Cakes Ordered: @Model.TotalNumberOfOrders </p>
-
+        <div style="display: flex; justify-content: center;">
+            <table style="margin-top:20px;">
+                <tr style="margin-bottom: 1rem">
+                    <td class="itemX-profile"><img src="../images/profile_picture.png" class="img-all" /></td>
+                       <td class="itemX-profile"> <b>@Model.PrefferedName</b></td>
+                </tr>
+                <tr>
+                    <td class ="itemX-profile">
+                        <img src="../images/email.png" class="img-all" alt="email image" >
+                    </td>
+                    <td class="itemX-profile">@Model.Email</td>
+                </tr>
+                <tr>
+                    <td class="itemX-profile">
+                        <img src="../images/phone.jpg" class="img-all" alt="phone image"  />
+                    </td>
+                    <td class="itemX-profile">@Model.PhoneNumber</td>
+                </tr>
+                <tr>
+                    <td class="itemX-profile"><img src="../images/cake.png" class="img-all" /></td>
+                    <td class="itemX-profile">@Model.TotalNumberOfOrders Cake Orders</td>
+                </tr>
+            </table>
         </div>
+
 
 
 
