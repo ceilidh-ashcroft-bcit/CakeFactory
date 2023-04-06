@@ -211,7 +211,9 @@ namespace CakeFactoryProd.Controllers
                 
                 var mailMessage = MailHelper.CreateSingleEmail(from, to, subject, plainContent, htmlContent);
                 await sendGridClient.SendEmailAsync(mailMessage);
-                
+
+                HttpContext.Session.SetComplexData("_Cart", new List<CartVM>());
+
                 return Ok();
             } catch (Exception ex)
             {
