@@ -1,16 +1,49 @@
 ﻿@model CakeFactoryProd.ViewModels.UserVM
 
+
+
 @{
     ViewData["Title"] = "UserProfile";
 }
 
-<h1>Your Profile</h1>
+
 
 <div>
-    <h4>Welcome to your dashboard</h4>
+    <br />
+    <h3>Welcome to dashboard</h3>
     <hr />
+    
     <dl class="row">
-        <dt class = "col-sm-2">
+
+        <div style="display: flex; justify-content: center;">
+            <table style="margin-top:20px;">
+                <tr style="margin-bottom: 1rem">
+                    <td class="itemX-profile"><img src="../images/profile_picture.png" class="img-all" /></td>
+                       <td class="itemX-profile"> <b>@Model.PrefferedName</b></td>
+                </tr>
+                <tr>
+                    <td class ="itemX-profile">
+                        <img src="../images/email.png" class="img-all" alt="email image" >
+                    </td>
+                    <td class="itemX-profile">@Model.Email</td>
+                </tr>
+                <tr>
+                    <td class="itemX-profile">
+                        <img src="../images/phone.jpg" class="img-all" alt="phone image"  />
+                    </td>
+                    <td class="itemX-profile">@Model.PhoneNumber</td>
+                </tr>
+                <tr>
+                    <td class="itemX-profile"><img src="../images/cake.png" class="img-all" /></td>
+                    <td class="itemX-profile">@Model.TotalNumberOfOrders Cake Orders</td>
+                </tr>
+            </table>
+        </div>
+
+
+
+
+       @* <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.UserName)
         </dt>
         <dd class = "col-sm-10">
@@ -39,7 +72,7 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.TotalNumberOfOrders)
-        </dd>
+        </dd>*@
     </dl>
 </div>
 <div>
