@@ -42,6 +42,7 @@ namespace CakeFactoryProd.ViewModels
         public List<Filling> Fillings { get; set; }
 
         public List<Topping>? Toppings { get; set; }
+        public int[] Accepted { get; set; }
 
     }
 }

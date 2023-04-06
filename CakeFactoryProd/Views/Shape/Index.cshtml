@@ -2,13 +2,14 @@
 
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/Admin/_AdminLayout.cshtml";
 }
+<a asp-action="Cakes" asp-controller="Admin">Cakes</a>|<a asp-action="Index" asp-controller="Toppings">Toppings</a>|<a asp-action="Index" asp-controller="Fillings">Fillings</a>|<a asp-action="Index" asp-controller="Shape">Shapes</a>
 
-<h1>Index</h1>
+<h1>Shapes</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
 </p>
 <h5>
     @ViewBag.message
