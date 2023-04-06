@@ -17,8 +17,9 @@ namespace CakeFactoryProd.ViewModels
 
         [Required(ErrorMessage = "Please select a date")]
         [BindProperty,DisplayFormat(DataFormatString = "{yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Pickup Date")]
         public DateTime? PickupDate { get; set; }
-
+        [Display(Name = "Purchase Date")]
         public DateTime? PurchaseDate { get; set; }
 
         [Required(ErrorMessage = "Please enter in a quantity")]
@@ -27,15 +28,22 @@ namespace CakeFactoryProd.ViewModels
         public decimal Total { get; set; }
 
         [Required(ErrorMessage = "Please select a size")]
-        public SelectList Sizes { get; set; }
+
+        //public SelectList Sizes { get; set; }
+        public List<Size> Sizes { get; set; }
 
         [Required(ErrorMessage = "Please select a shape")]
-        public SelectList Shapes { get; set; }
+        //public SelectList Shapes { get; set; }
+        public List<Shape> Shapes { get; set; }
 
         [Required(ErrorMessage = "Please select a filling")]
-        public SelectList Fillings { get; set; }
-        public List<ToppingVM>? SelectedToppings { get; set; } = new List<ToppingVM>();
+        
+        //public SelectList Fillings { get; set; }
+        public List<Filling> Fillings { get; set; }
+
         public List<Topping>? Toppings { get; set; }
         public IpnVM IpnVM { get; internal set; }
+        public int[] Accepted { get; set; }
+
     }
 }

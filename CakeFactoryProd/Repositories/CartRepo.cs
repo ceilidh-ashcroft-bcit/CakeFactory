@@ -62,6 +62,7 @@ namespace CakeFactoryProd.Repositories
             {
                 CakeVM cakeVM = cartVM.CakeVM;
                 CakeOrderVM cakeOrderVM = cartVM.OrderVM;
+                ToppingsRepo toppings = new ToppingsRepo(_context);
 
                 // need to check whether Cake has Id, it means it is already in DB,
                 // otherwise need to insert it in DB
@@ -73,19 +74,22 @@ namespace CakeFactoryProd.Repositories
                         Name = cakeVM.Name,
                         Price = cakeVM.Price,
                         Description = cakeVM.Description,
-                        IsActive = cakeVM.IsActive,
+                        //IsActive = cakeVM.IsActive,
+                        IsActive = false,
                         FillingId = cakeVM.FillingId,
                         ShapeId = cakeVM.ShapeId,
                         SizeId = cakeVM.SizeId,
                         //ImagePath = cakeVM.CakeImage
                     };
                     _context.Cakes.Add(newCake);
+                    _context.SaveChanges();
                     tempCakeId = newCake.Id;
                 }
 
                 // need to loop through CakeHasToppings list to add
-                // a row for each occurrancy in the table CakeHasToopin
-
+                // a row for each occurrancy in the table CakeHasTopping
+                var toppingsAccepted = cakeVM.Accepted;
+                toppings.AddCakeHasToppings(toppingsAccepted, tempCakeId);
 
                 OrderHasCake orderHasCake = new OrderHasCake()
                     {
@@ -97,10 +101,10 @@ namespace CakeFactoryProd.Repositories
                         Cost = cakeOrderVM.Total
                     };
 
-                    newOrder.TotalAmount += orderHasCake.Cost;
+                newOrder.TotalAmount += orderHasCake.Cost;
 
-                    _context.OrderHasCakes.Add(orderHasCake);
-                    _context.SaveChanges();
+                _context.OrderHasCakes.Add(orderHasCake);
+                _context.SaveChanges();
             }
 
             return newOrder.Id;

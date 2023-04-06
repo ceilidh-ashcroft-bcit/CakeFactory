@@ -1,9 +1,10 @@
 ﻿@model CakeFactoryProd.ViewModels.CakeOrderVM;
 
-
 @{
     ViewData["Title"] = "Cake Order";
 }
+6
+<input hidden id="dt" value="">
 
 
 <div class="cake-detail-container">
@@ -11,11 +12,11 @@
         <div class="cake-detail-image">
             @if (Model.CakeVM.CakeId == 0)
             {
-                <img src="~/images/emptyCake.jpg" alt="TEST-IMAGE-PLACEHOLDER" />
+                <img src="~/images/emptyCake.jpg" id = "cake-image" alt="TEST-IMAGE-PLACEHOLDER" />
             }
             else
             {
-                <img src="data:image/png;base64, @Convert.ToBase64String(Model.CakeVM.ImageCake)" alt="@Model.CakeVM.ImageName" />
+                <img src="data:image/png;base64, @Convert.ToBase64String(Model.CakeVM.ImageCake)" id="cake-image" alt="@Model.CakeVM.ImageName" />
                 @*<img src="~/images/@Model.CakeVM.CakeImage" alt="@Model.CakeVM.Name" />        *@
             }
 
@@ -47,7 +48,10 @@
         <form class="cake-order-form" method="post" action="/cart">
             <input type="hidden" name="name" value="@Model.CakeVM.Name" />
             <input type="hidden" name="description" value="@Model.CakeVM.Description " />
-            <input type="hidden" name="imagePath" value="/images/emptyCake.jpg" />
+            <input type="hidden" id = "imagePath" name="imagePath" />
+            <input type="hidden" name="description" value="@Model.CakeVM.Description " />
+            <input type="hidden" name="imagePath" id="imagePath" />
+            <input type="hidden" name="Accepted" id="Accepted" />
 
             <div class="cake-size-shape">
                 <h2>Select a size and shape</h2>
@@ -57,36 +61,100 @@
                 {
                     <input type="hidden" name="CakeId" class="property" value="@Model.CakeVM.CakeId" />
                     <label asp-for="Sizes" class="property">Size</label>
-                    @Html.DropDownListFor(model => model.Sizes, Model.Sizes, "Select a size", new { @class = "cake-sel-size" })
-                    <br />
-                    <label asp-for="Shapes" class="property">Shape</label>
-                    @Html.DropDownListFor(model => model.Shapes, Model.Shapes, "Select a shape", new { @class = "cake-sel-shape" })
-                    <br />
-                    <label asp-for="Fillings" class="property">Filling</label>
-                    @Html.DropDownListFor(model => model.Fillings, Model.Fillings, "Select a filling", new { @class = "cake-sel-filling" })
-                    <br />
-                    <label asp-for="Toppings" class="property">Topping</label>
+
+                    <select name="Sizes" class="cake-sel-size"
+                        id="Sizes" onchange="updateTotal(this)">
+                        <option value="0" data-price="0"data-prop="size">Select Option</option>
+                        @foreach (var item in Model.Sizes)
+                        {
+                            <option value="@item.Id"
+                            data-price="@item.CakeBasicPrice"
+                            data-prop="size">
+                                @item.Value
+                            </option>
+                        }
+                    </select>
+                    <br/>
+
+                    <label asp-for="Shapes"class="property">Shape</label>
+                    <select name="Shapes" class="cake-sel-size" 
+                        id="Shapes" onchange="updateTotal(this)">
+                        <option value="0" data-price="0"data-prop="shape">Select Option</option>
+                        @foreach (var item in Model.Shapes)
+                        {
+                            <option 
+                                value="@item.Id" 
+                                data-price="@item.PriceFactor"
+                                data-prop="shape"
+                            >
+                                @item.Value
+                            </option>
+                        }
+                    </select>
+                    <br/>
+                    <label asp-for="Fillings"class="property">Filling</label>
+                    <select name="Fillings" class="cake-sel-size"
+                        id="Fillings" onchange="updateTotal(this)">
+                        <option value="0" data-price="0" data-prop="filling">Select Option</option>
+                        @foreach (var item in Model.Fillings)
+                        {
+                            <option value="@item.Id"
+                            data-price="@item.PriceFactor"
+                            data-prop="filling">
+                                @item.Flavor
+                            </option>
+                        }
+                    </select>
+                    <br/>
+
+
+                    <label asp-for="Toppings"class="property">Topping</label>
 
                     <div class="cake-edit-topping-contianer">
                         @foreach (var topping in Model.Toppings)
                         {
-                            <input type="checkbox" class="property" id="topping" name="Toppings" value="@topping.Id" />
-
+                            <input type="checkbox" class="property" id="topping" name="Accepted" value="@topping.Id" data-id="@topping.Id" data-price="@topping.PriceFactor" />
                             @topping.Flavor
+
                         }
                     </div>
                 }
 
                 else
                 {
-                    <label asp-for="@Model.CakeVM.SizeId" class="property">Size: </label>
-                    <select asp-for="@Model.CakeVM.SizeId" asp-items="@Model.Sizes" disabled name="Sizes" id="Sizes"></select>
+                    <label asp-for="@Model.CakeVM.SizeId"class="property" >Size: </label>
+                    <select name="Sizes" class="cake-sel-size"
+                        id="Sizes" onchange="updateTotal(this)" disabled>
+                        @foreach (var item in Model.Sizes)
+                        {
+                            <option value="@item.Id"
+                            >
+                                    @item.Value
+                            </option>
+                        }
+                    </select>
                     <br />
-                    <label asp-for="@Model.CakeVM.ShapeId" class="property">Shape: </label>
-                    <select asp-for="@Model.CakeVM.ShapeId" asp-items="@Model.Shapes" disabled name="Shapes" id="Shapes"></select>
+                    <label asp-for="@Model.CakeVM.ShapeId"class="property" >Shape: </label>
+                    <select name="Shapes" class="cake-sel-size"
+                        id="Shapes" onchange="updateTotal(this)" disabled>
+                        @foreach (var item in Model.Shapes)
+                        {
+                            <option value="@item.Id">
+                                @item.Value
+                            </option>
+                        }
+                    </select>
                     <br />
-                    <label asp-for="@Model.CakeVM.FillingId" class="property">Filling: </label>
-                    <select asp-for="@Model.CakeVM.FillingId" asp-items="@Model.Fillings" disabled name="Fillings" id="Fillings"></select>
+                    <label asp-for="@Model.CakeVM.FillingId"class="property" >Filling: </label>
+                    <select name="Fillings" class="cake-sel-size"
+                        id="Fillings" onchange="updateTotal(this)" disabled>
+                        @foreach (var item in Model.Fillings)
+                        {
+                            <option value="@item.Id">
+                                @item.Flavor
+                            </option>
+                        }
+                    </select>
                     <br />
                     <label asp-for="@Model.CakeVM.Toppings" class="property">Toppings: </label>
                     <span>
@@ -106,14 +174,14 @@
             <div class="cake-pickup-date">
                 <h2>Pickup Date</h2>
                 <input asp-for="PickupDate" type="date" id="datePicker" required>
-            </div>
-            <div class="cake-to-cart-container">
-                <h2>Quantity</h2>
-                <input type="number" min="1" max="3" placeholder="Qty" id="quantity" name="quantity-input" value="@Model.Quantity">
-                <input readonly name="total" id="total" value="@String.Format("{0:0.00}", Model.CakeVM.Price)" />
-                <button type="submit">Add to Cart</button>
-            </div>
-        </form>
+        </div>
+        <div class="cake-to-cart-container">
+            <h2>Quantity</h2>
+            <input type="number" min="1" max="3" placeholder="Qty" id="quantity" name="quantity-input" value="@Model.Quantity" onchange="updateQuantity()">
+                <input readonly name="total" id="total" value="@Model.CakeVM.Price" />
+            <button type="submit">Add to Cart</button>
+        </div>
+       </form>
     </div>
     <div class="cake-detail-info-container">
         <h2>Important Information</h2>
@@ -136,20 +204,99 @@
     <script>
         let quantity = document.getElementById("quantity");
         let total_field = document.getElementById("total");
+        let toppings = document.querySelectorAll('input[name="Accepted"]')
+        let basicPrice = 0;
+        let fillingFactor = 0;
+        let shapeFactor = 0;
+        let additionals = 0;
+        let temp = 0;
+        let messageFee = 0.00;
+        let toppingTotal = 0;
 
-        function updateTotal() {
-            const cakeID = @Model.CakeVM.CakeId
-            if (cakeID == 0) {
-                let a = @Model.CakeVM.ToppingPrice;
-                console.log(a);
-                let toppingCount = document.querySelectorAll('input[type="checkbox"]:checked').length;
-                let toppingTotal = @Model.CakeVM.ToppingPrice * toppingCount;
-                console.log("topping total : " + toppingTotal);
-                total_field.value = ((@(Model.CakeVM.Price + Model.CakeVM.ShapePrice + Model.CakeVM.FillingPrice) + toppingTotal) * quantity.value);
+        //console.log("toppings" + toppings)
+        //toppings.forEach(checkbox => {
+        //    checkbox.addEventListener('change', (event) => {
+        //        updateTopping()
+        //    });
+        //})
+
+        function updateQuantity(){
+            total_field.value = (temp * quantity.value).toFixed(2)
+        }
+
+        //function updateTopping(){
+        //    console.log("updateTopping")
+        //    let totalPrice = 0;
+        //    let checkedToppings = document.querySelectorAll('input[name="Toppings"]:checked')
+
+        //    checkedToppings.forEach(topping => {
+        //        console.log(topping);
+        //        let toppingId = topping.dataset.id;
+        //        let toppingPrice = topping.dataset.price;
+        //        totalPrice += parseFloat(toppingPrice);
+        //    });
+        //    total_field.value = (total_field.value + totalPrice).toFixed(2)
+        //}
+
+        function updateTotal(el) 
+        {
+            console.log("updatetotal: ", el);
+            const dataArray = Array.from(el);
+            const value = el.value;
+            const cakePropName = dataArray[value - 1].attributes[2].value;
+            const cakePropValue = dataArray[value - 1].attributes[1].value;
+            console.log("updatetotal: ", value, cakePropName, cakePropValue);
+
+            if (cakePropName == "size") {
+                basicPrice = cakePropValue;
+                console.log("basicPrice: ", basicPrice);
+            } else if (cakePropName == "filling"){
+                fillingFactor = cakePropValue;
+                console.log("filling", cakePropName, cakePropValue);
+            } else if (cakePropName == "shape"){
+                shapeFactor = cakePropValue;
+                console.log("shape!!!!!!!!!!!!!!!!!", cakePropName, cakePropValue, shapeFactor);
             }
-            else {
-                total_field.value = (@Model.CakeVM.Price) * quantity.value
+
+            let totalPrice = 0;
+            let checkedToppings = document.querySelectorAll('input[name="Accepted"]:checked')
+
+            checkedToppings.forEach(topping => {
+                console.log(topping);
+                let toppingId = topping.dataset.id;
+                let toppingPrice = topping.dataset.price;
+                totalPrice += parseFloat(toppingPrice);
+            });
+            console.log("Topping total " + totalPrice)
+            toppingTotal = totalPrice;    
+            additionals = basicPrice * ((shapeFactor + fillingFactor) / 100) + toppingTotal;
+            console.log("additionals " + additionals)
+            temp = Number(basicPrice) + Number(additionals);
+            updateQuantity();
+            
+        }
+
+        
+
+        var currentDate = new Date();
+        for (var i = 0; i < 30; i++) {
+            var nextDate = new Date(currentDate);
+            nextDate.setDate(currentDate.getDate() + i);
+            // Skip over Monday and Tuesday
+            if (nextDate.getDay() == 1 || nextDate.getDay() == 2) {
+                continue;
+            }
+             //Check if the day falls on a Wednesday through Sunday
+            if (nextDate.getDay() >= 3 && nextDate.getDay() <= 6) {
+                var maxDate = nextDate.toISOString().slice(0, 10);
+
+                // Set the minimum value for the date picker to the current day
+                if (i == 0) {
+                    document.getElementById("datePicker").min = currentDate.toISOString().slice(0, 10);
+                }
+
+                // Set the maximum value for the date picker
+                document.getElementById("datePicker").max = maxDate;
             }
         }
-        quantity.addEventListener("change", updateTotal);
     </script>

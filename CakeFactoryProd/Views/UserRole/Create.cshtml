@@ -1,8 +1,13 @@
 ﻿@model CakeFactoryProd.ViewModels.UserRoleVM
 
+@{
+    ViewData["Title"] = "User Role";
+    Layout = "~/Views/Shared/Admin/_AdminLayout.cshtml";
+}
+
 <h4>User Role</h4>
 <hr />
-<div class="row">
+<div class="row justify-content-center">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly"

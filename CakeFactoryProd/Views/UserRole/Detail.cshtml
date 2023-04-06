@@ -2,6 +2,7 @@
 
     @{
         ViewData["Title"] = "Detail";
+        Layout = "~/Views/Shared/Admin/_AdminLayout.cshtml";
     }
 
     <h3>@ViewBag.UserName</h3>
@@ -10,17 +11,12 @@
         @Html.ActionLink("Assign Roles", "Create",
         new { userName = @ViewBag.UserName })
     </p>
-
-    <p>
-        <a asp-action="Create">Create New</a>
-    </p>
     <table class="table">
         <thead>
             <tr>
                 <th>
                     @Html.DisplayNameFor(model => model.RoleName)
-                </th>
-                <th></th>
+                </th>   
             </tr>
         </thead>
         <tbody>
