@@ -226,28 +226,6 @@
                 console.log("shape!!!!!!!!!!!!!!!!!", cakePropName, cakePropValue, shapeFactor);
             }
 
-        function updateTotal() {
-            const cakeID = @Model.CakeVM.CakeId
-            const cakePrice = 29.99;
-            if (cakeID == 0) {
-                let checkedToppings = document.querySelectorAll('input[name="Toppings"]:checked');
-                let totalPrice = 0;
-
-                checkedToppings.forEach(function (topping) {
-                    let toppingId = topping.dataset.id;
-                    let toppingPrice = topping.dataset.price;
-
-                    totalPrice += parseFloat(toppingPrice);
-                });
-                let toppingTotal = totalPrice.toFixed(2);
-                total_field.value = ((@(Model.CakeVM.ShapePrice + Model.CakeVM.FillingPrice) + parseFloat(cakePrice) + parseFloat(toppingTotal)) * quantity.value).toFixed(2);
-                console.log(total_field.value);
-            }
-            else {
-                total_field.value = (@Model.CakeVM.Price) * quantity.value
-            }
-        }
-
         var currentDate = new Date();
         for (var i = 0; i < 30; i++) {
             var nextDate = new Date(currentDate);

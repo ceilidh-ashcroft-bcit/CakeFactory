@@ -89,7 +89,7 @@ namespace CakeFactoryProd.Repositories
                 // need to loop through CakeHasToppings list to add
                 // a row for each occurrancy in the table CakeHasToopin
                 var toppingsAccepted = cakeVM.Accepted;
-                //toppings.AddCakeHasToppings(toppingsAccepted, tempCakeId);
+                toppings.AddCakeHasToppings(toppingsAccepted, tempCakeId);
 
                 OrderHasCake orderHasCake = new OrderHasCake()
                     {

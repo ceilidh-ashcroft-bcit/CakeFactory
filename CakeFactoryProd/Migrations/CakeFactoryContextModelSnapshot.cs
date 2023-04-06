@@ -152,6 +152,137 @@ namespace CakeFactoryProd.Migrations
                     b.ToTable("Filling", (string)null);
                 });
 
+            modelBuilder.Entity("CakeFactoryProd.Models.IPN", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Amount")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasColumnName("amount");
+
+                    b.Property<string>("Cart")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("cart");
+
+                    b.Property<string>("CreateTime")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasColumnName("createTime");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(3)")
+                        .HasColumnName("currency");
+
+                    b.Property<string>("Custom")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("custom");
+
+                    b.Property<string>("Intent")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(15)")
+                        .HasColumnName("intent");
+
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int")
+                        .HasColumnName("orderId");
+
+                    b.Property<string>("PayerCountryCode")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(3)")
+                        .HasColumnName("payerCountryCode");
+
+                    b.Property<string>("PayerEmail")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("payerEmail");
+
+                    b.Property<string>("PayerFirstName")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("payerFirstName");
+
+                    b.Property<string>("PayerId")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("payerID");
+
+                    b.Property<string>("PayerLastName")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("payerLastName");
+
+                    b.Property<string>("PayerMiddleName")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("payerMiddleName");
+
+                    b.Property<string>("PayerStatus")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("payerStatus");
+
+                    b.Property<string>("PaymentId")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(30)")
+                        .HasColumnName("paymentID");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("paymentMethod");
+
+                    b.Property<string>("PaymentState")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("paymentState");
+
+                    b.HasKey("Id")
+                        .HasName("PK__IPN__3213E83F616ED7C5");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("IPN", (string)null);
+                });
+
             modelBuilder.Entity("CakeFactoryProd.Models.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -723,6 +854,15 @@ namespace CakeFactoryProd.Migrations
                     b.Navigation("Topping");
                 });
 
+            modelBuilder.Entity("CakeFactoryProd.Models.IPN", b =>
+                {
+                    b.HasOne("CakeFactoryProd.Models.Order", "Order")
+                        .WithMany("IPNs")
+                        .HasForeignKey("OrderId");
+
+                    b.Navigation("Order");
+                });
+
             modelBuilder.Entity("CakeFactoryProd.Models.Order", b =>
                 {
                     b.HasOne("CakeFactoryProd.Models.User", "User")
@@ -814,6 +954,11 @@ namespace CakeFactoryProd.Migrations
             modelBuilder.Entity("CakeFactoryProd.Models.Filling", b =>
                 {
                     b.Navigation("Cakes");
+                });
+
+            modelBuilder.Entity("CakeFactoryProd.Models.Order", b =>
+                {
+                    b.Navigation("IPNs");
                 });
 
             modelBuilder.Entity("CakeFactoryProd.Models.Shape", b =>
