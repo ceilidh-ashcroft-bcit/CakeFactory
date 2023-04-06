@@ -64,7 +64,7 @@
 
                     <select name="Sizes" class="cake-sel-size"
                         id="Sizes" onchange="updateTotal(this)">
-                        @*<option value="0">Select Option</option>*@
+                        <option value="0" data-price="0"data-prop="size">Select Option</option>
                         @foreach (var item in Model.Sizes)
                         {
                             <option value="@item.Id"
@@ -79,7 +79,7 @@
                     <label asp-for="Shapes"class="property">Shape</label>
                     <select name="Shapes" class="cake-sel-size" 
                         id="Shapes" onchange="updateTotal(this)">
-                        @*<option value="0">Select Option</option>*@
+                        <option value="0" data-price="0"data-prop="shape">Select Option</option>
                         @foreach (var item in Model.Shapes)
                         {
                             <option 
@@ -95,7 +95,7 @@
                     <label asp-for="Fillings"class="property">Filling</label>
                     <select name="Fillings" class="cake-sel-size"
                         id="Fillings" onchange="updateTotal(this)">
-                        @*<option value="0">Select Option</option>*@
+                        <option value="0" data-price="0" data-prop="filling">Select Option</option>
                         @foreach (var item in Model.Fillings)
                         {
                             <option value="@item.Id"
