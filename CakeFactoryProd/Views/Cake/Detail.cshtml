@@ -61,8 +61,10 @@
                 {
                     <input type="hidden" name="CakeId" class="property" value="@Model.CakeVM.CakeId" />
                     <label asp-for="Sizes" class="property">Size</label>
+
                     <select name="Sizes" class="cake-sel-size"
                         id="Sizes" onchange="updateTotal(this)">
+                        @*<option value="0">Select Option</option>*@
                         @foreach (var item in Model.Sizes)
                         {
                             <option value="@item.Id"
@@ -77,6 +79,7 @@
                     <label asp-for="Shapes"class="property">Shape</label>
                     <select name="Shapes" class="cake-sel-size" 
                         id="Shapes" onchange="updateTotal(this)">
+                        @*<option value="0">Select Option</option>*@
                         @foreach (var item in Model.Shapes)
                         {
                             <option 
@@ -92,6 +95,7 @@
                     <label asp-for="Fillings"class="property">Filling</label>
                     <select name="Fillings" class="cake-sel-size"
                         id="Fillings" onchange="updateTotal(this)">
+                        @*<option value="0">Select Option</option>*@
                         @foreach (var item in Model.Fillings)
                         {
                             <option value="@item.Id"
@@ -200,7 +204,7 @@
     <script>
         let quantity = document.getElementById("quantity");
         let total_field = document.getElementById("total");
-        let toppings = document.querySelectorAll('input[id="topping"]')
+        let toppings = document.querySelectorAll('input[name="Accepted"]')
         let basicPrice = 0;
         let fillingFactor = 0;
         let shapeFactor = 0;
@@ -255,7 +259,7 @@
             }
 
             let totalPrice = 0;
-            let checkedToppings = document.querySelectorAll('input[name="Toppings"]:checked')
+            let checkedToppings = document.querySelectorAll('input[name="Accepted"]:checked')
 
             checkedToppings.forEach(topping => {
                 console.log(topping);
