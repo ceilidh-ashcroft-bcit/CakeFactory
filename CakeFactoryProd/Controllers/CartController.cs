@@ -179,6 +179,7 @@ namespace CakeFactoryProd.Controllers
                 };
 
                 await PurchaseEmail(emailInfo);
+                
 
                 return View(ipn);
             }
@@ -211,7 +212,9 @@ namespace CakeFactoryProd.Controllers
                 
                 var mailMessage = MailHelper.CreateSingleEmail(from, to, subject, plainContent, htmlContent);
                 await sendGridClient.SendEmailAsync(mailMessage);
-                
+
+             
+
                 return Ok();
             } catch (Exception ex)
             {
