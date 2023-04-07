@@ -1,9 +1,13 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using CakeFactoryProd.ViewModels
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
-@inject IHttpContextAccessor HttpContextAccessor;
+@inject IHttpContextAccessor HttpContextAccessor
+
+
 
 <ul class="navbar-nav">
+
     @if (SignInManager.IsSignedIn(User) && !String.IsNullOrEmpty(HttpContextAccessor.HttpContext.Session.GetString("Preffered Name")))
 {
 
@@ -15,38 +19,20 @@
             <button  type="submit" class="nav-link btn btn-link">Logout</button>
         </form>
     </li>
-        @if (!String.IsNullOrEmpty(HttpContextAccessor.HttpContext.Session.GetString("_Cart")))
-        {
-            <li class="nav-item">
-                <a class="nav-link text-danger" asp-controller="Cart" asp-action="Index">Cart</a>
-            </li>
-        }
-        else
-        {
-            <li class="nav-item">
-                <a class="nav-link" asp-controller="Cart" asp-action="Index">Cart</a>
-            </li>
-        }
-
+    <li class="nav-item">
+        <a class="nav-link" asp-controller="Cart" asp-action="Index">Cart</a>
+    </li>
     }
+
+    
 else
 {
     <li class="nav-item">
         <a class="nav-link" asp-area="Identity" asp-page="/Account/Login">Login</a>
     </li>
-        @if (!String.IsNullOrEmpty(HttpContextAccessor.HttpContext.Session.GetString("_Cart")))
-        {
-            <li class="nav-item">
-                <a class="nav-link text-danger" asp-controller="Cart" asp-action="Index">Cart</a>
-            </li>
-        }
-        else
-        {
-            <li class="nav-item">
-                <a class="nav-link" asp-controller="Cart" asp-action="Index">Cart</a>
-            </li>
-        }
-    
+     <li class="nav-item">
+        <a class="nav-link" asp-controller="Cart" asp-action="Index">Cart</a>
+     </li>     
 }
 </ul>
 
