@@ -237,6 +237,14 @@ namespace CakeFactoryProd.Repositories
         }
 
 
+
+        public void DeleteCakeOrder(int id)
+        {
+            OrderHasCake orderHasCake = _context.OrderHasCakes.Find(id);
+            _context.OrderHasCakes.Remove(orderHasCake);
+            _context.SaveChanges();
+        }
+
         //public void AddCakeOrder(OrderHasCake orderHasCake)
         //{
         //    _context.OrderHasCakes.Add(orderHasCake);
@@ -256,11 +264,40 @@ namespace CakeFactoryProd.Repositories
         //    _context.SaveChanges();
         //}  
         
-        public List<Order> GetAllOrders(int id)
+        public List<CakeOrderVM> GetAllOrders(int id)
         {
-            var orders = _context.Orders.Where(o => o.UserId == id).ToList();
-            return orders;
 
+            var query = from c in _context.Cakes
+                        join oc in _context.OrderHasCakes on c.Id equals oc.CakeId
+                        join o in _context.Orders on oc.OrderId equals o.Id
+                        join i in _context.IPNs on o.Id equals i.OrderId into ipns
+                        from ipn in ipns.DefaultIfEmpty()
+                        where o.UserId == id
+
+                        select new CakeOrderVM
+                        {
+                            CakeVM = new CakeVM
+                            {
+                                Name = c.Name
+                            },
+
+                            PurchaseDate = o.PurchaseDate,
+                            Total = o.TotalAmount,
+                            Quantity = oc.Quantity,
+                            OrderId = oc.OrderId,
+
+                            IpnVM = new IpnVM
+                            {
+                                PaymentId = (ipn == null ? null : ipn.PaymentId)
+                            }
+                           
+                        };
+
+
+            // Create a list of CakeOrderVM objects
+            List<CakeOrderVM> cakeOrders = query.ToList();
+
+            return cakeOrders;
         }
     }
 }

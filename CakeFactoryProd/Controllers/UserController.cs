@@ -1,8 +1,10 @@
 ﻿using CakeFactoryProd.Data;
 using CakeFactoryProd.Models;
 using CakeFactoryProd.Repositories;
+using CakeFactoryProd.Utilities;
 using CakeFactoryProd.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Data;
 
@@ -101,8 +103,41 @@ namespace CakeFactoryProd.Controllers
 
 
 
-        public IActionResult OrderHistory()
+        //public IActionResult OrderHistory()
+        //{
+        //    CakeOrderRepository cakeOrderRepository = new CakeOrderRepository(_context);
+
+        //    var email = User.Identity.Name;
+
+        //    UserRepository userRepo = new UserRepository(_context);
+        //    var user = userRepo.GetUserProfile(email);
+
+        //    var orders = cakeOrderRepository.GetAllOrders(user.Id);
+
+        //    if (orders.Count == 0)
+        //    {
+        //        return View();
+        //    }
+        //    return View(orders);
+
+
+        //}
+
+        public IActionResult OrderHistory(string sortOrder, string currentFilter, string searchString, int? page)
         {
+
+            // searching
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+
             CakeOrderRepository cakeOrderRepository = new CakeOrderRepository(_context);
 
             var email = User.Identity.Name;
@@ -110,15 +145,14 @@ namespace CakeFactoryProd.Controllers
             UserRepository userRepo = new UserRepository(_context);
             var user = userRepo.GetUserProfile(email);
 
-            var orders = cakeOrderRepository.GetAllOrders(user.Id);
+            IQueryable<CakeOrderVM> cakeOrderVM = cakeOrderRepository.GetAllOrders(user.Id).AsQueryable();
 
-            if (orders.Count == 0)
-            {
-                return View();
-            }
-            return View(orders);
+            // pagination code
+            int pageSize = 10;
+                return View(PaginatedList<CakeOrderVM>.Create(cakeOrderVM.AsNoTracking(), page ?? 1, pageSize));
 
 
+                //return View(orders);
         }
 
 

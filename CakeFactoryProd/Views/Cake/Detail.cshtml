@@ -247,17 +247,12 @@
             console.log("updatetotal: ", el);
             const dataArray = Array.from(el);
             const value = el.value;
-            console.log("dataArray: ", dataArray, "\nVALUE:", value);
-            //console.log("==== ", dataArray[value - 1].attributes)
-
             //const cakePropName = dataArray[value - 1].attributes[2].value;
             //const cakePropValue = dataArray[value - 1].attributes[1].value;
             const tempArr = dataArray.filter(e => e.attributes[0].value == value);
-            console.log("tk: ", tempArr);
-            //console.log("----tk::: ", tk[0].attributes[0], tk[0].attributes[1].value);
             const cakePropName = tempArr[0].attributes[2].value;
             const cakePropValue = tempArr[0].attributes[1].value;
-            console.log("updatetotal: ", value, cakePropName, cakePropValue);
+            //console.log("updatetotal: ", value, cakePropName, cakePropValue);
 
             if (cakePropName == "size") {
                 basicPrice = cakePropValue;
@@ -312,10 +307,14 @@
             }
         }
 
-        // it checks whether the selected cake has price zero, if so does not submit
+        // it checks whether the selected cake has price zero
+        // or customer did not set cake's properties
+        // if so does not submit
         document.getElementById("btAddToCart").addEventListener("click", function (ev) {
-            // code here
-            if (total_field.value == 0) {
+            const shapes = document.getElementById("Shapes").value;
+            const fillings = document.getElementById("Fillings").value;
+            console.log("fillings: ", shapes, fillings, toppingTotal);
+            if (total_field.value == 0 || shapes == 0 || fillings == 0) {
                 console.log("NOPEEEEEEEEE");
                 alert("Please, select a valid cake setting :)");
                 ev.preventDefault();

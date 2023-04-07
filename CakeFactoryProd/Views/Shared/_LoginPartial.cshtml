@@ -6,16 +6,16 @@
 
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User) && !String.IsNullOrEmpty(HttpContextAccessor.HttpContext.Session.GetString("Preffered Name")))
-{
+    {
 
-    <li class="nav-item">
+        <li class="nav-item">
             <a class="nav-link" asp-area="Identity" asp-controller="User" asp-action="UserProfile" title="Manage">@HttpContextAccessor.HttpContext.Session.GetString("Preffered Name")'s Profile</a>
-    </li>
-    <li class="nav-item">
-        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button  type="submit" class="nav-link btn btn-link">Logout</button>
-        </form>
-    </li>
+        </li>
+        <li class="nav-item">
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button type="submit" class="nav-link btn btn-link">Logout</button>
+            </form>
+        </li>
 
         var temp = HttpContextAccessor.HttpContext.Session.GetComplexData<List<CartVM>>("_Cart");
         @*@if (temp != null && temp.Count > 0)*@
@@ -33,11 +33,11 @@
         }
 
     }
-else
-{
-    <li class="nav-item">
-        <a class="nav-link" asp-area="Identity" asp-page="/Account/Login">Login</a>
-    </li>
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        </li>
         @if (!String.IsNullOrEmpty(HttpContextAccessor.HttpContext.Session.GetString("_Cart")))
         {
             <li class="nav-item">
@@ -50,7 +50,7 @@ else
                 <a class="nav-link" asp-controller="Cart" asp-action="Index">Cart</a>
             </li>
         }
-    
-}
+
+    }
 </ul>
 
