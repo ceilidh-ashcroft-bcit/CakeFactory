@@ -16,7 +16,9 @@
             <button  type="submit" class="nav-link btn btn-link">Logout</button>
         </form>
     </li>
+
         var temp = HttpContextAccessor.HttpContext.Session.GetComplexData<List<CartVM>>("_Cart");
+        @*@if (temp != null && temp.Count > 0)*@
         @if (temp != null && temp.Count > 0)
         {
             <li class="nav-item">

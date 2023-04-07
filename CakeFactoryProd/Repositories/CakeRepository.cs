@@ -71,7 +71,7 @@ namespace CakeFactoryProd.Repositories
                     SizeId = cake.SizeId,
                     ShapeId = cake.ShapeId,
                     Price = cake.Price,
-                    SelectedToppings = toppings
+                    SelectedToppings = toppings,
                 },
                 //Shapes = new SelectList(shapes, "Id", "Value"), ////////
                 //Sizes = new SelectList(sizes, "Id", "Value"),
@@ -83,7 +83,7 @@ namespace CakeFactoryProd.Repositories
                 Toppings = _context.Toppings.ToList(),
 
                 PickupDate = order.PickupDate,
-                Quantity = orderHasCake.Quantity,
+                Quantity = orderHasCake.Quantity == 0 ? 1 : orderHasCake.Quantity,
             };
         }
         
@@ -150,6 +150,25 @@ namespace CakeFactoryProd.Repositories
             //List<Filling> fillings = _context.Fillings.ToList();
             //List<Topping> toppings = _context.Toppings.ToList();
 
+            var tempSizes = _context.Sizes.ToList(); 
+            var sizes = new List<Size>();
+            var sz = new Size() 
+            { Id = (tempSizes[tempSizes.Count - 1].Id + 1), Value = "Select an option", CakeBasicPrice = 0, IsActive = true, Description = "any" };
+            sizes.Add(sz);
+            tempSizes.ForEach(s => sizes.Add(s));
+
+            var tempShapes = _context.Shapes.ToList();
+            var shapes = new List<Shape>();
+            var sh = new Shape() { Id = 0, Value = "Select an option", PriceFactor = 0 };
+            shapes.Add(sh);
+            tempShapes.ForEach(s => shapes.Add(s));
+
+            var tempFillings = _context.Fillings.ToList();
+            var fillings = new List<Filling>();
+            var fl = new Filling() { Id = 0, Flavor = "Select an option", PriceFactor = 0 };
+            fillings.Add(fl);
+            tempFillings.ForEach(s => fillings.Add(s));
+
             return new CakeOrderVM
             {
                 CakeVM = new CakeVM
@@ -170,12 +189,15 @@ namespace CakeFactoryProd.Repositories
                 //Shapes = new SelectList(shapes, "Id", "Value"),
                 //Sizes = new SelectList(sizes, "Id", "Value"),
                 //Fillings = new SelectList(fillings, "Id", "Flavor"),
-                Shapes = _context.Shapes.ToList(),
-                Sizes = _context.Sizes.ToList(),
-                Fillings = _context.Fillings.ToList(),
+                //Shapes = _context.Shapes.ToList(),
+                //Sizes = _context.Sizes.ToList(),
+                //Fillings = _context.Fillings.ToList(),
+                Sizes = sizes,
+                Shapes = shapes,
+                Fillings = fillings,
 
                 Toppings = _context.Toppings.ToList(),
-                Quantity = orderHasCake.Quantity,
+                Quantity = orderHasCake.Quantity == 0 ? 1 : orderHasCake.Quantity,
             };
         }
         

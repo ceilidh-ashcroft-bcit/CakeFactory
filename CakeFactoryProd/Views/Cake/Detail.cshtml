@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Cake Order";
 }
-6
+
 <input hidden id="dt" value="">
 
 
@@ -64,12 +64,11 @@
 
                     <select name="Sizes" class="cake-sel-size"
                         id="Sizes" onchange="updateTotal(this)">
-                        <option value="0" data-price="0"data-prop="size">Select Option</option>
                         @foreach (var item in Model.Sizes)
                         {
                             <option value="@item.Id"
-                            data-price="@item.CakeBasicPrice"
-                            data-prop="size">
+                                data-price="@item.CakeBasicPrice"
+                                data-prop="size" >
                                 @item.Value
                             </option>
                         }
@@ -79,7 +78,7 @@
                     <label asp-for="Shapes"class="property">Shape</label>
                     <select name="Shapes" class="cake-sel-size" 
                         id="Shapes" onchange="updateTotal(this)">
-                        <option value="0" data-price="0"data-prop="shape">Select Option</option>
+                        @*<option value="0" data-price=0 data-prop="shape">Select Option</option>*@
                         @foreach (var item in Model.Shapes)
                         {
                             <option 
@@ -95,7 +94,7 @@
                     <label asp-for="Fillings"class="property">Filling</label>
                     <select name="Fillings" class="cake-sel-size"
                         id="Fillings" onchange="updateTotal(this)">
-                        <option value="0" data-price="0" data-prop="filling">Select Option</option>
+                        @*<option value="0" data-price="0" data-prop="filling">Select Option</option>*@
                         @foreach (var item in Model.Fillings)
                         {
                             <option value="@item.Id"
@@ -178,8 +177,8 @@
         <div class="cake-to-cart-container">
             <h2>Quantity</h2>
             <input type="number" min="1" max="3" placeholder="Qty" id="quantity" name="quantity-input" value="@Model.Quantity" onchange="updateQuantity()">
-                <input readonly name="total" id="total" value="@Model.CakeVM.Price" />
-            <button type="submit">Add to Cart</button>
+                <input readonly name="total" id="total" value="@Model.CakeVM.Price.ToString("0.00")" style="padding-left: 1rem" />
+            <button type="submit" id="btAddToCart">Add to Cart</button>
         </div>
        </form>
     </div>
@@ -205,7 +204,8 @@
         let quantity = document.getElementById("quantity");
         let total_field = document.getElementById("total");
         let toppings = document.querySelectorAll('input[name="Accepted"]')
-        let basicPrice = 0;
+        let basicPrice = total_field.value || 0;
+        console.log("basic price:::::::::::::; ", basicPrice);
         let fillingFactor = 0;
         let shapeFactor = 0;
         let additionals = 0;
@@ -220,8 +220,12 @@
         //    });
         //})
 
-        function updateQuantity(){
-            total_field.value = (temp * quantity.value).toFixed(2)
+        function updateQuantity(temp){
+
+            if (temp) basicPrice = temp;
+            console.log("quantity.value: ", quantity.value, "temp: ", temp, "basicPrice: ", basicPrice);
+
+            total_field.value = (basicPrice * quantity.value).toFixed(2)
         }
 
         //function updateTopping(){
@@ -243,8 +247,16 @@
             console.log("updatetotal: ", el);
             const dataArray = Array.from(el);
             const value = el.value;
-            const cakePropName = dataArray[value - 1].attributes[2].value;
-            const cakePropValue = dataArray[value - 1].attributes[1].value;
+            console.log("dataArray: ", dataArray, "\nVALUE:", value);
+            //console.log("==== ", dataArray[value - 1].attributes)
+
+            //const cakePropName = dataArray[value - 1].attributes[2].value;
+            //const cakePropValue = dataArray[value - 1].attributes[1].value;
+            const tempArr = dataArray.filter(e => e.attributes[0].value == value);
+            console.log("tk: ", tempArr);
+            //console.log("----tk::: ", tk[0].attributes[0], tk[0].attributes[1].value);
+            const cakePropName = tempArr[0].attributes[2].value;
+            const cakePropValue = tempArr[0].attributes[1].value;
             console.log("updatetotal: ", value, cakePropName, cakePropValue);
 
             if (cakePropName == "size") {
@@ -272,7 +284,7 @@
             additionals = basicPrice * ((shapeFactor + fillingFactor) / 100) + toppingTotal;
             console.log("additionals " + additionals)
             temp = Number(basicPrice) + Number(additionals);
-            updateQuantity();
+            updateQuantity(temp);
             
         }
 
@@ -299,4 +311,15 @@
                 document.getElementById("datePicker").max = maxDate;
             }
         }
+
+        // it checks whether the selected cake has price zero, if so does not submit
+        document.getElementById("btAddToCart").addEventListener("click", function (ev) {
+            // code here
+            if (total_field.value == 0) {
+                console.log("NOPEEEEEEEEE");
+                alert("Please, select a valid cake setting :)");
+                ev.preventDefault();
+                return;
+            }
+        });
     </script>
