@@ -108,13 +108,14 @@
 
 
                     <label asp-for="Toppings"class="property">Topping</label>
-
                     <div class="cake-edit-topping-contianer">
                         @foreach (var topping in Model.Toppings)
                         {
-                            <input type="checkbox" class="property" id="topping" name="Accepted" value="@topping.Id" data-id="@topping.Id" data-price="@topping.PriceFactor" />
+                            <input type="checkbox" class="property" id="topping" name="Accepted" 
+                                value="@topping.Id" data-id="@topping.Id" data-price="@topping.PriceFactor"
+                                onchange="updateTotal(this, 'toppingsFlag')"
+                            >
                             @topping.Flavor
-
                         }
                     </div>
                 }
@@ -155,13 +156,33 @@
                         }
                     </select>
                     <br />
-                    <label asp-for="@Model.CakeVM.Toppings" class="property">Toppings: </label>
+                    <label asp-for="Toppings" class="property">Topping</label>
+                    <div class="cake-edit-topping-contianer">
+                        @foreach (var topping in Model.Toppings)
+                        {
+                            var validIndex = false;
+                            try
+                            {
+                                validIndex = Model.CakeVM.SelectedToppings[Model.Toppings.IndexOf(topping)]?.ToppingId == topping.Id;
+                            }
+                            catch (System.ArgumentOutOfRangeException e)
+                            {
+                                validIndex = false;
+                            }
+                            <input type="checkbox" class="property" id="topping" name="Accepted" disabled
+                                value="@topping.Id" data-id="@topping.Id" data-price="@topping.PriceFactor"
+                                @(validIndex ? "checked" : "") >
+                            @topping.Flavor
+
+                        }
+                    </div>
+                    @*<label asp-for="@Model.CakeVM.Toppings" class="property">Toppings: </label>
                     <span>
                         @foreach (var topping in Model.CakeVM.SelectedToppings)
                         {
                             <span class="h3">@topping.Flavor </span>
                         }
-                    </span>
+                    </span>*@
                     <input type="hidden" name="Sizes" class="property" value="@Model.CakeVM.SizeId" />
                     <input type="hidden" name="Shapes" class="property" value="@Model.CakeVM.ShapeId" />
                     <input type="hidden" name="Fillings" class="property" value="@Model.CakeVM.FillingId" />
@@ -177,7 +198,8 @@
         <div class="cake-to-cart-container">
             <h2>Quantity</h2>
             <input type="number" min="1" max="3" placeholder="Qty" id="quantity" name="quantity-input" value="@Model.Quantity" onchange="updateQuantity()">
-                <input readonly name="total" id="total" value="@Model.CakeVM.Price.ToString("0.00")" style="padding-left: 1rem" />
+            <span><b>$ </b></span>
+            <input readonly name="total" id="total" value="@Model.CakeVM.Price.ToString("0.00")" style="padding-left: 1rem" />
             <button type="submit" id="btAddToCart">Add to Cart</button>
         </div>
        </form>
@@ -205,6 +227,7 @@
         let total_field = document.getElementById("total");
         let toppings = document.querySelectorAll('input[name="Accepted"]')
         let basicPrice = total_field.value || 0;
+        //let basicPrice = 0;
         console.log("basic price:::::::::::::; ", basicPrice);
         let fillingFactor = 0;
         let shapeFactor = 0;
@@ -212,6 +235,7 @@
         let temp = 0;
         let messageFee = 0.00;
         let toppingTotal = 0;
+        let totalCakePrice = basicPrice;
 
         //console.log("toppings" + toppings)
         //toppings.forEach(checkbox => {
@@ -220,12 +244,24 @@
         //    });
         //})
 
-        function updateQuantity(temp){
+        //function checkTopping(item) {
+        //    var isChecked = $(item).is(':checked');
+        //    console.log("item checked: ", item, " - checked: ", isChecked);
+        //}
 
-            if (temp) basicPrice = temp;
-            console.log("quantity.value: ", quantity.value, "temp: ", temp, "basicPrice: ", basicPrice);
+        function updateQuantity(temp) {
 
-            total_field.value = (basicPrice * quantity.value).toFixed(2)
+            //if (temp) basicPrice = temp;
+            console.log("quantity.value: ", quantity.value, "temp: ", temp, "basicPrice: ", basicPrice, temp, total_field.value);
+            if (!temp && Number(total_field.value) == 0)
+                return quantity.value = 1;
+
+            if (temp) 
+                //total_field.value = (basicPrice * quantity.value).toFixed(2)
+                total_field.value = (temp * quantity.value).toFixed(2)
+            else
+                //total_field.value = (total_field.value * quantity.value).toFixed(2)
+                total_field.value = (totalCakePrice * quantity.value).toFixed(2)
         }
 
         //function updateTopping(){
@@ -242,45 +278,58 @@
         //    total_field.value = (total_field.value + totalPrice).toFixed(2)
         //}
 
-        function updateTotal(el) 
-        {
-            console.log("updatetotal: ", el);
-            const dataArray = Array.from(el);
-            const value = el.value;
-            //const cakePropName = dataArray[value - 1].attributes[2].value;
-            //const cakePropValue = dataArray[value - 1].attributes[1].value;
-            const tempArr = dataArray.filter(e => e.attributes[0].value == value);
-            const cakePropName = tempArr[0].attributes[2].value;
-            const cakePropValue = tempArr[0].attributes[1].value;
-            //console.log("updatetotal: ", value, cakePropName, cakePropValue);
+        function updateTotal(el, toppingsFlag) {
+            if (toppingsFlag) {
+                console.log("call checkitoppings", $(el));
+                var isChecked = $(el).is(':checked');
+                var tempPrice = $(el).data('price');
+                if (isChecked)
+                    toppingTotal += tempPrice
+                else 
+                    toppingTotal -= tempPrice;
+                console.log("item checked: ", " - checked: ", isChecked, tempPrice);
+            } else {
+                //basicPrice = total_field.value || 0;
+                console.log("updatetotal: ", el);
+                const dataArray = Array.from(el);
+                const value = el.value;
+                //const cakePropName = dataArray[value - 1].attributes[2].value;
+                //const cakePropValue = dataArray[value - 1].attributes[1].value;
+                const tempArr = dataArray.filter(e => e.attributes[0].value == value);
+                const cakePropName = tempArr[0].attributes[2].value;
+                const cakePropValue = tempArr[0].attributes[1].value;
+                //console.log("updatetotal: ", value, cakePropName, cakePropValue);
 
-            if (cakePropName == "size") {
-                basicPrice = cakePropValue;
-                console.log("basicPrice: ", basicPrice);
-            } else if (cakePropName == "filling"){
-                fillingFactor = cakePropValue;
-                console.log("filling", cakePropName, cakePropValue);
-            } else if (cakePropName == "shape"){
-                shapeFactor = cakePropValue;
-                console.log("shape!!!!!!!!!!!!!!!!!", cakePropName, cakePropValue, shapeFactor);
+                if (cakePropName == "size") {
+                    basicPrice = cakePropValue;
+                    console.log("basicPrice: ", basicPrice);
+                } else if (cakePropName == "filling"){
+                    fillingFactor = cakePropValue;
+                    console.log("filling", cakePropName, cakePropValue);
+                } else if (cakePropName == "shape"){
+                    shapeFactor = cakePropValue;
+                    console.log("shape!!!!!!!!!!!!!!!!!", cakePropName, cakePropValue, shapeFactor);
+                }
             }
 
-            let totalPrice = 0;
-            let checkedToppings = document.querySelectorAll('input[name="Accepted"]:checked')
+            //let totalPrice = 0;
+            //let checkedToppings = document.querySelectorAll('input[name="Accepted"]:checked')
 
-            checkedToppings.forEach(topping => {
-                console.log(topping);
-                let toppingId = topping.dataset.id;
-                let toppingPrice = topping.dataset.price;
-                totalPrice += parseFloat(toppingPrice);
-            });
-            console.log("Topping total " + totalPrice)
-            toppingTotal = totalPrice;    
-            additionals = basicPrice * ((shapeFactor + fillingFactor) / 100) + toppingTotal;
-            console.log("additionals " + additionals)
+            //checkedToppings.forEach(topping => {
+            //    console.log(topping);
+            //    let toppingId = topping.dataset.id;
+            //    let toppingPrice = topping.dataset.price;
+            //    totalPrice += parseFloat(toppingPrice);
+            //});
+            //console.log("Topping total " + totalPrice)
+            //toppingTotal = totalPrice;
+
+            console.log("basic price: ", basicPrice, "ShapeFactor: ", (shapeFactor/100)*basicPrice, "FillingFactor: ", fillingFactor);
+            additionals = (basicPrice * ((Number(shapeFactor) + Number(fillingFactor)) / 100)) + Number(toppingTotal);
+            console.log("additionals " + additionals, ((shapeFactor + fillingFactor) / 100));
             temp = Number(basicPrice) + Number(additionals);
+            totalCakePrice = temp;
             updateQuantity(temp);
-            
         }
 
         
@@ -309,7 +358,7 @@
 
         // it checks whether the selected cake has price zero
         // or customer did not set cake's properties
-        // if so does not submit
+        // if so does not submit form
         document.getElementById("btAddToCart").addEventListener("click", function (ev) {
             const shapes = document.getElementById("Shapes").value;
             const fillings = document.getElementById("Fillings").value;
