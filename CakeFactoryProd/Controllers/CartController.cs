@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CakeFactoryProd.Controllers
 {
@@ -56,8 +57,17 @@ namespace CakeFactoryProd.Controllers
            Console.WriteLine(pairs["Accepted"]);
             string accepted =  pairs["Accepted"];
             string[] list = accepted.Split(",");
+            int[] acceptedValues;
 
-            int[] acceptedValues = Array.ConvertAll(list, s => int.Parse(s));
+            try
+            {
+                acceptedValues = Array.ConvertAll(list, s => int.Parse(s));
+            }
+            catch(Exception ex)
+            {
+                acceptedValues = new int[0];
+                Console.WriteLine(ex.ToString());
+            }
             ToppingsRepo toppings = new ToppingsRepo(_context);
 
             CakeVM cakeVM = new CakeVM()
