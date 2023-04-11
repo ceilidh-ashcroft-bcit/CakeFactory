@@ -48,4 +48,5 @@ Once signed in as an Admin, you can user the 'User Roles' dashboard to set other
 
 
 ***DO NOT INPUT REAL PAYPAL INFORMATION IN THE CHECKOUT SCREEN***
+
       PayPal testing accounts can be created <a href="https://developer.paypal.com">here.</a>
