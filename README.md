@@ -31,7 +31,7 @@ Cake Factory was built in C# using ASP.NET Core with Razor Pages. The applicatio
   5. In NuGet Package Manager console run: 
       - <b>`add-migration InitialCreate`</b>
       - <b>`update-database`</b>
-  6. Run the `database.db` seed script in MSSMS.
+  6. Run the `cake-factory_db-script.sql` seed script in MSSMS.
   7. Build and run the application in Visual Studio.
   
   ## Usage
