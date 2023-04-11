@@ -48,9 +48,9 @@
         <form class="cake-order-form" method="post" action="/cart">
             <input type="hidden" name="name" value="@Model.CakeVM.Name" />
             <input type="hidden" name="description" value="@Model.CakeVM.Description " />
-            <input type="hidden" id = "imagePath" name="imagePath" />
+            <input type="hidden" id = "imagePath" name="imagePath"/>
             <input type="hidden" name="description" value="@Model.CakeVM.Description " />
-            <input type="hidden" name="imagePath" id="imagePath" />
+            <input type="hidden" name="Accepted" id="Accepted" />
 
             <div class="cake-size-shape">
                 <h2>Select a size and shape</h2>
@@ -369,4 +369,9 @@
                 return;
             }
         });
+
+        let cakeImage = document.getElementById("cake-image");
+        let imageField = document.getElementById("imagePath");
+
+        imageField.value = cakeImage.src
     </script>
