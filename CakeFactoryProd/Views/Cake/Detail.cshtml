@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Cake Order";
 }
-
+6
 <input hidden id="dt" value="">
 
 
@@ -60,8 +60,10 @@
                 {
                     <input type="hidden" name="CakeId" class="property" value="@Model.CakeVM.CakeId" />
                     <label asp-for="Sizes" class="property">Size</label>
+
                     <select name="Sizes" class="cake-sel-size"
                         id="Sizes" onchange="updateTotal(this)">
+                        <option value="0" data-price="0"data-prop="size">Select Option</option>
                         @foreach (var item in Model.Sizes)
                         {
                             <option value="@item.Id"
@@ -76,6 +78,7 @@
                     <label asp-for="Shapes"class="property">Shape</label>
                     <select name="Shapes" class="cake-sel-size" 
                         id="Shapes" onchange="updateTotal(this)">
+                        <option value="0" data-price="0"data-prop="shape">Select Option</option>
                         @foreach (var item in Model.Shapes)
                         {
                             <option 
@@ -91,6 +94,7 @@
                     <label asp-for="Fillings"class="property">Filling</label>
                     <select name="Fillings" class="cake-sel-size"
                         id="Fillings" onchange="updateTotal(this)">
+                        <option value="0" data-price="0" data-prop="filling">Select Option</option>
                         @foreach (var item in Model.Fillings)
                         {
                             <option value="@item.Id"
@@ -108,9 +112,9 @@
                     <div class="cake-edit-topping-contianer">
                         @foreach (var topping in Model.Toppings)
                         {
-                            @*<input type="checkbox" class="property" id="topping" name="Toppings" value="@topping.Id" />*@
                             <input type="checkbox" class="property" id="topping" name="Accepted" value="@topping.Id" data-id="@topping.Id" data-price="@topping.PriceFactor" />
                             @topping.Flavor
+
                         }
                     </div>
                 }
@@ -172,7 +176,7 @@
         </div>
         <div class="cake-to-cart-container">
             <h2>Quantity</h2>
-            <input type="number" min="1" max="3" placeholder="Qty" id="quantity" name="quantity-input" value="@Model.Quantity">
+            <input type="number" min="1" max="3" placeholder="Qty" id="quantity" name="quantity-input" value="@Model.Quantity" onchange="updateQuantity()">
                 <input readonly name="total" id="total" value="@Model.CakeVM.Price" />
             <button type="submit">Add to Cart</button>
         </div>
@@ -197,15 +201,42 @@
     </div>
 
     <script>
-        console.log("hereeeeeeeeeee");
         let quantity = document.getElementById("quantity");
         let total_field = document.getElementById("total");
+        let toppings = document.querySelectorAll('input[name="Accepted"]')
         let basicPrice = 0;
         let fillingFactor = 0;
         let shapeFactor = 0;
         let additionals = 0;
         let temp = 0;
         let messageFee = 0.00;
+        let toppingTotal = 0;
+
+        //console.log("toppings" + toppings)
+        //toppings.forEach(checkbox => {
+        //    checkbox.addEventListener('change', (event) => {
+        //        updateTopping()
+        //    });
+        //})
+
+        function updateQuantity(){
+            total_field.value = (temp * quantity.value).toFixed(2)
+        }
+
+        //function updateTopping(){
+        //    console.log("updateTopping")
+        //    let totalPrice = 0;
+        //    let checkedToppings = document.querySelectorAll('input[name="Toppings"]:checked')
+
+        //    checkedToppings.forEach(topping => {
+        //        console.log(topping);
+        //        let toppingId = topping.dataset.id;
+        //        let toppingPrice = topping.dataset.price;
+        //        totalPrice += parseFloat(toppingPrice);
+        //    });
+        //    total_field.value = (total_field.value + totalPrice).toFixed(2)
+        //}
+
         function updateTotal(el) 
         {
             console.log("updatetotal: ", el);
@@ -225,6 +256,30 @@
                 shapeFactor = cakePropValue;
                 console.log("shape!!!!!!!!!!!!!!!!!", cakePropName, cakePropValue, shapeFactor);
             }
+
+            let totalPrice = 0;
+            let checkedToppings = document.querySelectorAll('input[name="Accepted"]:checked')
+
+            checkedToppings.forEach(topping => {
+                console.log(topping);
+                let toppingId = topping.dataset.id;
+                let toppingPrice = topping.dataset.price;
+                totalPrice += parseFloat(toppingPrice);
+            });
+            console.log("Topping total " + totalPrice)
+            toppingTotal = totalPrice;    
+            additionals = basicPrice * ((shapeFactor + fillingFactor) / 100) + toppingTotal;
+            console.log("additionals " + additionals)
+            temp = Number(basicPrice) + Number(additionals);
+            updateQuantity();
+
+            if(@Model.CakeVM.Price != 0){
+                total_field.value = (@Model.CakeVM.Price) * quantity.value
+            }
+            
+        }
+
+        
 
         var currentDate = new Date();
         for (var i = 0; i < 30; i++) {

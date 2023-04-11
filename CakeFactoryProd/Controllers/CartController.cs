@@ -8,6 +8,7 @@ using SendGrid.Helpers.Mail;
 using SendGrid;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using System.Diagnostics;
 
 namespace CakeFactoryProd.Controllers
 {
@@ -48,9 +49,17 @@ namespace CakeFactoryProd.Controllers
                                                                                 Int32.Parse(pairs["Fillings"])
                                                                                 /*Int32.Parse(pairs["Toppings"])*/
                                                                                 );
+           Console.WriteLine(pairs["Accepted"]);
+            string accepted =  pairs["Accepted"];
+            string[] list = accepted.Split(",");
+
+
+            int[] acceptedValues = Array.ConvertAll(list, s => int.Parse(s));
+            ToppingsRepo toppings = new ToppingsRepo(_context);
 
             CakeVM cakeVM = new CakeVM()
             {
+                Accepted = acceptedValues,
                 CakeId= tempCakeID,
                 SizeId = Int32.Parse(pairs["Sizes"]),
                 Size = properties["Size"],
@@ -72,7 +81,8 @@ namespace CakeFactoryProd.Controllers
                 Quantity = Int32.Parse(pairs["quantity-input"]),
                 Total = Decimal.Parse(pairs["total"])
             };
-
+/*            var toppingsAccepted = pairs["Accepted"];
+            toppings.AddCakeHasToppings(toppingsAccepted, tempCakeId);*/
             var currentCart = HttpContext.Session.GetComplexData<List<CartVM>>("_Cart");
             int newID = 0;
 
