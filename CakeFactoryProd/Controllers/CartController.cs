@@ -9,6 +9,7 @@ using SendGrid;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace CakeFactoryProd.Controllers
 {
@@ -49,10 +50,12 @@ namespace CakeFactoryProd.Controllers
                                                                                 Int32.Parse(pairs["Fillings"])
                                                                                 /*Int32.Parse(pairs["Toppings"])*/
                                                                                 );
+            // seems need to check whether is predefined cake
+            //if so, dont need to do the four lines below - has to skip them
+            //maybe this is the solution
            Console.WriteLine(pairs["Accepted"]);
             string accepted =  pairs["Accepted"];
             string[] list = accepted.Split(",");
-
 
             int[] acceptedValues = Array.ConvertAll(list, s => int.Parse(s));
             ToppingsRepo toppings = new ToppingsRepo(_context);
@@ -189,7 +192,7 @@ namespace CakeFactoryProd.Controllers
                 };
 
                 await PurchaseEmail(emailInfo);
-
+                
                 return View(ipn);
             }
             catch (Exception ex)
@@ -221,7 +224,9 @@ namespace CakeFactoryProd.Controllers
                 
                 var mailMessage = MailHelper.CreateSingleEmail(from, to, subject, plainContent, htmlContent);
                 await sendGridClient.SendEmailAsync(mailMessage);
-                
+
+                HttpContext.Session.SetComplexData("_Cart", new List<CartVM>());
+
                 return Ok();
             } catch (Exception ex)
             {

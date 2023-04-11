@@ -1,4 +1,9 @@
-﻿@model IEnumerable<CakeFactoryProd.Models.Order>
+﻿@*@model IEnumerable<CakeFactoryProd.Models.Order>*@
+
+@using CakeFactoryProd.Utilities
+@model PaginatedList<CakeOrderVM>
+@using CakeFactoryProd.ViewModels
+
 
 @{
     ViewData["Title"] = "OrderHistory";
@@ -11,26 +16,22 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.PurchaseDate)
+                Order Id
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PickupDate)
+                Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsPicked)
+                Quantity
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TotalAmount)
+               Total Amount
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.OpenOrder)
+                Date
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OpenOrderDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.User)
-            </th>
+            <th>PaymentId</th>
+          
             <th></th>
         </tr>
     </thead>
@@ -38,26 +39,28 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.PurchaseDate)
+                @item.OrderId
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PickupDate)
+                @item.CakeVM.Name
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IsPicked)
+                @item.Quantity
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TotalAmount)
+                 @item.Total.ToString("C2")
+
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.OpenOrder)
+                @item.PurchaseDate?.ToString("ddd, MMM d, yyyy")
+                    
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.OpenOrderDate)
+                @item.IpnVM.PaymentId
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.Id)
-            </td>
+        
+
+
          @*   <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
@@ -72,6 +75,26 @@ else
 {
     <p>Nothing to show</p>
 }
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="OrderHistory"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="OrderHistory"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
 
 
 <div>   

@@ -26,6 +26,8 @@ builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
 
+builder.Services.AddHttpContextAccessor();
+
 
 var app = builder.Build();
 
