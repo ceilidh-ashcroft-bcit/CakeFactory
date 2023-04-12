@@ -25,9 +25,6 @@
                 @Html.DisplayNameFor(model => model.CakeVM.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CakeVM.Description)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.OrderVM.Total)
             </th>
             <th>
@@ -42,7 +39,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                <img src="@item.CakeVM.ImageName" class="w-100"/>
+                <img src="@item.CakeVM.ImageName" class="w-100 h-100"/>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CakeVM.Size)
@@ -52,9 +49,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CakeVM.Name)
-            </td>
-            <td class="w-100">
-                @Html.DisplayFor(modelItem => item.CakeVM.Description)
             </td>
             <td class="total">
                     @Html.DisplayFor(modelItem => item.OrderVM.Total)
