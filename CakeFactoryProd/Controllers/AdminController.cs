@@ -40,7 +40,6 @@ namespace CakeFactoryProd.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {
                 adminOrderVM = adminOrderVM.Where(x => x.UserVM.PrefferedName.ToUpper().Contains(searchString.ToUpper()));
-                
             }
 
             if (string.IsNullOrEmpty(sortOrder))

@@ -26,8 +26,6 @@ namespace CakeFactoryProd.Repositories
                 var orders = from o in _context.Orders
                              join oc in _context.OrderHasCakes on o.Id equals oc.OrderId
                              join c in _context.Cakes on oc.CakeId equals c.Id
-                             //join ct in _context.CakeHasToppings on c.Id equals ct.CakeId
-                             //join t in _context.Toppings on ct.ToppingId equals t.Id
                              join u in _context.Users on o.UserId equals u.Id
 
                              select new AdminOrderVM
@@ -54,14 +52,6 @@ namespace CakeFactoryProd.Repositories
                                      PurchaseDate = o.PurchaseDate,
                                      Total = o.TotalAmount,
                                  },
-
-                                 //ToppingVM = new ToppingVM
-                                 //{
-                                 //    CakeId = c.Id,
-                                 //    ToppingId = ct.ToppingId,
-                                 //    Flavor = c.Filling.Flavor,
-                                 //    PriceFactor = t.PriceFactor,
-                                 //},
 
                                  UserVM = new UserVM
                                  {
@@ -90,16 +80,17 @@ namespace CakeFactoryProd.Repositories
         /// <returns>
         /// cake order by id
         /// </returns>
-        public AdminOrderVM GetAdminCakeOrderById(int id)
+        public List<AdminOrderVM> GetAdminCakeOrderById(int id)
         {
             try
             {
+                ToppingsRepo toppingsRepo = new ToppingsRepo(_context);
                 var order = (from o in _context.Orders
                              where o.Id == id
                              join oc in _context.OrderHasCakes on o.Id equals oc.OrderId
                              join c in _context.Cakes on oc.CakeId equals c.Id
-                             join ct in _context.CakeHasToppings on c.Id equals ct.CakeId
-                             join t in _context.Toppings on ct.ToppingId equals t.Id
+/*                             join ct in _context.CakeHasToppings on c.Id equals ct.CakeId
+                             join t in _context.Toppings on ct.ToppingId equals t.Id*/
                              join s in _context.Sizes on c.SizeId equals s.Id
                              join sp in _context.Shapes on c.ShapeId equals sp.Id
                              join u in _context.Users on o.UserId equals u.Id
@@ -107,11 +98,12 @@ namespace CakeFactoryProd.Repositories
                              {
                                  OrderId = o.Id,
                                  CakeName = c.Name,
+                                 CakeId = c.Id,
                                  Cost = oc.Cost,
                                  Total = o.TotalAmount,
                                  OrderDate = o.PurchaseDate,
                                  Filling = c.Filling.Flavor,
-                                 Topping = t.Flavor,
+                                 /*Topping = t.Flavor,*/
                                  Size = s.Value,
                                  Shape = sp.Value,
                                  Quantity = oc.Quantity,
@@ -121,15 +113,14 @@ namespace CakeFactoryProd.Repositories
                                  PickupDate = o.PickupDate,
                                  PurchaseDate = o.PurchaseDate,
 
-                             }).FirstOrDefault();
+                             }).ToList();
 
-
-                var adminOrderVM = new AdminOrderVM
+                var adminOrderVM = order.Select(order=> new AdminOrderVM
                 {
-                    Cost = order.Cost,
 
                     CakeOrderVM = new CakeOrderVM
                     {
+                        Cost = order.Cost,
                         OrderId = order.OrderId,
                         Quantity = order.Quantity,
                         PickupDate = order.PickupDate,
@@ -142,21 +133,22 @@ namespace CakeFactoryProd.Repositories
                             Filling = order.Filling,
                             Size = order.Size,
                             Shape = order.Shape,
+                            SelectedToppings = toppingsRepo.GetToppingByCakeId(order.CakeId)
                         },
                     },
 
-                    ToppingVM = new ToppingVM
+/*                    ToppingVM = new ToppingVM
                     {
                         Flavor = order.Topping
                     },
-
+*/
                     UserVM = new UserVM
                     {
                         UserName = order.Name,
                         PrefferedName = order.PrefferedName,
                         PhoneNumber = order.PhoneNumber
                     }
-                };
+                }).ToList();
 
                 return adminOrderVM;
             }
