@@ -28,11 +28,14 @@ Cake Factory was built in C# using ASP.NET Core with Razor Pages. The applicatio
   2. Open the project in <a href="https://visualstudio.microsoft.com">Visual Studio</a> and install the required packages.
   3. Create a database server using <a href= "https://learn.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver16">Microsoft SQL Server Management Studio</a>.
   4. Add your database connection string in user secrets.
-  5. In NuGet Package Manager console run: 
+  5. Delete the `Migrations` folder from the project directory.
+  6. In NuGet Package Manager console run: 
       - <b>`add-migration InitialCreate`</b>
       - <b>`update-database`</b>
-  6. Run the `cake-factory_db-script.sql` seed script in MSSMS.
-  7. Build and run the application in Visual Studio.
+  7. Change lines 310 and 315 of the seed script located at `<project_DIR>/DB/cake-factory_db-script.sql` to point to your project directory.
+       e.g. `BULK N'K:\<project_DIR>\CakeFactory\CakeFactoryProd\wwwroot\images\chocolateCake.jpg'  
+  8. Run the seed script in MSSMS.
+  9. Build and run the application in Visual Studio.
   
   ## Usage
   
