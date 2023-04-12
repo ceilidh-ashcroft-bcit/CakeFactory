@@ -68,7 +68,7 @@
     }
 
 select#Sizes {
-    margin-left: 36px;
+    margin-left: 43px;
     font-size: 1.5rem;
     max-width: 300px;
     border-radius: 5px;
@@ -76,7 +76,7 @@ select#Sizes {
 }
 
 select#Shapes {
-    margin-left: 10px;
+    margin-left: 16px;
     font-size: 1.5rem;
     max-width: 300px;
     padding-right: 20px;
