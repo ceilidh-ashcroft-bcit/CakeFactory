@@ -39,7 +39,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                <img src="@item.CakeVM.ImageName" class="w-100"/>
+                <img src="@item.CakeVM.ImageName" class="w-100 h-100"/>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CakeVM.Size)
@@ -57,8 +57,10 @@
                 @Html.DisplayFor(modelItem => item.OrderVM.Quantity)
              </td>
             <td>
-                @Html.DisplayFor(modelItem => item.OrderVM.PickupDate.Value)
-                @*format date for this info*@
+                @{
+                    var dt = item.OrderVM.PickupDate.Value.ToString("MMMM dd'th', yyyy");
+                }
+                @dt
             </td>
             <td>
                 <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
@@ -68,7 +70,7 @@
     </tbody>
 </table>
 
-<div>Total: <span id="purchase-total">0.00</span></div>
+<div>Total: CAD <span id="purchase-total">0.00</span></div>
 
 @if (SignInManager.IsSignedIn(User))
 {
