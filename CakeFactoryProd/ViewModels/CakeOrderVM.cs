@@ -44,6 +44,7 @@ namespace CakeFactoryProd.ViewModels
         public List<Topping>? Toppings { get; set; }
         public IpnVM IpnVM { get; internal set; }
         public int[] Accepted { get; set; }
+        public decimal Cost { get; set; }
 
     }
 }
