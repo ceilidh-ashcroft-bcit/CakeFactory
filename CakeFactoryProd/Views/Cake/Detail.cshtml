@@ -124,38 +124,29 @@
                     <label asp-for="@Model.CakeVM.SizeId"class="property" >Size: </label>
                     <select name="Sizes" class="cake-sel-size"
                         id="Sizes" onchange="updateTotal(this)" disabled>
-                        @foreach (var item in Model.Sizes)
-                        {
-                            <option value="@item.Id"
-                            >
-                                    @item.Value
-                            </option>
-                        }
+                        <option value="@Model.CakeVM.SizeId">
+                            @Model.CakeVM.Size
+                        </option>
                     </select>
                     <br />
                     <label asp-for="@Model.CakeVM.ShapeId"class="property" >Shape: </label>
                     <select name="Shapes" class="cake-sel-size"
                         id="Shapes" onchange="updateTotal(this)" disabled>
-                        @foreach (var item in Model.Shapes)
-                        {
-                            <option value="@item.Id">
-                                @item.Value
-                            </option>
-                        }
+                        <option value="@Model.CakeVM.ShapeId">
+                            @Model.CakeVM.Shape
+                        </option>
                     </select>
                     <br />
                     <label asp-for="@Model.CakeVM.FillingId"class="property" >Filling: </label>
                     <select name="Fillings" class="cake-sel-size"
                         id="Fillings" onchange="updateTotal(this)" disabled>
-                        @foreach (var item in Model.Fillings)
-                        {
-                            <option value="@item.Id">
-                                @item.Flavor
-                            </option>
-                        }
+                        <option value="@Model.CakeVM.FillingId">
+                            @Model.CakeVM.Filling
+                        </option>
                     </select>
                     <br />
-                    <label asp-for="Toppings" class="property">Topping</label>
+
+@*                    <label asp-for="Toppings" class="property">Topping</label>
                     <div class="cake-edit-topping-contianer">
                         @foreach (var topping in Model.Toppings)
                         {
@@ -174,14 +165,14 @@
                             @topping.Flavor
 
                         }
-                    </div>
-                    @*<label asp-for="@Model.CakeVM.Toppings" class="property">Toppings: </label>
+                    </div>*@
+                    <label asp-for="@Model.CakeVM.Toppings" class="property">Toppings: </label>
                     <span>
                         @foreach (var topping in Model.CakeVM.SelectedToppings)
                         {
                             <span class="h3">@topping.Flavor </span>
                         }
-                    </span>*@
+                    </span>
                     <input type="hidden" name="Sizes" class="property" value="@Model.CakeVM.SizeId" />
                     <input type="hidden" name="Shapes" class="property" value="@Model.CakeVM.ShapeId" />
                     <input type="hidden" name="Fillings" class="property" value="@Model.CakeVM.FillingId" />
