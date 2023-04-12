@@ -26,8 +26,6 @@ namespace CakeFactoryProd.Repositories
                 var orders = from o in _context.Orders
                              join oc in _context.OrderHasCakes on o.Id equals oc.OrderId
                              join c in _context.Cakes on oc.CakeId equals c.Id
-                             /*join ct in _context.CakeHasToppings on c.Id equals ct.CakeId
-                             join t in _context.Toppings on ct.ToppingId equals t.Id*/
                              join u in _context.Users on o.UserId equals u.Id
 
                              select new AdminOrderVM
@@ -54,14 +52,6 @@ namespace CakeFactoryProd.Repositories
                                      PurchaseDate = o.PurchaseDate,
                                      Total = o.TotalAmount,
                                  },
-
-/*                                 ToppingVM = new ToppingVM
-                                 {
-                                     CakeId = c.Id,
-                                     ToppingId = ct.ToppingId,
-                                     Flavor = c.Filling.Flavor,
-                                     PriceFactor = t.PriceFactor,
-                                 },*/
 
                                  UserVM = new UserVM
                                  {
