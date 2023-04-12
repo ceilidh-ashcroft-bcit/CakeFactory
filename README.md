@@ -33,7 +33,7 @@ Cake Factory was built in C# using ASP.NET Core with Razor Pages. The applicatio
       - <b>`add-migration InitialCreate`</b>
       - <b>`update-database`</b>
   7. Change lines 310 and 315 of the seed script located at `<project_DIR>/DB/cake-factory_db-script.sql` to point to your project directory.
-       e.g. `BULK N'K:\<project_DIR>\CakeFactory\CakeFactoryProd\wwwroot\images\chocolateCake.jpg'  
+       e.g. `BULK N'K:\<project_DIR>\CakeFactory\CakeFactoryProd\wwwroot\images\chocolateCake.jpg`  
   8. Run the seed script in MSSMS.
   9. Build and run the application in Visual Studio.
   
