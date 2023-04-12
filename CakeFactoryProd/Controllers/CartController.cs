@@ -121,7 +121,7 @@ namespace CakeFactoryProd.Controllers
         {
             if (cartVM.CakeVM.CakeId == 0)
             {
-                cartVM.CakeVM.Name = "-";
+                cartVM.CakeVM.Name = "Custom Cake";
                 cartVM.CakeVM.Description = "Custom Cake";
                 cartVM.CakeVM.Price = cartVM.OrderVM.Total;
                 //pickeupdate should be for the order not cake
