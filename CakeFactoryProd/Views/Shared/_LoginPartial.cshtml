@@ -18,7 +18,6 @@
         </li>
 
         var temp = HttpContextAccessor.HttpContext.Session.GetComplexData<List<CartVM>>("_Cart");
-        @*@if (temp != null && temp.Count > 0)*@
         @if (temp != null && temp.Count > 0)
         {
             <li class="nav-item">
@@ -38,7 +37,8 @@
         <li class="nav-item">
             <a class="nav-link" asp-area="Identity" asp-page="/Account/Login">Login</a>
         </li>
-        @if (!String.IsNullOrEmpty(HttpContextAccessor.HttpContext.Session.GetString("_Cart")))
+        var temp = HttpContextAccessor.HttpContext.Session.GetComplexData<List<CartVM>>("_Cart");
+        @if (temp != null && temp.Count > 0)
         {
             <li class="nav-item">
                 <a class="nav-link text-danger" asp-controller="Cart" asp-action="Index">Cart</a>
