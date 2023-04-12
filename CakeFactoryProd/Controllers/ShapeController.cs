@@ -1,11 +1,13 @@
 ﻿using CakeFactoryProd.Data;
 using CakeFactoryProd.Models;
 using CakeFactoryProd.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CakeFactoryProd.Controllers
 {
+    [Authorize(Roles = "Admin")]
     /// <summary>
     /// Class responsable for the Shape Controller and all its methods.
     /// </summary>

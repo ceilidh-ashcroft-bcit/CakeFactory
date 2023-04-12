@@ -3,8 +3,10 @@
 using CakeFactoryProd.Models;
 using CakeFactoryProd.Repositories;
 using CakeFactoryProd.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Data;
 
 namespace CakeFactoryProd.Controllers
 {
@@ -48,7 +50,7 @@ namespace CakeFactoryProd.Controllers
             }
             
         }
-
+     [Authorize(Roles = "Admin")]
     public IActionResult CakeOrderDetail(int id)
         {
             
@@ -59,7 +61,7 @@ namespace CakeFactoryProd.Controllers
         
         }
 
-
+        [Authorize(Roles = "Admin")]
         public IActionResult CakeOrderEdit(int id)
         {
             CakeOrderRepository cakeOrderRepo = new CakeOrderRepository(_context);
@@ -70,6 +72,7 @@ namespace CakeFactoryProd.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult CakeOrderEdit(Order order)
         {
             CakeOrderRepository cakeOrderRepo = new CakeOrderRepository(_context);
@@ -89,6 +92,7 @@ namespace CakeFactoryProd.Controllers
 
             
         }
+        [Authorize(Roles = "Admin")]
         public IActionResult AdminDetail(int id)
         {
             CakeRepository cakeRepo = new CakeRepository(_context);
@@ -99,6 +103,7 @@ namespace CakeFactoryProd.Controllers
             return View(cakeVM);
 
         }
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
 
@@ -119,7 +124,8 @@ namespace CakeFactoryProd.Controllers
         }
 
         [HttpPost]
-  /*      [Bind("Name, IsActive, Sizes, Shapes, Fillings, Toppings, Description, CakeImage, Price")]*/
+        [Authorize(Roles = "Admin")]
+        /*      [Bind("Name, IsActive, Sizes, Shapes, Fillings, Toppings, Description, CakeImage, Price")]*/
         public IActionResult Create(CakeVM cakeVM)
         {
             string message = "";
@@ -187,7 +193,7 @@ namespace CakeFactoryProd.Controllers
                    contentType == "image/jpeg" ||
                    contentType == "image/jpg";
         }
-
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(int id)
         {
 
@@ -206,6 +212,7 @@ namespace CakeFactoryProd.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         /*      [Bind("Name, IsActive, Sizes, Shapes, Fillings, Toppings, Description, CakeImage, Price")]*/
         public IActionResult Edit(CakeVM cakeVM)
         {
