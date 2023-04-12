@@ -10,7 +10,7 @@ namespace CakeFactoryProd.Controllers
     // This annotation can be used at the class or method level.
     // The annotation could include a comma separated list or different
     // roles.
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class UserRoleController : Controller
     {
         private CakeFactoryContext _context;

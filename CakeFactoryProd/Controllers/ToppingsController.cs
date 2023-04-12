@@ -2,10 +2,13 @@
 using CakeFactoryProd.Models;
 using CakeFactoryProd.Repositories;
 using CakeFactoryProd.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace CakeFactoryProd.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class ToppingsController : Controller
     {
         private readonly CakeFactoryContext _context;
